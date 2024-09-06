@@ -75,14 +75,14 @@ body {
 
 /* grimoire */
 /* Desk Section */
-.desk-container {
+.grimoire-container {
     position: relative;
     width: 100%;
     height: 0;
     padding-bottom: 56.25%; /* Adjust this value based on your image aspect ratio */
     margin-bottom: 20px; /* Space between sections */
 }
-.desk-section {
+.grimoire-section {
     background-image: url('assets/desk.png'); /* Path to your desk image */
     background-size: contain; /* Cover the entire section */
     background-repeat: no-repeat;
@@ -91,4 +91,34 @@ body {
     padding: 50px; /* Add padding for content */
     color: white; /* Text color */
     text-align: center; /* Center text */
+}
+
+/* papers */
+.papers.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; /* Adjust the size of the paper relative to the desk */
+    height: auto;
+    z-index: 1; /* Ensure paper is above the desk */   
+}
+
+.papers {
+    position: absolute;
+    height: auto;
+}
+
+.paper-todo {
+    top: 40%; /* Adjust these values to position the paper */
+    left: 5%;
+    width: 60%; /* Adjust as needed */
+    z-index: 2; /* Higher than paper-user to appear on top */
+}
+
+.paper-user {
+    top: 55%; /* Adjust these values to position the paper */
+    left: 40%;
+    width: 60%; /* Adjust as needed */
+    z-index: 1;
 }
