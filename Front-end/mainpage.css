@@ -83,13 +83,12 @@ body {
     margin-bottom: 20px; /* Space between sections */
 }
 .grimoire-section {
-    background-image: url('assets/desk.png'); /* Path to your desk image */
+    background-image: url('assets/to-do/desk.png'); /* Path to your desk image */
     background-size: contain; /* Cover the entire section */
     background-repeat: no-repeat;
     background-position: center; /* Center the image */
     height: 650px;
     padding: 50px; /* Add padding for content */
-    color: white; /* Text color */
     text-align: center; /* Center text */
 }
 
@@ -181,3 +180,4 @@ body {
     width: 60%; /* Adjust as needed */
     z-index: 1;
 }
+
