@@ -109,6 +109,7 @@ body {
     height: auto;
 }
 
+/*to-do list */
 .paper-todo {
     top: 40%; /* Adjust these values to position the paper */
     left: 5%;
@@ -116,7 +117,6 @@ body {
     z-index: 2; /* Higher than paper-user to appear on top */
 }
 
-/*to-do list */
 .todo-content {
     top: 100%;
     left: 3%;
@@ -151,6 +151,30 @@ body {
     font-size: 2em;
 }
 
+/* feather edit button */
+.feather-button-container {
+    position: absolute;
+    top: 388px;  /* Adjust as needed */
+    left: 600px;   /* Adjust as needed */
+    z-index: 10;   /* Ensure it's above other elements */
+}
+
+.feather-button {
+    width: 50px;  /* Adjust size as needed */
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.feather-button:hover {
+    transform: scale(1.1);  /* Slightly enlarge on hover */
+}
+
+.feather-button:active {
+    transform: scale(0.95);  /* Slightly shrink when clicked */
+}
+
+/* user info part */
 .paper-user {
     top: 55%; /* Adjust these values to position the paper */
     left: 40%;
