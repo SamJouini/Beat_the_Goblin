@@ -116,6 +116,41 @@ body {
     z-index: 2; /* Higher than paper-user to appear on top */
 }
 
+/*to-do list */
+.todo-content {
+    top: 100%;
+    left: 3%;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    overflow: none;
+    font-family: 'Arial', sans-serif; /* Choose an appropriate font */
+    color: #333; /* Dark grey color for text */
+}
+
+.todo-content h3 {
+    position: absolute;
+    top: 40%;
+    left: 23%;
+    font-family: Hilda, Arial, sans-serif;
+    font-size: 7em;
+    z-index: 3;
+}
+
+.todo-content ul {
+    position: absolute;
+    top: 85%;
+    left: 23%;
+    list-style-type: none;
+    padding-left: 0;
+    z-index: 3;
+}
+
+.todo-content li {
+    margin-bottom: 5px;
+    font-size: 2em;
+}
+
 .paper-user {
     top: 55%; /* Adjust these values to position the paper */
     left: 40%;
