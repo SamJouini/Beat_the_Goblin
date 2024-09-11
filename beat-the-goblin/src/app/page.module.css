@@ -174,6 +174,18 @@
   pointer-events: auto; /* Allow text to be selectable */
 }
 
+/* Versus */
+.versusText {
+  position: relative;
+  top: 50%;
+  left: 10%;
+  margin: 1rem 0;
+  text-align: left;
+  font-size: 2rem;
+  color: #5E7255;
+  font-family: 'Hilds', Arial, sans-serif;
+}
+
 /*level*/
 .userStatsContainer {
   position: absolute;

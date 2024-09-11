@@ -26,7 +26,9 @@ export default function Home() {
       </header>
 
       <main className={styles.main}>
+
         <section className={styles.grimoire}>
+
           <div className={styles.deskBackground}>
             <Image
               src="/assets/desk/desk.png"
@@ -36,6 +38,7 @@ export default function Home() {
               priority
             />
           </div>
+
           <div className={styles.paperUser}>
             <Image
               src="/assets/desk/userpaper.png"
@@ -43,8 +46,11 @@ export default function Home() {
               width={800}
               height={600}
             />
+
             <div className={styles.userContent}>
+
               <div className={styles.knightBannerContainer}>
+
                 <div className={styles.frameContainer}>
                   <Image
                     src="/assets/user_data/frame.png"
@@ -61,6 +67,7 @@ export default function Home() {
                     className={styles.knight}
                   />
                 </div>
+
                 <div className={styles.bannerContainer}>
                   <Image
                     src="/assets/user_data/banner.png"
@@ -71,8 +78,17 @@ export default function Home() {
                   />
                   <span className={styles.username}>Username {/*ajouter logique username ici*/}</span>
                 </div>
+
               </div>
+
+              <div className={styles.versusText}>
+                <h2>Versus</h2>
+              </div>
+
+
+
               <div className={styles.userStatsContainer}>
+
                 <div className={styles.userLevelContainer}>
                   <h3 className={styles.levelTitle}> Current level: {5} {/*ajouter logique level ici*/}</h3>
                   <div className={styles.levelDisplay}>
@@ -81,10 +97,12 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+
                 <div className={styles.streakContainer}>
                   <span className={styles.streakBest}>Longest's Streak: {7}</span>
                   <span className={styles.streakText}>Current Streak: {7}</span>
                 </div>
+
                 <div className={styles.rewardContainer}>
                   <h4 className={styles.rewardTitle}>My rewards:</h4> {/* reward function here*/}
                   <div className={styles.rewardGrid}>
@@ -114,9 +132,13 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+
               </div>
+
             </div>
+
           </div>
+
           <div className={styles.paperTodo}>
             <Image
               src="/assets/desk/todopaper.png"
@@ -124,6 +146,7 @@ export default function Home() {
               width={650}
               height={750}
             />
+
             <div className={styles.todoContent}>
               <h2>Grimoire
                 <Image
@@ -134,14 +157,18 @@ export default function Home() {
                   className={styles.editButton} //ajouter logique edit todo ici
                 />
               </h2>
+
               <ul className={styles.todoList}>
                 <li>Learn fireball spell</li>
                 <li>Collect dragon scales</li>
                 <li>Brew invisibility potion</li>
                 <li>Practice levitation</li>
               </ul>
+
             </div>
+
           </div>
+
         </section>
       </main>
 
