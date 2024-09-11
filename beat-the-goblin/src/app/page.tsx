@@ -40,8 +40,16 @@ export default function Home() {
             <Image
               src="/assets/desk/userpaper.png"
               alt="Paper User"
-              width={850}
-              height={650}
+              width={800}
+              height={600}
+            />
+          </div>
+          <div className={styles.paperTodo}>
+            <Image
+              src="/assets/desk/todopaper.png"
+              alt="Paper Todo"
+              width={650}
+              height={750}
             />
           </div>
         </section>

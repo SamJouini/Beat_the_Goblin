@@ -45,7 +45,7 @@
 
 .loginButton {
   position: absolute;
-  top: 50%; /* Adjust these values to position the button */
+  top: 50%;
   right: 20%;
   transform: translate(50%, -50%);
   padding: 10px 20px;
@@ -71,11 +71,11 @@
 }
 
 .grimoire {
-  width: 100%;
+  width: 90%;
   max-width: 1200px;
   margin-bottom: 2rem;
   position: relative;
-  height: 600px; /* Adjust based on your needs */
+  height: 600px;
   overflow: visible;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -90,8 +90,21 @@
 }
 
 .paperUser {
-  position: absolute; /* Position it absolutely within the grimoire */
-  top: -7%; /* Adjust this value to position it vertically */
-  left: 35%; /* Center horizontally */
-  z-index: 2; /* Ensure it's above the desk background */
+  position: absolute; 
+  top: -6%;
+  left: 30%;
+  width: 50%;
+  height: auto;
+  transform: rotate(+5deg);
+  z-index: 2;
+}
+
+.paperTodo {
+  position: absolute;
+  top: -15%;
+  left: -5%;
+  width: 50%;
+  height: auto;
+  transform: rotate(-3deg);
+  z-index: 3;
 }
