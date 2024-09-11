@@ -50,7 +50,6 @@ export default function Home() {
             <div className={styles.userContent}>
 
               <div className={styles.knightBannerContainer}>
-
                 <div className={styles.frameContainer}>
                   <Image
                     src="/assets/user_data/frame.png"
@@ -67,7 +66,6 @@ export default function Home() {
                     className={styles.knight}
                   />
                 </div>
-
                 <div className={styles.bannerContainer}>
                   <Image
                     src="/assets/user_data/banner.png"
@@ -78,17 +76,42 @@ export default function Home() {
                   />
                   <span className={styles.username}>Username {/*ajouter logique username ici*/}</span>
                 </div>
-
               </div>
 
-              <div className={styles.versusText}>
+              <div className={styles.versusText}> {/* Idée changer la couleur du versus si ok = vert, sinon = rouge ?*/}
                 <h2>Versus</h2>
               </div>
 
-
+              <div className={styles.goblinBannerContainer}>
+                <div className={styles.frameContainer}>
+                  <Image
+                    src="/assets/user_data/frame.png"
+                    alt="Goblin Frame"
+                    width={150}
+                    height={150}
+                    className={styles.frame}
+                  />
+                  <Image
+                    src="/assets/user_data/goblin.png"
+                    alt="Goblin"
+                    width={130}
+                    height={130}
+                    className={styles.goblin}
+                  />
+                </div>
+                <div className={styles.bannerContainer}>
+                  <Image
+                    src="/assets/user_data/banner2.png"
+                    alt="Goblin Banner"
+                    width={200}
+                    height={50}
+                    className={styles.banner}
+                  />
+                  <span className={styles.GoblinName}> Bob {/*ajouter random goblin name ici ?*/}</span>
+                </div>
+              </div>
 
               <div className={styles.userStatsContainer}>
-
                 <div className={styles.userLevelContainer}>
                   <h3 className={styles.levelTitle}> Current level: {5} {/*ajouter logique level ici*/}</h3>
                   <div className={styles.levelDisplay}>
@@ -132,7 +155,6 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-
               </div>
 
             </div>

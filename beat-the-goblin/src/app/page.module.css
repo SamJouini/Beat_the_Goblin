@@ -116,6 +116,7 @@
   box-sizing: border-box;
 }
 
+/* knight*/
 .knightBannerContainer {
   position: relative;
   top: 10%;
@@ -177,13 +178,45 @@
 /* Versus */
 .versusText {
   position: relative;
-  top: 50%;
+  top: 43%;
   left: 10%;
   margin: 1rem 0;
   text-align: left;
   font-size: 2rem;
   color: #5E7255;
   font-family: 'Hilds', Arial, sans-serif;
+}
+
+/* goblin */
+.goblinBannerContainer {
+  position: relative;
+  top: 60%;
+  left: -15%;
+  width: 30%;
+  height: auto;
+}
+
+.goblin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: auto; 
+  z-index: 2;
+}
+
+.GoblinName {
+  position: absolute;
+  top: 35%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Perfect centering */
+  color: #333; /* Adjust color as needed */
+  font-size: 1rem; /* Adjust size as needed */
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  pointer-events: auto; /* Allow text to be selectable */
 }
 
 /*level*/
