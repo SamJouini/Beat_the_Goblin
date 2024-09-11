@@ -44,31 +44,33 @@ export default function Home() {
               height={600}
             />
             <div className={styles.userContent}>
-              <div className={styles.frameContainer}>
-                <Image
-                  src="/assets/user_data/frame.png"
-                  alt="Frame"
-                  width={150}
-                  height={150}
-                  className={styles.frame}
-                />
-                <Image
-                  src="/assets/user_data/knight.png"
-                  alt="Knight"
-                  width={130}
-                  height={130}
-                  className={styles.knight}
-                />
-              </div>
-              <div className={styles.bannerContainer}>
-                <Image
-                  src="/assets/user_data/banner.png"
-                  alt="Banner"
-                  width={200}
-                  height={50}
-                  className={styles.banner}
-                />
-                <span className={styles.username}>Username {/*ajouter logique username ici*/}</span>
+              <div className={styles.knightBannerContainer}>
+                <div className={styles.frameContainer}>
+                  <Image
+                    src="/assets/user_data/frame.png"
+                    alt="Frame"
+                    width={150}
+                    height={150}
+                    className={styles.frame}
+                  />
+                  <Image
+                    src="/assets/user_data/knight.png"
+                    alt="Knight"
+                    width={130}
+                    height={130}
+                    className={styles.knight}
+                  />
+                </div>
+                <div className={styles.bannerContainer}>
+                  <Image
+                    src="/assets/user_data/banner.png"
+                    alt="Banner"
+                    width={200}
+                    height={50}
+                    className={styles.banner}
+                  />
+                  <span className={styles.username}>Username {/*ajouter logique username ici*/}</span>
+                </div>
               </div>
             </div>
           </div>
