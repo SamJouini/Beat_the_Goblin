@@ -20,12 +20,33 @@ export default function Home() {
             width={300}
             height={200}
           />
+          <button className={styles.loginButton}> Login </button> {/* ajouter logique login ici */}
         </div>
         <h1 className={styles.title}>Beat the goblin!</h1>
       </header>
 
-      <main>
+      <main className={styles.main}>
+        <section className={styles.grimoire}>
+          <div className={styles.deskBackground}>
+            <Image
+              src="/assets/desk/desk.png"
+              alt="Desk"
+              fill
+              style={{ objectFit: 'cover' }}
+              priority
+            />
+          </div>
+          <div className={styles.paperUser}>
+            <Image
+              src="/assets/desk/userpaper.png"
+              alt="Paper User"
+              width={850}
+              height={650}
+            />
+          </div>
+        </section>
       </main>
+
 
       <footer className={styles.footer}>
         <p>&copy; 2024 Your Name</p>

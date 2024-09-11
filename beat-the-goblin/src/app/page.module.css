@@ -22,6 +22,19 @@
   max-width: 300px;
 }
 
+.title {
+  font-family: 'Hilds', Arial, sans-serif;
+  font-size: 11rem;
+  color: #E1CF7D; /*or*/
+  text-shadow: 
+  3px 3px 2px rgba(182, 138, 91, 1),
+  4px 4px 3px rgba(238, 223, 129, 1); /*sable */
+  text-align: center;
+  position: relative;
+  z-index: 1; /* on top of the clouds*/
+}
+
+
 .rightCloud {
   position: absolute;
   top: -10px;
@@ -30,14 +43,55 @@
   max-width: 300px;
 }
 
-.title {
-  font-family: 'Hilds', Arial, sans-serif;
-  font-size: 11rem;
-  color: #E1CF7D; /*or*/
-  text-shadow: 
-    3px 3px 2px rgba(182, 138, 91, 1),
-    4px 4px 3px rgba(238, 223, 129, 1); /*sable */
-  text-align: center;
+.loginButton {
+  position: absolute;
+  top: 50%; /* Adjust these values to position the button */
+  right: 20%;
+  transform: translate(50%, -50%);
+  padding: 10px 20px;
+  background-color: #B68A5B;
+  color: #EEDFA9;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.3s;
+  z-index: 2;
+}
+
+.loginButton:hover {
+  background-color: #5E7255;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+.grimoire {
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 2rem;
   position: relative;
-  z-index: 1; /* on top of the clouds*/
+  height: 600px; /* Adjust based on your needs */
+  overflow: visible;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.deskBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.paperUser {
+  position: absolute; /* Position it absolutely within the grimoire */
+  top: -7%; /* Adjust this value to position it vertically */
+  left: 35%; /* Center horizontally */
+  z-index: 2; /* Ensure it's above the desk background */
 }

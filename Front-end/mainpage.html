@@ -3,34 +3,50 @@
 <head>
     <title>Beat the Goblin</title>
     <link rel="stylesheet" href="mainpage.css">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel Script -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/jsx">
+      const domNode = document.getElementById('app');
+      const root = ReactDOM.createRoot(domNode);
+      root.render(<h1>Develop. Preview. Ship.</h1>);
+    </script>
 </head>
 <body>
-    <header>
-        <header class="header">
-            <img src="assets/clouds/leftcloud.png" alt="Left cloud" class="header-clouds left-cloud">
-            <div class="header-content">
-                <h1>Beat the Goblin!</h1>
-            </div>
-            <img src="assets/clouds/rightcloud.png" alt="Right cloud" class="header-clouds right-cloud">
-            <button class="login-button">Login</button>
+    <div id="app"></div>
+    <header class="header">
+        <img src="assets/clouds/leftcloud.png" alt="Left cloud" class="header-clouds left-cloud"/>
+        <div class="header-content">
+            <h1>Beat the Goblin!</h1>
+        </div>
+        <img src="assets/clouds/rightcloud.png" alt="Right cloud" class="header-clouds right-cloud"/>
+        <button class="login-button">Login</button>
     </header>
     <section class="grimoire-section">
         <div class="desk-background"></div>
-        <div class="papers-container"></div>
-        <div class="paper-todo">
-        <img src="assets/to-do/todopaper.png" alt="=Todo" class="papers paper-todo">
-        <div class="todo-content">
-            <div class="feather-button-container">
-                <img src="assets/to-do/feather.png" alt="Feather Button" class="feather-button">
+        <div class="papers-container">
+            <div class="paper-todo">
+                <img src="assets/to-do/todopaper.png" alt="Todo" class="papers paper-todo">
+                <div class="todo-content">
+                    <div class="feather-button-container">
+                        <img src="assets/to-do/feather.png" alt="Feather Button" class="feather-button">
+                    </div>
+                    <h3>Grimoire</h3>
+                    <ul>
+                        <li>Defeat the Goblin</li>
+                        <li>Learn new spells</li>
+                        <li>Explore the dungeon</li>
+                    </ul>
+                </div>
             </div>
-            <h3>Grimoire</h3>
-            <ul>
-                <li>Defeat the Goblin</li>
-                <li>Learn new spells</li>
-                <li>Explore the dungeon</li>
-            </ul>
-        </div>
-        <img src="assets/to-do/userpaper.png" alt="Paper" class="papers paper-user">
+            <div class="paper-user">
+                <img src="assets/to-do/userpaper.png" alt="Paper" class="papers paper-user">
+                <div class="user-frame">
+                    <img src="assets/user_data/frame.png" alt="Frame" class="frame">
+                    <img src="assets/user_data/knight.png" alt="Knight" class="knight">
+                </div>
+            </div>
         </div>
     </section>
 </body>

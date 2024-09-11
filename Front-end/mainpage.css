@@ -181,3 +181,31 @@ body {
     z-index: 1;
 }
 
+/* user image */ 
+.user-frame {
+    position: absolute;
+    top: 70%; /* Adjust to position the frame within paper-user */
+    left: 75%; /* Adjust to position the frame within paper-user */
+    width: 30%; /* Adjust size as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.frame {
+    position: absolute;
+    top: 0; /* Aligns the frame with the top of the circular frame */
+    left: 0; /* Aligns the frame with the left of the circular frame */
+    width: 65%; /* Make the frame fill the circular area */
+    height: 70%; /* Make the frame fill the circular area */
+    z-index: 2;
+}
+
+.knight {
+    top: 50%;
+    left: 50%;
+    width: 75%;
+    height: 75%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+}
+
+
