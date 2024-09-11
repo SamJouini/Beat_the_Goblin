@@ -59,7 +59,7 @@ export default function Home() {
                     className={styles.frame}
                   />
                   <Image
-                    src="/assets/user_data/knight.png"
+                    src="/assets/user_data/KnightAnimated.gif"
                     alt="Knight"
                     width={130}
                     height={130}
@@ -92,7 +92,7 @@ export default function Home() {
                     className={styles.frame}
                   />
                   <Image
-                    src="/assets/user_data/goblin.png"
+                    src="/assets/user_data/GoblinAnimated.gif"
                     alt="Goblin"
                     width={130}
                     height={130}
@@ -190,7 +190,10 @@ export default function Home() {
             </div>
 
           </div>
+        </section>
 
+        <section className={styles.map}>
+          <h2 className={styles.mapTitle}>Adventure Map</h2>
         </section>
       </main>
 
