@@ -81,11 +81,40 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                    <div className={styles.streakContainer}>
-                      <span className={styles.streakBest}>Longest's Streak: {7}</span>
-                      <span className={styles.streakText}>Current Streak: {7}</span>
-                    </div>
+                <div className={styles.streakContainer}>
+                  <span className={styles.streakBest}>Longest's Streak: {7}</span>
+                  <span className={styles.streakText}>Current Streak: {7}</span>
                 </div>
+                <div className={styles.rewardContainer}>
+                  <h4 className={styles.rewardTitle}>My rewards:</h4> {/* reward function here*/}
+                  <div className={styles.rewardGrid}>
+                    <div className={styles.rewardItem}>
+                      <Image
+                        src="/assets/user_data/rewards/cailloux.png"
+                        alt="Reward 1"
+                        width={50}
+                        height={50}
+                      />
+                    </div>
+                    <div className={styles.rewardItem}>
+                      <Image
+                        src="/assets/user_data/rewards/courge.png"
+                        alt="Reward 2"
+                        width={50}
+                        height={50}
+                      />
+                    </div>
+                    <div className={styles.rewardItem}>
+                      <Image
+                        src="/assets/user_data/rewards/mushroom.png"
+                        alt="Reward 3"
+                        width={50}
+                        height={50}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div className={styles.paperTodo}>
