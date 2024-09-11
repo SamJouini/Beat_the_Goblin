@@ -1,5 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import GameMap from "./map"
+import {mapData} from "./map";
 
 export default function Home() {
   return (
@@ -59,10 +61,11 @@ export default function Home() {
                     className={styles.frame}
                   />
                   <Image
-                    src="/assets/user_data/KnightAnimated.gif"
+                    src="/assets/characters/KnightAnimated.gif"
                     alt="Knight"
                     width={130}
                     height={130}
+                    unoptimized
                     className={styles.knight}
                   />
                 </div>
@@ -92,10 +95,11 @@ export default function Home() {
                     className={styles.frame}
                   />
                   <Image
-                    src="/assets/user_data/GoblinAnimated.gif"
+                    src="/assets/characters/GoblinAnimated.gif"
                     alt="Goblin"
                     width={130}
                     height={130}
+                    unoptimized
                     className={styles.goblin}
                   />
                 </div>
@@ -193,7 +197,9 @@ export default function Home() {
         </section>
 
         <section className={styles.map}>
-          <h2 className={styles.mapTitle}>Adventure Map</h2>
+          <div className={styles.mapContainer}>
+            <GameMap mapData={mapData} />
+          </div>
         </section>
       </main>
 
