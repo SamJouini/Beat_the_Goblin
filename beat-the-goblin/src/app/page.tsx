@@ -72,6 +72,20 @@ export default function Home() {
                   <span className={styles.username}>Username {/*ajouter logique username ici*/}</span>
                 </div>
               </div>
+              <div className={styles.userStatsContainer}>
+                <div className={styles.userLevelContainer}>
+                  <h3 className={styles.levelTitle}> Current level: {5} {/*ajouter logique level ici*/}</h3>
+                  <div className={styles.levelDisplay}>
+                    <div className={styles.levelBar}>  {/*show the user's xp/next level when hoover ?*/}
+                      <div className={styles.levelProgress} style={{ width: '60%' }}></div>
+                    </div>
+                  </div>
+                </div>
+                    <div className={styles.streakContainer}>
+                      <span className={styles.streakBest}>Longest's Streak: {7}</span>
+                      <span className={styles.streakText}>Current Streak: {7}</span>
+                    </div>
+                </div>
             </div>
           </div>
           <div className={styles.paperTodo}>
@@ -84,7 +98,7 @@ export default function Home() {
             <div className={styles.todoContent}>
               <h2>Grimoire
                 <Image
-                  src="/assets/to-do/feather.png"
+                  src="/assets/todo/feather.png"
                   alt="Edit"
                   width={40}
                   height={40}
@@ -101,8 +115,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-
-
 
       <footer className={styles.footer}>
         <p>&copy; 2024 Your Name</p>
