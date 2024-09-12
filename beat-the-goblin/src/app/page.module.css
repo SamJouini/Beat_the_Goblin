@@ -377,4 +377,38 @@
 }
 
 /* map section */
+.mapSection {
+  width: 90%;
+  max-width: 1200px;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+.mapTitle {
+  font-family: 'Hilds', Arial, sans-serif;
+  position: relative;
+  font-size: 7rem;
+  margin: 1rem 0;
+  text-align: center;
+  color: #5E7255;
+  text-shadow: 
+  3px 3px 2px rgba(182, 138, 91, 1),
+  4px 4px 3px rgba(238, 223, 129, 1); /*sable */
+}
+
+.mapContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid rgb(238, 223, 169);
+  background-color: #47ABA9;
+  box-shadow: 1px 1px 10px rgba(89, 126, 127, 0.5);
+}
+
+.TheMap {
+  position: relative;
+  overflow: hidden;
+}

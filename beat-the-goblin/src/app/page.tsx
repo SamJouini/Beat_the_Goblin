@@ -1,7 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import GameMap from "./map"
-import {mapData} from "./map";
+import TheMap from "./map";
 
 export default function Home() {
   return (
@@ -196,9 +195,10 @@ export default function Home() {
           </div>
         </section>
 
-        <section className={styles.map}>
+        <section className={styles.mapSection}>
+          <h2 className={styles.mapTitle}>The adventure map</h2>
           <div className={styles.mapContainer}>
-            <GameMap mapData={mapData} />
+            <TheMap />
           </div>
         </section>
       </main>
