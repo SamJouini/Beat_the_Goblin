@@ -140,8 +140,8 @@
 
 .knight {
   position: absolute;
-  top: 55%;
-  left: 55%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   width: 125%;
   height: auto; 
