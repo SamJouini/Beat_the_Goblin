@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import TheMap from "./map";
+// import TheMap from "./map";
 
 export default function Home() {
   return (
@@ -198,7 +198,6 @@ export default function Home() {
         <section className={styles.mapSection}>
           <h2 className={styles.mapTitle}>The adventure map</h2>
           <div className={styles.mapContainer}>
-            <TheMap />
           </div>
         </section>
       </main>
