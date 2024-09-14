@@ -198,8 +198,15 @@ export default function Home() {
         <section className={styles.mapSection}>
           <h2 className={styles.mapTitle}>The adventure map</h2>
           <div className={styles.mapContainer}>
+            <Image
+              src="/assets/map/map.png"
+              alt="game's map"
+              width={800}
+              height={600}
+            />
           </div>
         </section>
+
       </main>
 
       <footer className={styles.footer}>

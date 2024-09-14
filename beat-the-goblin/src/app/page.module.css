@@ -399,16 +399,8 @@
 }
 
 .mapContainer {
-  display: flex;
+  display: relative;
   justify-content: center;
   align-items: center;
   padding: 10px;
-  border: 1px solid rgb(238, 223, 169);
-  background-color: #47ABA9;
-  box-shadow: 1px 1px 10px rgba(89, 126, 127, 0.5);
-}
-
-.TheMap {
-  position: relative;
-  overflow: hidden;
 }
