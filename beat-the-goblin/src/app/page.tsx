@@ -201,9 +201,33 @@ export default function Home() {
             <Image
               src="/assets/map/map.png"
               alt="game's map"
-              width={800}
-              height={600}
+              width={850}
+              height={650}
             />
+            <div className={styles.rockinthewater}>
+              <Image
+                src="/assets/map/water/Rocks_03.gif"
+                alt="Rock in the water"
+                width={100}
+                height={100}
+              />
+            </div>
+            <div className={styles.sheepinsand}>
+              <Image
+                src="/assets/map/decors/HappySheep_Idle.gif"
+                alt="sheep in sand"
+                width={100}
+                height={100}
+              />
+            </div>
+            <div className={styles.tree1}>
+              <Image
+                src="/assets/map/decors/Tree1.gif"
+                alt="Tree1"
+                width={100}
+                height={100}
+              />
+            </div>
           </div>
         </section>
 
