@@ -204,6 +204,8 @@ export default function Home() {
               width={850}
               height={650}
             />
+            
+{/*
             <div className={styles.rockinthewater}>
               <Image
                 src="/assets/map/water/Rocks_03.gif"
@@ -228,13 +230,24 @@ export default function Home() {
                 height={100}
               />
             </div>
+*/}
           </div>
         </section>
 
       </main>
 
       <footer className={styles.footer}>
-        <p>&copy; 2024 Your Name</p>
+      <div className={styles.cloud}>
+          <Image
+            src="/assets/clouds/leftcloud.png"
+            alt="center cloud"
+            width={300}
+            height={200}
+            />
+            <div className={styles.footerText}>
+              <p>&copy; 2024 Samantha Jouini</p>
+            </div>
+        </div>
       </footer>
     </div>
   );
