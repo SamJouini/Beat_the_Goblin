@@ -13,6 +13,7 @@ export default function Home() {
             width={300}
             height={200}
           />
+          <button className={styles.signupButton}> Sign up {/*ajouter logique login ici*/} </button>
         </div>
         <div className={styles.rightCloud}>
           <Image
