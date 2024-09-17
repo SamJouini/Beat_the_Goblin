@@ -1,10 +1,20 @@
+'use client';
 import Image from "next/image";
-import styles from "./page.module.css";
-// import TheMap from "./map";
+import { useRouter } from 'next/navigation';
+import styles from "./styles/page.module.css";
 
-export default function Home() {
+// Set up to adds components
+const MyComponents = () => {
+  const router = useRouter();
+
+// Function to add working buttons for Sign up
+const handleSignupClick = () => {
+  router.push('/signup');
+};
+
   return (
     <div className={styles.container}>
+
       <header className={styles.header}>
         <div className={styles.leftCloud}>
           <Image
@@ -13,7 +23,9 @@ export default function Home() {
             width={300}
             height={200}
           />
-          <button className={styles.signupButton}> Sign up {/*ajouter logique login ici*/} </button>
+          <button className={styles.signupButton} onClick={handleSignupClick}>
+          Sign up
+          </button>
         </div>
         <div className={styles.rightCloud}>
           <Image
@@ -40,7 +52,6 @@ export default function Home() {
               priority
             />
           </div>
-
           <div className={styles.paperUser}>
             <Image
               src="/assets/desk/userpaper.png"
@@ -246,10 +257,12 @@ export default function Home() {
             height={200}
             />
             <div className={styles.footerText}>
-              <p>&copy; 2024 Samantha Jouini</p>
+              <p>&copy; 2024 by Samantha Jouini</p>
             </div>
         </div>
       </footer>
     </div>
   );
-}
+};
+
+export default MyComponents;
