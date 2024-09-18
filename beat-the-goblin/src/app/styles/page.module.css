@@ -1,12 +1,3 @@
-/*.page {} */
-
-@font-face {
-  font-family: 'Hilds';
-  src: url('../fonts/Hilds___.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 /* header */
 .header {
   position: relative;
@@ -40,7 +31,7 @@
 }
 
 .title {
-  font-family: 'Hilds', Arial, sans-serif;
+  font-family: Hilds, Arial, sans-serif;
   font-size: 11rem;
   color: #E1CF7D; /*or*/
   text-shadow: 

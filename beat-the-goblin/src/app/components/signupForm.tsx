@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import styles from './signupForm.module.css'
 
 /*
  * SignupForm Component to renders a form for user registration.
@@ -48,31 +49,39 @@ const SignupForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="username"
-        value={formData.username}
-        placeholder="Username"
-        required
-      />
-      <input
-        type="email"
-        name="email"
-        value={formData.email}
-        placeholder="Email"
-        required
-      />
-      <input
-        type="password"
-        name="password"
-        value={formData.password}
-        placeholder="Password"
-        required
-      />
-      {error && <p>{error}</p>}
-      <button type="submit">Sign Up</button>
-    </form>
+    <form onSubmit={handleSubmit} className={styles.form}>
+    <div className={styles.formGrid}>
+      <div className={styles.formField}>
+        <input
+          type="text"
+          name="username"
+          value={formData.username}
+          placeholder="Username"
+          required
+        />
+      </div>
+      <div className={styles.formField}>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          placeholder="Email"
+          required
+        />
+      </div>
+      <div className={styles.formField}>
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          placeholder="Password"
+          required
+        />
+      </div>
+    </div>
+    {error && <p className={styles.error}>{error}</p>}
+    <button type="submit" className={styles.submitButton}>Sign Up</button>
+  </form>
   );
 };
 

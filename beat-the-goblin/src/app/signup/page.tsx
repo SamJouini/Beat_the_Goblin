@@ -1,12 +1,19 @@
-import SignupForm from '../components/SignupForm';
-import styles from '/signup.module.css'
+import SignupForm from '../components/signupForm';
+import Image from 'next/image';
+import styles from './page.module.css';
 
 // html page for the form
 export default function SignupPage() {
     return (
-      <div>
-        <h1>Sign Up</h1>
-        <SignupForm />
-      </div>
-    );
+      <div className={styles.page}>
+      <main className={styles.mainContainer}>
+          <div className={styles.paperSection}>
+          <div className={styles.content}>
+              <h1 className={styles.title}>Welcome to Beat the Goblin!</h1>
+              <SignupForm/>
+          </div>
+          </div>
+      </main>
+  </div>
+  );
 };
