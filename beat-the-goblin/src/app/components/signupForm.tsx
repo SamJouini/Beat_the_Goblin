@@ -23,6 +23,15 @@ const SignupForm = () => {
   // Call for Next.js router
   const router = useRouter();
 
+// field writting handler
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+const { name, value } = e.target;
+  setFormData(prevState => ({
+    ...prevState,
+    [name]: value
+  }));
+};
+
   // form submission handler
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,6 +65,7 @@ const SignupForm = () => {
           type="text"
           name="username"
           value={formData.username}
+          onChange={handleChange}
           placeholder="Username"
           required
         />
@@ -65,6 +75,7 @@ const SignupForm = () => {
           type="email"
           name="email"
           value={formData.email}
+          onChange={handleChange}
           placeholder="Email"
           required
         />
@@ -74,6 +85,7 @@ const SignupForm = () => {
           type="password"
           name="password"
           value={formData.password}
+          onChange={handleChange}
           placeholder="Password"
           required
         />
