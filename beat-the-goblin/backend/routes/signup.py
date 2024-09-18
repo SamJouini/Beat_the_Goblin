@@ -24,7 +24,7 @@ def signup():
 
     try:
         # Check if user already exists
-        cursor.execute("SELECT * FROM users WHERE username = ? OR email = ?", (username, email))
+        cursor.execute("SELECT * FROM Users WHERE username = ? OR email = ?", (username, email))
         existing_user = cursor.fetchone()
 
         if existing_user:
@@ -34,7 +34,7 @@ def signup():
         hashed_password = generate_password_hash(password)
 
         # Store the new user
-        cursor.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+        cursor.execute("INSERT INTO Users (username, email, password_hash) VALUES (?, ?, ?)",
                        (username, email, hashed_password))
         conn.commit()
 

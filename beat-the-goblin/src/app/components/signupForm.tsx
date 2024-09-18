@@ -52,9 +52,9 @@ const { name, value } = e.target;
         setError(data.message);
       }
       // Set generic error message for any other errors
-    } catch (err) {
-      setError('An error occurred. Please try again.');
-    }
+      } catch (err) {
+        setError('An error occurred. Please try again.');
+      }
   };
 
   return (
