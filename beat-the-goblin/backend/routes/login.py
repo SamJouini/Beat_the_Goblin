@@ -32,12 +32,12 @@ def login():
         cursor = conn.cursor()
 
         try:
-            # Fetch user from database
+            # Fetch email from database
             cursor.execute("SELECT * FROM Users WHERE email = ?", (email,))
             user = cursor.fetchone()
 
             if user is None:
-                return jsonify({'success': False, 'message': 'User not found'}), 404
+                return jsonify({'success': False, 'message': 'Email not found'}), 404
 
             # Check password
             if check_password_hash(user['password_hash'], password):

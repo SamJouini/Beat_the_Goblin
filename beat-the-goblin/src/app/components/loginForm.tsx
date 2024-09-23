@@ -37,7 +37,7 @@ const LoginForm = () => {
 
       if (data.success) {
         // Redirect to dashboard or home page after successful login
-        router.push('/dashboard');
+        router.push('/');
       } else {
         setError(data.message || 'Login failed. Please try again.');
       }
