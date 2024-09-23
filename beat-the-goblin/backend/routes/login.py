@@ -21,19 +21,19 @@ def get_db_connection():
 @bp.route('/api/login', methods=['POST'])
 def login():
     data = request.json
-    username = data.get('username')
+    email = data.get('email')
     password = data.get('password')
 
     # Input validation
-    if not username or not password:
-        return jsonify({'success': False, 'message': 'Missing username or password'}), 400
+    if not email or not password:
+        return jsonify({'success': False, 'message': 'Missing email or password'}), 400
 
     with get_db_connection() as conn:
         cursor = conn.cursor()
 
         try:
             # Fetch user from database
-            cursor.execute("SELECT * FROM Users WHERE username = ?", (username,))
+            cursor.execute("SELECT * FROM Users WHERE email = ?", (email,))
             user = cursor.fetchone()
 
             if user is None:
@@ -42,7 +42,7 @@ def login():
             # Check password
             if check_password_hash(user['password_hash'], password):
                 # Create access token
-                access_token = create_access_token(identity=username)
+                access_token = create_access_token(identity=email)
                 return jsonify({
                     'success': True,
                     'message': 'Login successful',
