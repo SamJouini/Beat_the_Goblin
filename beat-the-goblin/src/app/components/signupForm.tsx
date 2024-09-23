@@ -23,7 +23,7 @@ const SignupForm = () => {
   // Call for Next.js router
   const router = useRouter();
 
-// field writting handler
+// Field writting handler
 const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 const { name, value } = e.target;
   setFormData(prevState => ({
@@ -57,6 +57,7 @@ const { name, value } = e.target;
       }
   };
 
+  // The actual form
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
     <div className={styles.formGrid}>

@@ -1,15 +1,20 @@
 'use client';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-import styles from "./styles/page.module.css";
+import styles from "./page.module.css";
 
 // Set up to adds components
 const MyComponents = () => {
   const router = useRouter();
 
-// Function to add working buttons for Sign up
+// Function to handle signup button click
 const handleSignupClick = () => {
   router.push('/signup');
+};
+
+// Function to handle login button click
+const handleLoginClick = () => {
+  router.push('/login');
 };
 
   return (
@@ -34,7 +39,9 @@ const handleSignupClick = () => {
             width={300}
             height={200}
           />
-          <button className={styles.loginButton}> Login {/*ajouter logique login ici*/} </button>
+          <button className={styles.loginButton} onClick={handleLoginClick}>
+          Login
+          </button>
         </div>
         <h1 className={styles.title}>Beat the goblin!</h1>
       </header>
