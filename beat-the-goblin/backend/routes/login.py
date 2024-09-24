@@ -43,7 +43,10 @@ def login():
             # Check password
             if check_password_hash(user['password_hash'], password):
                 # Create access token
-                access_token = create_access_token(identity=email)
+                access_token = create_access_token(
+                    identity=user['id'],
+                    additional_claims={"username": user['username']}
+                )
                 return jsonify({
                     'success': True,
                     'message': 'Login successful',

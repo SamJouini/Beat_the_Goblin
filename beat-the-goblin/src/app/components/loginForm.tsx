@@ -38,7 +38,7 @@ const LoginForm = () => {
       if (data.success) {
          // Store the token in localStorage
       localStorage.setItem('token', data.access_token);
-      
+      localStorage.setItem('username', data.username); 
         // Redirect to dashboard or home page after successful login
         router.push('/');
       } else {

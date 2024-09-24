@@ -8,11 +8,17 @@ import styles from "./page.module.css";
 const MyComponents = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('Guest');
 
-// Function to check if there's a token in storage
+// Function to check if there's a token in storage and fetch username
 useEffect(() => {
   const token = localStorage.getItem('token');
   setIsLoggedIn(Boolean(token));
+
+  const storedUsername = localStorage.getItem('username');
+  if (storedUsername) {
+    setUsername(storedUsername);
+  }
 }, []);
 
 // Function to handle signup button click
@@ -25,7 +31,9 @@ const handleLoginLogoutClick = () => {
   if (isLoggedIn) {
     // Logout logic
     localStorage.removeItem('token');
+    localStorage.removeItem('username');
     setIsLoggedIn(false);
+    setUsername('Guest');
   } else {
     // Login logic
     router.push('/login');
@@ -110,7 +118,7 @@ const handleLoginLogoutClick = () => {
                     height={50}
                     className={styles.banner}
                   />
-                  <span className={styles.username}>Username {/*ajouter logique username ici*/}</span>
+                  <span className={styles.username}>{username}</span>
                 </div>
               </div>
 
