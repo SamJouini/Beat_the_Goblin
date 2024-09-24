@@ -51,9 +51,11 @@ const handleLoginLogoutClick = () => {
             width={300}
             height={200}
           />
-          <button className={styles.signupButton} onClick={handleSignupClick}>
-          Sign up
-          </button>
+          {!isLoggedIn && (
+            <button className={styles.signupButton} onClick={handleSignupClick}>
+            Sign up
+            </button>
+          )}
         </div>
         <div className={styles.rightCloud}>
           <Image
