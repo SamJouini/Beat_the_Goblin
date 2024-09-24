@@ -1,20 +1,35 @@
 'use client';
-import Image from "next/image";
 import { useRouter } from 'next/navigation';
+import { useState, useEffect } from "react";
+import Image from "next/image";
 import styles from "./page.module.css";
 
 // Set up to adds components
 const MyComponents = () => {
   const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+// Function to check if there's a token in storage
+useEffect(() => {
+  const token = localStorage.getItem('token');
+  setIsLoggedIn(Boolean(token));
+}, []);
 
 // Function to handle signup button click
 const handleSignupClick = () => {
   router.push('/signup');
 };
 
-// Function to handle login button click
-const handleLoginClick = () => {
-  router.push('/login');
+// Function to handle login/logout button click
+const handleLoginLogoutClick = () => {
+  if (isLoggedIn) {
+    // Logout logic
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+  } else {
+    // Login logic
+    router.push('/login');
+  }
 };
 
   return (
@@ -39,8 +54,8 @@ const handleLoginClick = () => {
             width={300}
             height={200}
           />
-          <button className={styles.loginButton} onClick={handleLoginClick}>
-          Login
+          <button className={styles.loginButton} onClick={handleLoginLogoutClick}>
+          {isLoggedIn ? 'Logout' : 'Login'}
           </button>
         </div>
         <h1 className={styles.title}>Beat the goblin!</h1>

@@ -24,6 +24,7 @@ def login():
     email = data.get('email')
     password = data.get('password')
 
+
     # Input validation
     if not email or not password:
         return jsonify({'success': False, 'message': 'Missing email or password'}), 400
