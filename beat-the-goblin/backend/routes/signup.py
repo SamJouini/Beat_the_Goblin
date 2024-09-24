@@ -5,7 +5,7 @@ import sqlite3
 bp = Blueprint('signup', __name__)
 
 def get_db_connection():
-    conn = sqlite3.connect('mydatabase.db')
+    conn = sqlite3.connect('btgdatabase.db')
     conn.row_factory = sqlite3.Row
     return conn
 

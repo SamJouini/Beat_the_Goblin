@@ -8,7 +8,7 @@ export default function LoginPage() {
       <main className={styles.mainContainer}>
           <div className={styles.paperSection}>
           <div className={styles.content}>
-              <h1 className={styles.title}>Welcome to Beat the Goblin!</h1>
+              <h1 className={styles.title}>Welcome back to Beat the Goblin!</h1>
               <LoginForm/>
           </div>
           </div>
