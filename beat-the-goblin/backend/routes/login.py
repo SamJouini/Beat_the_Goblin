@@ -50,7 +50,8 @@ def login():
                 return jsonify({
                     'success': True,
                     'message': 'Login successful',
-                    'access_token': access_token
+                    'access_token': access_token,
+                    'username': user['username']
                 }), 200
             else:
                 return jsonify({'success': False, 'message': 'Invalid password'}), 401
