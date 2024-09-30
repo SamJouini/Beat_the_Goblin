@@ -8,8 +8,8 @@
   
   .mainContainer {
     position: relative;
-    width: 800px; /* Match this to your image width */
-    height: 600px; /* Match this to your image height */
+    width: 800px;
+    height: 600px;
   }
   
   .paperSection {

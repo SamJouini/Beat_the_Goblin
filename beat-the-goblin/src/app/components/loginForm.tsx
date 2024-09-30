@@ -1,22 +1,35 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './loginForm.module.css';
 
 const LoginForm = () => {
-  // Manager form for input values
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-
-  // Manager for error messages
   const [error, setError] = useState('');
-
-  // Call for Next.js router
   const router = useRouter();
 
-  // Field writing handler
+  useEffect(() => {
+    // Check token expiration on component mount
+    checkTokenExpiration();
+  }, []);
+
+  const checkTokenExpiration = () => {
+    const expirationTime = localStorage.getItem('tokenExpiration');
+    if (expirationTime && new Date().getTime() > parseInt(expirationTime)) {
+      handleLogout();
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('tokenExpiration');
+    router.push('/login');
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -36,9 +49,17 @@ const LoginForm = () => {
       const data = await response.json();
 
       if (data.success) {
-         // Store the token in localStorage
-      localStorage.setItem('token', data.access_token);
-      localStorage.setItem('username', data.username); 
+        // Store the token and username in localStorage
+        localStorage.setItem('token', data.access_token);
+        localStorage.setItem('username', data.username);
+        
+        // Set token expiration
+        const expirationTime = new Date().getTime() + (data.expires_in * 1000);
+        localStorage.setItem('tokenExpiration', expirationTime.toString());
+        
+        // Set up automatic logout
+        setTimeout(handleLogout, data.expires_in * 1000);
+        
         // Redirect to dashboard or home page after successful login
         router.push('/');
       } else {

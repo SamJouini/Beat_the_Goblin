@@ -39,7 +39,7 @@
   4px 4px 3px rgba(238, 223, 129, 1); /*sable */
   text-align: center;
   position: relative;
-  z-index: 1; /* on top of the clouds*/
+  z-index: 1;
 }
 
 
@@ -119,8 +119,8 @@
   height: 100%;
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start; /* Align to the top */
-  padding: 5%; /* Add some padding to prevent the frame from touching the edge */
+  align-items: flex-start;
+  padding: 5%;
   box-sizing: border-box;
 }
 
@@ -172,15 +172,15 @@
 
 .username {
   position: absolute;
-  top: 35%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Perfect centering */
-  color: #333; /* Adjust color as needed */
-  font-size: 1rem; /* Adjust size as needed */
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #333;
+  font-size: 1rem;
   font-weight: bold;
   text-align: center;
   width: 100%;
-  pointer-events: auto; /* Allow text to be selectable */
+  pointer-events: auto;
 }
 
 /* Versus */
@@ -216,15 +216,15 @@
 
 .GoblinName {
   position: absolute;
-  top: 35%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Perfect centering */
-  color: #333; /* Adjust color as needed */
-  font-size: 1rem; /* Adjust size as needed */
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #333;
+  font-size: 1rem;
   font-weight: bold;
   text-align: center;
   width: 100%;
-  pointer-events: auto; /* Allow text to be selectable */
+  pointer-events: auto;
 }
 
 /*level*/
@@ -417,7 +417,7 @@
 .footer {
   position: relative;
   width: 100%;
-  height: 250px; /* Adjust based on your image height */
+  height: 250px;
 }
 
 .cloud {
