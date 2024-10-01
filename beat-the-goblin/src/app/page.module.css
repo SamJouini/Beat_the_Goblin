@@ -363,13 +363,13 @@
   font-family: 'Hilds', 'Arial', sans-serif;
 }
 
-.editButton {
+.editButtonActive {
   margin-left: 5px;
   cursor: pointer;
   transition: transform 0.2s;
 }
 
-.editButton:hover {
+.editButtonActive:hover {
   transform: scale(1.1);
 }
 

@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
+import EditableList from './components/EditableList';
 
 // Set up to adds components
 const MyComponents = () => {
@@ -37,6 +38,14 @@ const handleLoginLogoutClick = () => {
   } else {
     // Login logic
     router.push('/login');
+  }
+};
+
+// Function to handle edit button click
+const handleEditClick = () => {
+  if (isLoggedIn) {
+    // Add your logic for handling the edit click
+    console.log('Edit button clicked');
   }
 };
 
@@ -223,17 +232,12 @@ const handleLoginLogoutClick = () => {
                   alt="Edit"
                   width={40}
                   height={40}
-                  className={styles.editButton} //ajouter logique edit todo ici
+                  className={`${styles.editButton} ${isLoggedIn ? styles.editButtonActive : ''}`}
+                  onClick={handleEditClick} //ajouter logique add todo ici
                 />
               </h2>
 
-              <ul className={styles.todoList}>
-                <li>Learn fireball spell</li>
-                <li>Collect dragon scales</li>
-                <li>Brew invisibility potion</li>
-                <li>Practice levitation</li>
-              </ul>
-
+              <EditableList />
             </div>
 
           </div>
