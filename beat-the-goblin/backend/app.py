@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 from datetime import timedelta
 from routes.signup import bp as signup_bp
 from routes.login import bp as login_bp
+from routes.tasks import bp as tasks_bp
 
 app = Flask(__name__)
 jwt = JWTManager(app)
@@ -13,6 +14,7 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=5)  # Set token to expi
 # blueprints
 app.register_blueprint(signup_bp)
 app.register_blueprint(login_bp)
+app.register_blueprint(tasks_bp)
 CORS(app)
 
 if __name__ == '__main__':

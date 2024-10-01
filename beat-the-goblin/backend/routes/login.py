@@ -49,13 +49,15 @@ def login():
                     additional_claims={"username": user['username']},
                     expires_delta=expires
                 )
-                return jsonify({
+                response = jsonify({
                     'success': True,
                     'message': 'Login successful',
                     'access_token': access_token,
                     'username': user['username'],
                     'expires_in': int(expires.total_seconds())  # Add expiration time in seconds
-                }), 200
+                })
+                return response
+
             else:
                 return jsonify({'success': False, 'message': 'Invalid password'}), 401
 
