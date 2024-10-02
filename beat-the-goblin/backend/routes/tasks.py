@@ -2,6 +2,7 @@ from flask import jsonify, request, Blueprint
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import sqlite3
 import logging
+import datetime
 
 bp = Blueprint('main', __name__)
 
@@ -14,45 +15,78 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-@bp.route('/api/tasks', methods=['GET', 'PUT'])
+@bp.route('/api/tasks')
 @jwt_required(optional=True)
-def main_page():
+def grimoire():
     current_user_id = get_jwt_identity()
 
-    if request.method == 'GET':
-        tasks = []
-        if current_user_id != None:
-            with get_db_connection() as conn:
-                cursor = conn.cursor()
-                try:
-                    cursor.execute("""
-                        SELECT id, title, xp, created_at, due_date, priority, completed_at 
-                        FROM Tasks 
-                        WHERE user_id = ?
-                    """, (current_user_id,))
-                    tasks = [{
-                        'id': row['id'],
-                        'title': row['title'],
-                        'xp': row['xp'],
-                        'created_at': row['created_at'],
-                        'due_date': row['due_date'],
-                        'priority': row['priority'],
-                        'completed_at': row['completed_at']
-                    } for row in cursor.fetchall()]
-                except sqlite3.Error as e:
-                    logger.error(f"Database error while fetching tasks: {e}")
-                    return jsonify({'success': False, 'message': 'An error occurred while fetching tasks'}), 500
+    hardcoded_tasks = [
+        {"id": 1, "title": "Click here to edit the tasks"},
+        {"id": 2, "title": "Each finished task will give you xp"},
+        {"id": 3, "title": "If they are important, urgent or even hard you will gain more xp"},
+        {"id": 4, "title": "At the end of the deadline your xp will be compared to Bob's"},
+    ]
+    
+    if current_user_id == None:
+        return jsonify({'isLoggedIn': False, 'tasks': hardcoded_tasks})
+    
+    else:
+        tasks = get_user_tasks (current_user_id)  
+        if len(tasks) == 0:
+            for task in hardcoded_tasks:
+                tasks.append(create_task(current_user_id, task['title']))
         
-        return jsonify({
-            'success': True,
-            'isLoggedIn': current_user_id != None,
-            'tasks': tasks
-        }), 200
+        return jsonify({'isLoggedIn': True, 'tasks': tasks})
+        
+def get_user_tasks (user_id):
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        try:
+            cursor.execute("""
+                SELECT id, title, xp, created_at, due_date, priority, completed_at 
+                FROM Tasks 
+                WHERE user_id = ?
+            """, (user_id,))
 
-    elif request.method == 'PUT':
-        if current_user_id == None:
-            return jsonify({'success': False, 'message': 'Authentication required'}), 401
-        
+            return [{
+                'id': row['id'],
+                'title': row['title'],
+                'xp': row['xp'],
+                'created_at': row['created_at'],
+                'due_date': row['due_date'],
+                'priority': row['priority'],
+                'completed_at': row['completed_at']
+            } for row in cursor.fetchall()]
+
+        except sqlite3.Error as e:
+            logger.error(f"Database error while fetching tasks: {e}")
+            raise e
+
+def create_task(user_id, title):
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        try:
+            cursor.execute('INSERT INTO Tasks (user_id, title) VALUES (?, ?)'
+            ' RETURNING id, title, created_at',
+            (user_id, title))
+            
+            row = cursor.fetchone()
+            return {
+                'id': row['id'],
+                'title': row['title'],
+                'created_at': row['created_at']
+            }
+            
+        except sqlite3.Error as e:
+            logger.error(f"Database error while fetching tasks: {e}")
+            raise e
+            
+@bp.route('/api/edition', methods =['GET, PUT'])
+@jwt_required
+def task_edition():
+    current_user_id= get_jwt_identity()
+    if request.method == 'PUT':
+       
         data = request.json
         task_id = data.get('id')
         new_title = data.get('title')

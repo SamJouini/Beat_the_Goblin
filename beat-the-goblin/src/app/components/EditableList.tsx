@@ -10,15 +10,8 @@ interface Task {
   completed_at?: string | null;
 }
 
-const hardcodedTasks: Task[] = [
-  { id: 1, title: "Click here to edit the tasks" },
-  { id: 2, title: "Each finished task will give you xp" },
-  { id: 3, title: "If they are important, urgent or even hard you will gain more xp" },
-  { id: 4, title: "At the end of the deadline your xp will be compared to Bob's" },
-];
-
 const EditableList = () => {
-  const [tasks, setTasks] = useState<Task[]>(hardcodedTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editValue, setEditValue] = useState<string>('');
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -56,7 +49,7 @@ const EditableList = () => {
     }
 
     try {
-      const response = await fetch('/', {
+      const response = await fetch('/api/edition', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
