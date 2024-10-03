@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import styles from './EditableList.module.css' 
 
 interface Task {
   id: number;
@@ -43,8 +44,10 @@ const EditableList = () => {
   };
 
   const handleEdit = (id: number, currentTitle: string) => {
-    setEditingId(id);
-    setEditValue(currentTitle);
+  if (isLoggedIn) {
+      setEditingId(id);
+      setEditValue(currentTitle);
+    }
   };
 
   const handleSave = async (id: number) => {
@@ -81,36 +84,41 @@ const EditableList = () => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, id: number) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && isLoggedIn) {
       handleSave(id);
     }
   };
 
   const handleBlur = (id: number) => {
-    handleSave(id);
+  if (isLoggedIn) {
+      handleSave(id);
+    }
   };
 
   return (
-    <div>
-      <ul>
-        {tasks.map(task => (
-          <li key={task.id}>
-            {editingId === task.id ? (
-              <input
-                value={editValue}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditValue(e.target.value)}
-                onKeyDown={(e) => handleKeyDown(e, task.id)}
-                onBlur={() => handleBlur(task.id)}
-                autoFocus
-              />
-            ) : (
-              <span onClick={() => handleEdit(task.id, task.title)}>
-                {task.title}
-              </span>
-            )}
-          </li>
-        ))}
-      </ul>
+    <div className={styles.EditableTasks}>
+      <div>
+        <ul>
+          {tasks.map(task => (
+            <li key={task.id}>
+              {editingId === task.id && isLoggedIn ? (
+                <input
+                  className={'taskedit'}
+                  value={editValue}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditValue(e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(e, task.id)}
+                  onBlur={() => handleBlur(task.id)}
+                  autoFocus
+                />
+              ) : (
+                <span onClick={() => handleEdit(task.id, task.title)}>
+                  {task.title}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
