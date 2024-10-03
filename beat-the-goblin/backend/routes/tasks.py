@@ -43,7 +43,7 @@ def get_user_tasks (user_id):
         cursor = conn.cursor()
         try:
             cursor.execute("""
-                SELECT id, title, xp, created_at, due_date, priority, completed_at 
+                SELECT id, title, xp, created_at, due_date, completed_at 
                 FROM Tasks 
                 WHERE user_id = ?
             """, (user_id,))
@@ -54,7 +54,6 @@ def get_user_tasks (user_id):
                 'xp': row['xp'],
                 'created_at': row['created_at'],
                 'due_date': row['due_date'],
-                'priority': row['priority'],
                 'completed_at': row['completed_at']
             } for row in cursor.fetchall()]
 
@@ -91,7 +90,6 @@ def task_edition():
     new_title = data.get('title')
     new_xp = data.get('xp')
     new_due_date = data.get('due_date')
-    new_priority = data.get('priority')
     new_completed_at = data.get('completed_at')
 
     if task_id is None or new_title is None:
@@ -112,9 +110,6 @@ def task_edition():
             if new_due_date is not None:
                 update_fields.append("due_date = ?")
                 update_values.append(new_due_date)
-            if new_priority is not None:
-                update_fields.append("priority = ?")
-                update_values.append(new_priority)
             if new_completed_at is not None:
                 update_fields.append("completed_at = ?")
                 update_values.append(new_completed_at)
