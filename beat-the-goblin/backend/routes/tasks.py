@@ -17,7 +17,7 @@ def get_db_connection():
 
 @bp.route('/api/tasks')
 @jwt_required(optional=True)
-def grimoire():
+def tasks_list():
     current_user_id = get_jwt_identity()
 
     hardcoded_tasks = [
@@ -81,62 +81,59 @@ def create_task(user_id, title):
             logger.error(f"Database error while fetching tasks: {e}")
             raise e
             
-@bp.route('/api/edition', methods =['GET, PUT'])
-@jwt_required
+@bp.route('/api/edition', methods=['PUT'])
+@jwt_required()
 def task_edition():
-    current_user_id= get_jwt_identity()
-    if request.method == 'PUT':
-       
-        data = request.json
-        task_id = data.get('id')
-        new_title = data.get('title')
-        new_xp = data.get('xp')
-        new_due_date = data.get('due_date')
-        new_priority = data.get('priority')
-        new_completed_at = data.get('completed_at')
+    current_user_id = get_jwt_identity()
 
-        if task_id is None or new_title is None:
-            return jsonify({'success': False, 'message': 'Missing id or title'}), 400
+    data = request.json
+    task_id = data.get('id')
+    new_title = data.get('title')
+    new_xp = data.get('xp')
+    new_due_date = data.get('due_date')
+    new_priority = data.get('priority')
+    new_completed_at = data.get('completed_at')
 
-        with get_db_connection() as conn:
-            cursor = conn.cursor()
-            try:
-                update_fields = []
-                update_values = []
-                
-                if new_title is not None:
-                    update_fields.append("title = ?")
-                    update_values.append(new_title)
-                if new_xp is not None:
-                    update_fields.append("xp = ?")
-                    update_values.append(new_xp)
-                if new_due_date is not None:
-                    update_fields.append("due_date = ?")
-                    update_values.append(new_due_date)
-                if new_priority is not None:
-                    update_fields.append("priority = ?")
-                    update_values.append(new_priority)
-                if new_completed_at is not None:
-                    update_fields.append("completed_at = ?")
-                    update_values.append(new_completed_at)
-                
-                update_values.extend([task_id, current_user_id])
-                
-                query = f"""
-                    UPDATE Tasks 
-                    SET {', '.join(update_fields)}
-                    WHERE id = ? AND user_id = ?
-                """
-                
-                cursor.execute(query, update_values)
-                conn.commit()
+    if task_id is None or new_title is None:
+        return jsonify({'success': False, 'message': 'Missing id or title'}), 400
 
-                if cursor.rowcount == 0:
-                    return jsonify({'success': False, 'message': 'Task not found or not owned by user'}), 404
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        try:
+            update_fields = []
+            update_values = []
+            
+            if new_title is not None:
+                update_fields.append("title = ?")
+                update_values.append(new_title)
+            if new_xp is not None:
+                update_fields.append("xp = ?")
+                update_values.append(new_xp)
+            if new_due_date is not None:
+                update_fields.append("due_date = ?")
+                update_values.append(new_due_date)
+            if new_priority is not None:
+                update_fields.append("priority = ?")
+                update_values.append(new_priority)
+            if new_completed_at is not None:
+                update_fields.append("completed_at = ?")
+                update_values.append(new_completed_at)
+            
+            update_values.extend([task_id, current_user_id])
+            
+            query = f"""
+                UPDATE Tasks 
+                SET {', '.join(update_fields)}
+                WHERE id = ? AND user_id = ?
+            """
+            
+            cursor.execute(query, update_values)
+            conn.commit()
 
-                return jsonify({'success': True, 'message': 'Task updated successfully'}), 200
-            except sqlite3.Error as e:
-                logger.error(f"Database error while updating task: {e}")
-                return jsonify({'success': False, 'message': 'An error occurred while updating the task'}), 500
+            if cursor.rowcount == 0:
+                return jsonify({'success': False, 'message': 'Task not found or not owned by user'}), 404
 
-    return jsonify({'success': False, 'message': 'Method not allowed'}), 405
+            return jsonify({'success': True, 'message': 'Task updated successfully'}), 200
+        except sqlite3.Error as e:
+            logger.error(f"Database error while updating task: {e}")
+            return jsonify({'success': False, 'message': 'An error occurred while updating the task'}), 500

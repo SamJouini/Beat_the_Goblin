@@ -53,6 +53,7 @@ const EditableList = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({
           id: id,
@@ -86,7 +87,6 @@ const EditableList = () => {
 
   return (
     <div>
-      {!isLoggedIn && <p>Please log in to save your tasks.</p>}
       <ul>
         {tasks.map(task => (
           <li key={task.id}>
