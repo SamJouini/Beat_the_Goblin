@@ -7,9 +7,9 @@ from routes.login import bp as login_bp
 from routes.tasks import bp as tasks_bp
 
 app = Flask(__name__)
-jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'beat_the_goblin'  # Change this to imptove security!
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=5)  # Set token to expire after 5 hours ?
+jwt = JWTManager(app)
 
 # blueprints
 app.register_blueprint(signup_bp)

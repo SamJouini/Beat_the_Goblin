@@ -22,16 +22,21 @@ const EditableList = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch('/api/tasks', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      const token = localStorage.getItem('token');
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json'
+      };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+  
+      const response = await fetch('/api/tasks', { headers });
+
+      
       const data = await response.json();
       setIsLoggedIn(data.isLoggedIn);
-      if (data.isLoggedIn) {
-        setTasks(data.tasks);
-      }
+      setTasks(data.tasks);
+
     } catch (error) {
       console.error('Error fetching tasks:', error);
     }
