@@ -18,22 +18,22 @@
   }
   
   .EditableTasks li::before {
-    content: '\261B'; /* The black right pointing index */
+    content: '\261B';
     position: absolute;
-    left: 10px;
+    left: 15px;
     top: 50%;
     transform: translateY(-50%);
     font-size: 1.5em;
-  }
-  
-  .EditableTasks li:hover {
-    cursor: pointer;
   }
   
   .EditableTasks span {
     display: block;
     cursor: default;
   }
+  
+  .EditableTasks.loggedIn .editable {
+    cursor: pointer;
+}
   
   .EditableTasks input.taskedit {
     width: 100%;
@@ -47,6 +47,5 @@
   
   .EditableTasks input.taskedit:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+    box-shadow: 0 0 0 2px rgba(89, 126, 127,.25);
   }
-  

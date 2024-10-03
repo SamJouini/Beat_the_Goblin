@@ -103,7 +103,7 @@ const EditableList = () => {
             <li key={task.id}>
               {editingId === task.id && isLoggedIn ? (
                 <input
-                  className={'taskedit'}
+                  className={styles.taskedit}
                   value={editValue}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditValue(e.target.value)}
                   onKeyDown={(e) => handleKeyDown(e, task.id)}
