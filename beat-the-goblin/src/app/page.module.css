@@ -363,13 +363,23 @@
   font-family: 'Hilds', 'Arial', sans-serif;
 }
 
-.editButtonActive {
+.AddTaskButtonActive {
   margin-left: 5px;
   cursor: pointer;
   transition: transform 0.2s;
 }
 
-.editButtonActive:hover {
+.AddTaskButtonActive:hover {
+  transform: scale(1.1);
+}
+
+.DelTaskButtonActive {
+  margin-left: 5px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.DelTaskButtonActive:hover {
   transform: scale(1.1);
 }
 

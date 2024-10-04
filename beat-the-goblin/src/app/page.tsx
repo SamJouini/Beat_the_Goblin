@@ -3,13 +3,15 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
-import EditableList from './components/EditableList';
+import EditableList from './components/TaskEdition';
+import CreateTask from './components/TaskAddition';
 
 // Set up to adds components
 const MyComponents = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('Guest');
+
 
 // Function to check if there's a token in storage and fetch username
 useEffect(() => {
@@ -30,24 +32,31 @@ const handleSignupClick = () => {
 // Function to handle login/logout button click
 const handleLoginLogoutClick = () => {
   if (isLoggedIn) {
-    // Logout logic
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     setIsLoggedIn(false);
-    setUsername('Guest');
+    setUsername('Guest');;
   } else {
-    // Login logic
     router.push('/login');
   }
 };
 
-// Function to handle edit button click
-const handleEditClick = () => {
+// Function to handle task addition button click
+const handleAddTaskClick = () => {
   if (isLoggedIn) {
-    // Add your logic for handling the edit click
-    console.log('Edit button clicked');
+    CreateTask
+  } else {
+    router.push('/login');
   }
 };
+
+/* Function to handle task deletion button click
+const handleDelTaskClick = () => {
+  if (isLoggedIn) {
+  }
+} else {
+  router.push('/login');
+} */
 
   return (
     <div className={styles.container}>
@@ -229,15 +238,24 @@ const handleEditClick = () => {
               <h2>Grimoire
                 <Image
                   src="/assets/todo/feather.png"
-                  alt="Edit"
-                  width={40}
-                  height={40}
-                  className={`${styles.editButton} ${isLoggedIn ? styles.editButtonActive : ''}`}
-                  onClick={handleEditClick} //ajouter logique add todo ici
+                  alt="Add"
+                  width={30}
+                  height={30}
+                  className={`${styles.AddTaskButton} ${isLoggedIn ? styles.AddTaskButtonActive : ''}`}
+                  onClick={handleAddTaskClick}
                 />
               </h2>
 
               <EditableList />
+
+              <Image
+                src={"/assets/todo/cross.png"}
+                alt='Delete'
+                width={30}
+                height={60}
+                className={`${styles.DelTaskButton} ${isLoggedIn ? styles.DelTaskButtonActive : ''}`}
+                /*onClick={handleDelTaskClick}*/
+                />
             </div>
 
           </div>
