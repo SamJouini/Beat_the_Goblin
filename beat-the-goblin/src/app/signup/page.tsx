@@ -1,4 +1,4 @@
-import SignupForm from '../components/signupForm';
+import SignupForm from './components/signupForm';
 import styles from './page.module.css';
 
 // html page for the form

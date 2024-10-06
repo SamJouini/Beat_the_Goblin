@@ -357,43 +357,6 @@
   font-family: 'Courier New', Courier, monospace;
 }
 
-.todoContent h2 {
-  font-size: 8rem;
-  text-align: center;
-  font-family: 'Hilds', 'Arial', sans-serif;
-}
-
-.AddTaskButtonActive {
-  margin-left: 5px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.AddTaskButtonActive:hover {
-  transform: scale(1.1);
-}
-
-.DelTaskButtonActive {
-  margin-left: 5px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.DelTaskButtonActive:hover {
-  transform: scale(1.1);
-}
-
-.todoList {
-  width: 100%;
-  list-style-type: disc;
-  padding-left: 1.5rem;
-}
-
-.todoList li {
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-}
-
 /* map section */
 .mapSection {
   width: 90%;
