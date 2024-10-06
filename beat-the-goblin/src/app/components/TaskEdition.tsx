@@ -1,56 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import styles from './TaskEdition.module.css' 
+import {Task} from './Grimoire'
 
-interface Task {
-  id: number;
-  title: string;
-  xp?: number;
-  created_at?: string;
-  due_date?: string | null;
-  priority?: string | null;
-  completed_at?: string | null;
-}
-
-const EditableList = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [editingId, setEditingId] = useState<number | null>(null);
+const EditableList = ({isLoggedIn, tasks, setTasks}: any) => {
+  const [editingId, setEditingId] = useState<number | undefined>();
   const [editValue, setEditValue] = useState<string>('');
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
-  const fetchTasks = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const headers: HeadersInit = {
-        'Content-Type': 'application/json'
-      };
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-  
-      const response = await fetch('/api/tasks', { headers });
-
-      
-      const data = await response.json();
-      setIsLoggedIn(data.isLoggedIn);
-      setTasks(data.tasks);
-
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
+  const handleEdit = (task: Task) => {
+   if (isLoggedIn) {
+      setEditingId(task.id);
+      setEditValue(task.title);
     }
   };
 
-  const handleEdit = (id: number, currentTitle: string) => {
-  if (isLoggedIn) {
-      setEditingId(id);
-      setEditValue(currentTitle);
-    }
-  };
-
-  const handleSave = async (id: number) => {
+  const handleSave = async (id: number | undefined) => {
     if (!isLoggedIn) {
       console.error('User is not logged in');
       return;
@@ -71,10 +34,10 @@ const EditableList = () => {
       const data = await response.json();
 
       if (data.success) {
-        setTasks(tasks.map(task => 
+        setTasks(tasks.map((task: Task) => 
           task.id === id ? { ...task, title: editValue } : task
         ));
-        setEditingId(null);
+        setEditingId(undefined);
       } else {
         console.error('Failed to update task:', data.message);
       }
@@ -83,13 +46,13 @@ const EditableList = () => {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, id: number) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, id: number | undefined) => {
     if (e.key === 'Enter' && isLoggedIn) {
       handleSave(id);
     }
   };
 
-  const handleBlur = (id: number) => {
+  const handleBlur = (id: number | undefined) => {
   if (isLoggedIn) {
       handleSave(id);
     }
@@ -99,7 +62,7 @@ const EditableList = () => {
     <div className={styles.EditableTasks}>
       <div>
         <ul>
-          {tasks.map(task => (
+          {tasks.map((task: Task) => (
             <li key={task.id}>
               {editingId === task.id && isLoggedIn ? (
                 <input
@@ -111,8 +74,8 @@ const EditableList = () => {
                   autoFocus
                 />
               ) : (
-                <span onClick={() => handleEdit(task.id, task.title)}>
-                  {task.title}
+                <span onClick={() => handleEdit(task)}>
+                  {task.title} {(task.id)}
                 </span>
               )}
             </li>

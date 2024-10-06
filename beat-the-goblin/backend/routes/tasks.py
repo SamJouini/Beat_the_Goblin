@@ -92,8 +92,12 @@ def task_edition():
     new_due_date = data.get('due_date')
     new_completed_at = data.get('completed_at')
 
-    if task_id is None or new_title is None:
+    if task_id is None and new_title is None:
         return jsonify({'success': False, 'message': 'Missing id or title'}), 400
+    
+    if task_id is None:
+        create_task(current_user_id, new_title)
+        return jsonify({'success': True, 'message': 'Task updated successfully'}), 200
 
     with get_db_connection() as conn:
         cursor = conn.cursor()

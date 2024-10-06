@@ -3,8 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
-import EditableList from './components/TaskEdition';
-import CreateTask from './components/TaskAddition';
+import TaskManager from './components/Grimoire';
 
 // Set up to adds components
 const MyComponents = () => {
@@ -40,23 +39,6 @@ const handleLoginLogoutClick = () => {
     router.push('/login');
   }
 };
-
-// Function to handle task addition button click
-const handleAddTaskClick = () => {
-  if (isLoggedIn) {
-    CreateTask
-  } else {
-    router.push('/login');
-  }
-};
-
-/* Function to handle task deletion button click
-const handleDelTaskClick = () => {
-  if (isLoggedIn) {
-  }
-} else {
-  router.push('/login');
-} */
 
   return (
     <div className={styles.container}>
@@ -235,27 +217,7 @@ const handleDelTaskClick = () => {
             />
 
             <div className={styles.todoContent}>
-              <h2>Grimoire
-                <Image
-                  src="/assets/todo/feather.png"
-                  alt="Add"
-                  width={30}
-                  height={30}
-                  className={`${styles.AddTaskButton} ${isLoggedIn ? styles.AddTaskButtonActive : ''}`}
-                  onClick={handleAddTaskClick}
-                />
-              </h2>
-
-              <EditableList />
-
-              <Image
-                src={"/assets/todo/cross.png"}
-                alt='Delete'
-                width={30}
-                height={60}
-                className={`${styles.DelTaskButton} ${isLoggedIn ? styles.DelTaskButtonActive : ''}`}
-                /*onClick={handleDelTaskClick}*/
-                />
+              <TaskManager isLoggedIn = {isLoggedIn}/>
             </div>
 
           </div>
