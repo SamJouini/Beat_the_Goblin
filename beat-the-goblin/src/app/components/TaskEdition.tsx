@@ -75,7 +75,7 @@ const EditableList = ({isLoggedIn, tasks, setTasks}: any) => {
                 />
               ) : (
                 <span onClick={() => handleEdit(task)}>
-                  {task.title} {(task.id)}
+                  {task.title}
                 </span>
               )}
             </li>

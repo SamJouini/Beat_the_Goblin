@@ -12,7 +12,7 @@ export interface Task {
   completed_at?: string | null;
 }
 
-const TaskManager = ({isLoggedIn}: any) => {
+const Grimoire = ({isLoggedIn}: any) => {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const addTask = () => {
@@ -44,8 +44,11 @@ const TaskManager = ({isLoggedIn}: any) => {
       }
   
       const response = await fetch('/api/tasks', { headers });
-
       
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
       setTasks(data.tasks);
 
@@ -70,17 +73,16 @@ const TaskManager = ({isLoggedIn}: any) => {
         <div>
         <EditableList isLoggedIn= {isLoggedIn} tasks={tasks} setTasks={setTasks}/>
         </div>
-        
+
         <Image
           src={"/assets/todo/cross.png"}
           alt='Delete'
           width={30}
           height={60}
           className={`${styles.DelTaskButton} ${isLoggedIn ? styles.DelTaskButtonActive : ''}`}
-          /*onClick={handleDelTaskClick}*/
         />
     </>
   );
 };
 
-export default TaskManager;
+export default Grimoire;

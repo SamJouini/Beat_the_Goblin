@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
-import TaskManager from './components/Grimoire';
+import Grimoire from './components/Grimoire';
 
 // Set up to adds components
 const MyComponents = () => {
@@ -217,7 +217,7 @@ const handleLoginLogoutClick = () => {
             />
 
             <div className={styles.todoContent}>
-              <TaskManager isLoggedIn = {isLoggedIn}/>
+              <Grimoire isLoggedIn = {isLoggedIn}/>
             </div>
 
           </div>
