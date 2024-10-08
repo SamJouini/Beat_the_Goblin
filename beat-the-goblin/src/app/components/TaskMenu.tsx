@@ -1,32 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './TaskMenu.module.css';
 import Image from 'next/image';
+import { Task } from './Grimoire';
 
 interface TaskMenuProps {
   isOpen: boolean;
   onClose: () => void;
   onDelete: () => void;
-  onUpdateTask: (updatedProperties: Partial<TaskProperties>) => void;
-}
-
-interface TaskProperties {
-  difficulty: boolean;
-  length: boolean;
-  importance: boolean;
-  urgency: boolean;
+  onUpdateTask: (updatedProperties: Partial<Task>) => void;
 }
 
 const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask }: TaskMenuProps) => {
-  const [properties, setProperties] = useState<TaskProperties>({
+  const [properties, setProperties] = useState({
     difficulty: false,
     length: false,
     importance: false,
     urgency: false,
   });
 
-  const handleCheckboxChange = (property: keyof TaskProperties) => {
-    setProperties(prev => ({ ...prev, [property]: !prev[property] }));
-    onUpdateTask({ [property]: !properties[property] });
+  const handleCheckboxChange = (property: keyof typeof properties) => {
+    const newValue = !properties[property];
+    setProperties(prev => ({ ...prev, [property]: newValue }));
+    onUpdateTask({ [property]: newValue });
   };
 
   if (!isOpen) return null;
@@ -44,38 +39,16 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask }: TaskMenuProps) =>
         <div className={styles.menuContent}>
           <h3>Task Options</h3>
           <div className={styles.checkboxGroup}>
-            <label>
-              <input
-                type="checkbox"
-                checked={properties.difficulty}
-                onChange={() => handleCheckboxChange('difficulty')}
-              />
-              Difficulty
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={properties.length}
-                onChange={() => handleCheckboxChange('length')}
-              />
-              Length
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={properties.importance}
-                onChange={() => handleCheckboxChange('importance')}
-              />
-              Importance
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={properties.urgency}
-                onChange={() => handleCheckboxChange('urgency')}
-              />
-              Urgency
-            </label>
+            {Object.entries(properties).map(([key, value]) => (
+              <label key={key}>
+                <input
+                  type="checkbox"
+                  checked={value}
+                  onChange={() => handleCheckboxChange(key as keyof typeof properties)}
+                />
+                {key.charAt(0).toUpperCase() + key.slice(1)}
+              </label>
+            ))}
           </div>
           <div className={styles.buttonGroup}>
             <button onClick={onDelete}>Delete Task</button>

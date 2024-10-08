@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import EditableList from './TaskEdition';
+import TaskList from './TaskList';
 import TaskMenu from './TaskMenu';
 import styles from './Grimoire.module.css';
 import Image from 'next/image';
@@ -17,24 +17,10 @@ export interface Task {
   urgency?: boolean;
 }
 
-const Grimoire = ({isLoggedIn}: any) => {
+const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<number | undefined>(undefined);
-
-  const addTask = () => {
-    const task: Task = {
-        title: "My new task",
-    }
-
-    setTasks([...tasks, task])
-  };
-
-  const updateTask = (updatedTask: Task) => {
-    setTasks(prevTasks => prevTasks.map(task => 
-      task.id === updatedTask.id ? updatedTask : task
-    ));
-  };
 
   useEffect(() => {
     fetchTasks();
@@ -58,20 +44,59 @@ const Grimoire = ({isLoggedIn}: any) => {
 
       const data = await response.json();
       setTasks(data.tasks);
-
     } catch (error) {
       console.error('Error fetching tasks:', error);
     }
   };
 
-  const openDialog = (taskId: number | undefined) => {
-    setSelectedTaskId(taskId);
-    setIsDialogOpen(true);
+  const addTask = async () => {
+    const newTask: Task = {
+      title: "My new task",
+    };
+
+    try {
+      const response = await fetch('/api/edition', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(newTask),
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        setTasks([...tasks, { ...newTask, id: data.taskId }]);
+      } else {
+        console.error('Failed to add task:', data.message);
+      }
+    } catch (error) {
+      console.error('Error adding task:', error);
+    }
   };
 
-  const closeDialog = () => {
-    setIsDialogOpen(false);
-    setSelectedTaskId(undefined);
+  const updateTask = async (updatedTask: Task) => {
+    try {
+      const response = await fetch('/api/edition', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(updatedTask),
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        setTasks(prevTasks => prevTasks.map(task => 
+          task.id === updatedTask.id ? updatedTask : task
+        ));
+      } else {
+        console.error('Failed to update task:', data.message);
+      }
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
   };
 
   const deleteTask = async () => {
@@ -98,44 +123,56 @@ const Grimoire = ({isLoggedIn}: any) => {
       }
     }
   };
- 
+
+  const openDialog = (taskId: number | undefined) => {
+    setSelectedTaskId(taskId);
+    setIsDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+    setSelectedTaskId(undefined);
+  };
 
   const updateTaskProperties = (updatedProperties: Partial<Task>) => {
     if (selectedTaskId) {
       setTasks(prevTasks => prevTasks.map(task => 
         task.id === selectedTaskId ? { ...task, ...updatedProperties } : task
       ));
+      updateTask({ id: selectedTaskId, ...updatedProperties } as Task);
     }
   };
 
   return (
     <>
-        <h2 className={styles.title}>Grimoire
+      <h2 className={styles.title}>
+        Grimoire
         <Image
-            src="/assets/todo/feather.png"
-            alt="Add"
-            width={30}
-            height={30}
-            className={`${styles.AddTaskButton} ${isLoggedIn ? styles.AddTaskButtonActive : ''}`}
-            onClick={addTask}
+          src="/assets/todo/feather.png"
+          alt="Add"
+          width={30}
+          height={30}
+          className={`${styles.AddTaskButton} ${isLoggedIn ? styles.AddTaskButtonActive : ''}`}
+          onClick={addTask}
         />
-        </h2>
+      </h2>
 
-        <EditableList 
-        isLoggedIn= {isLoggedIn} 
-        tasks={tasks} 
+      <TaskList 
+        isLoggedIn={isLoggedIn}
+        tasks={tasks}
         setTasks={setTasks}
         onOpenDialog={openDialog}
-        />
+        onUpdateTask={updateTask}
+      />
 
-        <TaskMenu
+      <TaskMenu
         isOpen={isDialogOpen}
         onClose={closeDialog}
         onDelete={deleteTask}
         onUpdateTask={updateTaskProperties}
-        />
+      />
     </>
   );
 };
 
-export default Grimoire;
+export default TaskManager;
