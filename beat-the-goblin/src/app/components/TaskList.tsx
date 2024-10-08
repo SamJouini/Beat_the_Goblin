@@ -6,12 +6,11 @@ import { Task } from './Grimoire';
 interface TaskListProps {
   isLoggedIn: boolean;
   tasks: Task[];
-  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   onOpenDialog: (taskId: number | undefined) => void;
   onUpdateTask: (updatedTask: Task) => void;
 }
 
-const TaskList = ({ isLoggedIn, tasks, setTasks, onOpenDialog, onUpdateTask }: TaskListProps) => {
+const TaskList = ({ isLoggedIn, tasks, onOpenDialog, onUpdateTask }: TaskListProps) => {
   const [editingId, setEditingId] = useState<number | undefined>();
   const [editValue, setEditValue] = useState<string>('');
 

@@ -160,7 +160,6 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       <TaskList 
         isLoggedIn={isLoggedIn}
         tasks={tasks}
-        setTasks={setTasks}
         onOpenDialog={openDialog}
         onUpdateTask={updateTask}
       />

@@ -27,7 +27,7 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask }: TaskMenuProps) =>
   if (!isOpen) return null;
 
   return (
-    <div className={styles.menuContainer}>
+    <dialog className={styles.menuContainer}>
         <button className={styles.closeButton} onClick={onClose}>×</button>
         <div className={styles.menuContent}>
             <h3 className={styles.title}>Is this task ...</h3>
@@ -53,7 +53,7 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask }: TaskMenuProps) =>
                 />
             </button>
         </div>
-    </div>
+    </dialog>
 );
 };
 
