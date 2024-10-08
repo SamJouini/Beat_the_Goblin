@@ -13,17 +13,7 @@
   .AddTaskButtonActive:hover {
     transform: scale(1.1);
   }
-  
-  .DelTaskButtonActive {
-    margin-left: 5px;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  
-  .DelTaskButtonActive:hover {
-    transform: scale(1.1);
-  }
-  
+   
   .todoList {
     width: 100%;
     list-style-type: disc;
@@ -31,6 +21,6 @@
   }
   
   .todoList li {
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
+    margin-bottom: 5rem;
+    font-size: 1rem;
   }

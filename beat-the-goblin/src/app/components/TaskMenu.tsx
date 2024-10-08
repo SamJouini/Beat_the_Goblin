@@ -30,7 +30,7 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask }: TaskMenuProps) =>
     <div className={styles.overlay}>
       <div className={styles.menuContainer}>
         <Image
-          src="/assets/todo/bannerHorizontale.png"
+          src="/assets/todo/DialogBox.png"
           alt="Menu"
           layout="fill"
           objectFit="cover"

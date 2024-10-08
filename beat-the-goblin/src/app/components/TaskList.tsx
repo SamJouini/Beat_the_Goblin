@@ -45,32 +45,39 @@ const TaskList = ({ isLoggedIn, tasks, setTasks, onOpenDialog, onUpdateTask }: T
   };
 
   return (
-    <div className={styles.EditableTasks}>
+    <div className={`${styles.EditableTasks} ${isLoggedIn ? styles.loggedIn : ''}`}>
       <ul>
         {tasks.map((task) => (
           <li key={task.id}>
-            {editingId === task.id && isLoggedIn ? (
-              <input
-                className={styles.taskedit}
-                value={editValue}
-                onChange={(e) => setEditValue(e.target.value)}
-                onKeyDown={(e) => handleKeyDown(e, task.id)}
-                onBlur={() => handleBlur(task.id)}
-                autoFocus
+            <div className={styles.taskContent}>
+              {editingId === task.id && isLoggedIn ? (
+                <input
+                  className={styles.taskedit}
+                  value={editValue}
+                  onChange={(e) => setEditValue(e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(e, task.id)}
+                  onBlur={() => handleBlur(task.id)}
+                  autoFocus
+                />
+              ) : (
+                <span 
+                  className={isLoggedIn ? styles.editable : ''}
+                  onClick={() => handleEdit(task)}
+                >
+                  {task.title}
+                </span>
+              )}
+            </div>
+            {isLoggedIn && (
+              <Image
+                src="/assets/todo/Book.png"
+                alt="Menu"
+                width={15}
+                height={15}
+                className={styles.MenuIcon}
+                onClick={() => onOpenDialog(task.id)}
               />
-            ) : (
-              <span onClick={() => handleEdit(task)}>
-                {task.title}
-              </span>
             )}
-            <Image
-              src="/assets/todo/optionPressed.png"
-              alt="Menu"
-              width={20}
-              height={20}
-              className={styles.MenuIcon}
-              onClick={() => onOpenDialog(task.id)}
-            />
           </li>
         ))}
       </ul>
