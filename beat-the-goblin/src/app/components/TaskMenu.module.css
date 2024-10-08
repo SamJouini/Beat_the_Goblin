@@ -1,48 +1,75 @@
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .menuContainer {
-    position: relative;
-    width: 80%;
-    max-width: 500px;
-    height: 300px;
-    overflow: hidden;
-    border-radius: 10px;
-  }
-  
-  .backgroundImage {
-    z-index: 1;
-  }
-  
-  .menuContent {
-    position: relative;
-    z-index: 2;
-    padding: 20px;
-    color: white;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .checkboxGroup {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .buttonGroup {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  
+.menuContainer {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  background-image: url('/assets/clouds/rightcloud.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 40px;
+  color: #5E7255;
+}
+
+.menuContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 25px;
+}
+
+.checkboxGroup {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 20px;
+  width: 80%;
+}
+
+.checkboxItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(25% - 15px);
+}
+
+.checkboxItem span {
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.checkboxItem input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+
+.deleteButton {
+  position: absolute;
+  bottom: 0%;
+  left: 90%;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.closeButton {
+  position: absolute;
+  top: 15%;
+  right: 10%;
+  background: none;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+.title {
+  color: #5E7255;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}

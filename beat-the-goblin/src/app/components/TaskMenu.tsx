@@ -12,10 +12,10 @@ interface TaskMenuProps {
 
 const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask }: TaskMenuProps) => {
   const [properties, setProperties] = useState({
-    difficulty: false,
-    length: false,
-    importance: false,
-    urgency: false,
+    long: false,
+    difficult: false,
+    urgent: false,
+    important: false,
   });
 
   const handleCheckboxChange = (property: keyof typeof properties) => {
@@ -27,37 +27,34 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask }: TaskMenuProps) =>
   if (!isOpen) return null;
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.menuContainer}>
-        <Image
-          src="/assets/todo/DialogBox.png"
-          alt="Menu"
-          layout="fill"
-          objectFit="cover"
-          className={styles.backgroundImage}
-        />
+    <div className={styles.menuContainer}>
+        <button className={styles.closeButton} onClick={onClose}>×</button>
         <div className={styles.menuContent}>
-          <h3>Task Options</h3>
-          <div className={styles.checkboxGroup}>
-            {Object.entries(properties).map(([key, value]) => (
-              <label key={key}>
-                <input
-                  type="checkbox"
-                  checked={value}
-                  onChange={() => handleCheckboxChange(key as keyof typeof properties)}
+            <h3 className={styles.title}>Is this task ...</h3>
+            <div className={styles.checkboxGroup}>
+                {Object.entries(properties).map(([key, value]) => (
+                    <div key={key} className={styles.checkboxItem}>
+                        <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+                        <input
+                            type="checkbox"
+                            checked={value}
+                            onChange={() => handleCheckboxChange(key as keyof typeof properties)}
+                        />
+                    </div>
+                ))}
+            <h3 className={styles.title}> ... ? </h3>
+            </div>
+            <button className={styles.deleteButton} onClick={onDelete}>
+                <Image
+                    src="/assets/todo/cross.png"
+                    alt="Delete"
+                    width={40}
+                    height={60}
                 />
-                {key.charAt(0).toUpperCase() + key.slice(1)}
-              </label>
-            ))}
-          </div>
-          <div className={styles.buttonGroup}>
-            <button onClick={onDelete}>Delete Task</button>
-            <button onClick={onClose}>Close</button>
-          </div>
+            </button>
         </div>
-      </div>
     </div>
-  );
+);
 };
 
 export default TaskMenu;
