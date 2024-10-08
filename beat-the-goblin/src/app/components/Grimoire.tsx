@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import EditableList from './TaskEdition';
+import TaskMenu from './TaskMenu';
 import styles from './Grimoire.module.css';
 import Image from 'next/image';
 
@@ -10,10 +11,16 @@ export interface Task {
   created_at?: string;
   due_date?: string | null;
   completed_at?: string | null;
+  difficulty?: boolean;
+  length?: boolean;
+  importance?: boolean;
+  urgency?: boolean;
 }
 
 const Grimoire = ({isLoggedIn}: any) => {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState<number | undefined>(undefined);
 
   const addTask = () => {
     const task: Task = {
@@ -57,6 +64,50 @@ const Grimoire = ({isLoggedIn}: any) => {
     }
   };
 
+  const openDialog = (taskId: number | undefined) => {
+    setSelectedTaskId(taskId);
+    setIsDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+    setSelectedTaskId(undefined);
+  };
+
+  const deleteTask = async () => {
+    if (selectedTaskId) {
+      try {
+        const response = await fetch(`/api/delete?id=${selectedTaskId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        });
+  
+        const data = await response.json();
+  
+        if (data.success) {
+          setTasks(prevTasks => prevTasks.filter(task => task.id !== selectedTaskId));
+          closeDialog();
+        } else {
+          console.error('Failed to delete task:', data.message);
+        }
+      } catch (error) {
+        console.error('Error deleting task:', error);
+      }
+    }
+  };
+ 
+
+  const updateTaskProperties = (updatedProperties: Partial<Task>) => {
+    if (selectedTaskId) {
+      setTasks(prevTasks => prevTasks.map(task => 
+        task.id === selectedTaskId ? { ...task, ...updatedProperties } : task
+      ));
+    }
+  };
+
   return (
     <>
         <h2 className={styles.title}>Grimoire
@@ -70,16 +121,18 @@ const Grimoire = ({isLoggedIn}: any) => {
         />
         </h2>
 
-        <div>
-        <EditableList isLoggedIn= {isLoggedIn} tasks={tasks} setTasks={setTasks}/>
-        </div>
+        <EditableList 
+        isLoggedIn= {isLoggedIn} 
+        tasks={tasks} 
+        setTasks={setTasks}
+        onOpenDialog={openDialog}
+        />
 
-        <Image
-          src={"/assets/todo/cross.png"}
-          alt='Delete'
-          width={30}
-          height={60}
-          className={`${styles.DelTaskButton} ${isLoggedIn ? styles.DelTaskButtonActive : ''}`}
+        <TaskMenu
+        isOpen={isDialogOpen}
+        onClose={closeDialog}
+        onDelete={deleteTask}
+        onUpdateTask={updateTaskProperties}
         />
     </>
   );

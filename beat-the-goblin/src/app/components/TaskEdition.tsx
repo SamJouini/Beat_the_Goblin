@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import styles from './TaskEdition.module.css' 
 import {Task} from './Grimoire'
 
-const EditableList = ({isLoggedIn, tasks, setTasks}: any) => {
+const EditableList = ({isLoggedIn, tasks, setTasks, onOpenDialog}: any) => {
   const [editingId, setEditingId] = useState<number | undefined>();
   const [editValue, setEditValue] = useState<string>('');
 
@@ -78,6 +79,14 @@ const EditableList = ({isLoggedIn, tasks, setTasks}: any) => {
                   {task.title}
                 </span>
               )}
+              <Image
+                src="/assets/todo/optionPressed.png"
+                alt="Menu"
+                width={20}
+                height={20}
+                className={styles.MenuIcon}
+                onClick={() => onOpenDialog(task.id)}
+              />
             </li>
           ))}
         </ul>

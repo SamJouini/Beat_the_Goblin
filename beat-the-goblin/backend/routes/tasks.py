@@ -2,7 +2,6 @@ from flask import jsonify, request, Blueprint
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import sqlite3
 import logging
-import datetime
 
 bp = Blueprint('main', __name__)
 
@@ -136,3 +135,34 @@ def task_edition():
         except sqlite3.Error as e:
             logger.error(f"Database error while updating task: {e}")
             return jsonify({'success': False, 'message': 'An error occurred while updating the task'}), 500
+
+
+@bp.route('/api/delete', methods=['DELETE'])
+@jwt_required()
+def task_delete():
+    current_user_id = get_jwt_identity()
+    
+    task_id = request.args.get('id')
+    
+    if task_id is None:
+        return jsonify({'success': False, 'message': 'Missing task id'}), 400
+
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        try:            
+            cursor.execute("""
+                DELETE FROM Tasks 
+                WHERE id = ? AND user_id = ?
+            """, (task_id, current_user_id))
+            
+            conn.commit()
+
+            if cursor.rowcount == 1:
+                return jsonify({'success': True, 'message': 'Task deleted successfully'}), 200
+            else:
+                return jsonify({'success': False, 'message': 'Failed to delete task'}), 500
+
+        except sqlite3.Error as e:
+            logger.error(f"Database error while deleting task: {e}")
+            return jsonify({'success': False, 'message': 'An error occurred while deleting the task'}), 500
+
