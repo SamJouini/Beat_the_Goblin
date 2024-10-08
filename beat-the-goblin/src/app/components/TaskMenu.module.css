@@ -65,6 +65,7 @@
   border: none;
   font-size: 32px;
   cursor: pointer;
+  z-index: 10;
 }
 
 .title {
