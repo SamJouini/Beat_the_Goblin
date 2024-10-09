@@ -3,7 +3,8 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
-import Grimoire from './components/Grimoire';
+import Grimoire from './components/Grimoire/Grimoire';
+import User from './components/Combat/User'
 
 // Set up to adds components
 const MyComponents = () => {
@@ -91,38 +92,8 @@ const handleLoginLogoutClick = () => {
               width={800}
               height={600}
             />
-
-            <div className={styles.userContent}>
-
-              <div className={styles.knightBannerContainer}>
-                <div className={styles.frameContainer}>
-                  <Image
-                    src="/assets/user_data/frame.png"
-                    alt="Frame"
-                    width={150}
-                    height={150}
-                    className={styles.frame}
-                  />
-                  <Image
-                    src="/assets/characters/KnightAnimated.gif"
-                    alt="Knight"
-                    width={130}
-                    height={130}
-                    unoptimized
-                    className={styles.knight}
-                  />
-                </div>
-                <div className={styles.bannerContainer}>
-                  <Image
-                    src="/assets/user_data/banner.png"
-                    alt="Banner"
-                    width={200}
-                    height={50}
-                    className={styles.banner}
-                  />
-                  <span className={styles.username}>{username}</span>
-                </div>
-              </div>
+            <User username={username} />
+            </div>
 
               <div className={styles.versusText}> {/* Idée changer la couleur du versus si ok = vert, sinon = rouge ?*/}
                 <h2>Versus</h2>
@@ -156,55 +127,6 @@ const handleLoginLogoutClick = () => {
                   />
                   <span className={styles.GoblinName}> Bob {/*ajouter random goblin name ici ?*/}</span>
                 </div>
-              </div>
-
-              <div className={styles.userStatsContainer}>
-                <div className={styles.userLevelContainer}>
-                  <h3 className={styles.levelTitle}> Current level: {5} {/*ajouter logique level ici*/}</h3>
-                  <div className={styles.levelDisplay}>
-                    <div className={styles.levelBar}>  {/*show the user's xp/next level when hoover ?*/}
-                      <div className={styles.levelProgress} style={{ width: '60%' }}></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={styles.streakContainer}>
-                  <span className={styles.streakBest}>Longest's Streak: {7}</span>
-                  <span className={styles.streakText}>Current Streak: {7}</span>
-                </div>
-
-                <div className={styles.rewardContainer}>
-                  <h4 className={styles.rewardTitle}>My rewards:</h4> {/* reward function here*/}
-                  <div className={styles.rewardGrid}>
-                    <div className={styles.rewardItem}>
-                      <Image
-                        src="/assets/user_data/rewards/cailloux.png"
-                        alt="Reward 1"
-                        width={50}
-                        height={50}
-                      />
-                    </div>
-                    <div className={styles.rewardItem}>
-                      <Image
-                        src="/assets/user_data/rewards/courge.png"
-                        alt="Reward 2"
-                        width={50}
-                        height={50}
-                      />
-                    </div>
-                    <div className={styles.rewardItem}>
-                      <Image
-                        src="/assets/user_data/rewards/mushroom.png"
-                        alt="Reward 3"
-                        width={50}
-                        height={50}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
 
           </div>
 
