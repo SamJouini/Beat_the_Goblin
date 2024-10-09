@@ -45,8 +45,8 @@ const User = ({ username }: any) => {
                 ></div>
               ))}
             </div>
-            <span className={styles.streakBest}>Longest's Streak: {7}</span>
             <span className={styles.streakText}>Current Streak: {3}</span>
+            <span className={styles.streakBest}>Longest's Streak: {7}</span>
           </div>
           <div className={styles.rewardContainer}>
             <h4 className={styles.rewardTitle}>My rewards:</h4>
@@ -76,6 +76,16 @@ const User = ({ username }: any) => {
                 />
               </div>
             </div>
+          </div>
+          <div className={styles.dayGifContainer}>
+            <Image
+              src="/assets/user_data/day.gif"
+              alt="Day"
+              width={100}
+              height={100}
+              className={styles.dayGif}
+            />
+            <button className={styles.deadlineButton}>Deadline</button>
           </div>
         </div>
       </div>

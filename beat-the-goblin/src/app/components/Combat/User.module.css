@@ -90,6 +90,7 @@
   width: 50%;
 }
 
+/* Streak */
 .streakContainer {
   margin-bottom: 20px;
 }
@@ -123,6 +124,7 @@
   background-color: #5E7255;
 }
 
+/*rewards*/
 .rewardContainer {
   margin-top: 20px;
 }
@@ -138,6 +140,49 @@
 }
 
 .rewardItem {
-  width: 75px;
-  height: 75px;
+  width: 60px;
+  height: 60px;
+  background-color: #E1CF7D;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+}
+
+.rewardItem img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/*deadline*/
+.dayGifContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  bottom: -110%;
+  justify-content: center;
+  transform: translateX(-50%);
+}
+
+.dayGif {
+  margin-bottom: 3px;
+}
+
+.deadlineButton {
+  padding: 5px 10px;
+  background-color: #B68A5B;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: -31px;
+  font-family: Arial, sans-serif;
+}
+
+.deadlineButton:hover {
+  background-color: #597E7F;
 }
