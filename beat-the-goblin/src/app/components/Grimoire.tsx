@@ -21,6 +21,7 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<number | undefined>(undefined);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   useEffect(() => {
     fetchTasks();
@@ -124,14 +125,17 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
     }
   };
 
-  const openDialog = (taskId: number | undefined) => {
-    setSelectedTaskId(taskId);
+   const openDialog = (taskId: number | undefined) => {
+    const task = tasks.find(t => t.id === taskId) || null;
     setIsDialogOpen(true);
+    setSelectedTask(task);
+    setSelectedTaskId(taskId)
   };
 
   const closeDialog = () => {
     setIsDialogOpen(false);
-    setSelectedTaskId(undefined);
+    setSelectedTask(null);
+    setSelectedTaskId(undefined)
   };
 
   const updateTaskProperties = (updatedProperties: Partial<Task>) => {
@@ -169,6 +173,7 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         onClose={closeDialog}
         onDelete={deleteTask}
         onUpdateTask={updateTaskProperties}
+        task={selectedTask}
       />
     </>
   );

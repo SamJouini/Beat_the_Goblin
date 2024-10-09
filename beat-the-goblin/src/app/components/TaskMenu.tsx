@@ -8,9 +8,13 @@ interface TaskMenuProps {
   onClose: () => void;
   onDelete: () => void;
   onUpdateTask: (updatedProperties: Partial<Task>) => void;
+  task: Task | null;
 }
 
-const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask }: TaskMenuProps) => {
+const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, task }: TaskMenuProps) => {
+    if (!isOpen || !task) return null;
+
+
   const [properties, setProperties] = useState({
     long: false,
     difficult: false,
@@ -18,8 +22,8 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask }: TaskMenuProps) =>
     important: false,
   });
 
-  const handleCheckboxChange = (property: keyof typeof properties) => {
-    const newValue = !properties[property];
+  const handleCheckboxChange = (property: keyof Task) => {
+    const newValue = !task[property];
     setProperties(prev => ({ ...prev, [property]: newValue }));
     onUpdateTask({ [property]: newValue });
   };
@@ -38,7 +42,7 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask }: TaskMenuProps) =>
                         <input
                             type="checkbox"
                             checked={value}
-                            onChange={() => handleCheckboxChange(key as keyof typeof properties)}
+                            onChange={() => handleCheckboxChange(key as keyof Task)}
                         />
                     </div>
                 ))}
