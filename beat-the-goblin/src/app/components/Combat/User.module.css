@@ -42,7 +42,7 @@
 .frame {
   position: absolute;
   top: 0;
-  left: 0;
+  left: -4px;
   z-index: 1;
 }
 
@@ -161,7 +161,7 @@
   flex-direction: column;
   align-items: center;
   position: absolute;
-  bottom: -110%;
+  bottom: -100%;
   justify-content: center;
   transform: translateX(-50%);
 }

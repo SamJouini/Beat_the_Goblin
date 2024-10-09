@@ -4,46 +4,44 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import Grimoire from './components/Grimoire/Grimoire';
-import User from './components/Combat/User'
+import User from './components/Combat/User';
+import VersusGoblin from './components/Combat/VersusGoblin';
 
-// Set up to adds components
 const MyComponents = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('Guest');
 
+  // Function to check if there's a token in storage and fetch username
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(Boolean(token));
 
-// Function to check if there's a token in storage and fetch username
-useEffect(() => {
-  const token = localStorage.getItem('token');
-  setIsLoggedIn(Boolean(token));
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
 
-  const storedUsername = localStorage.getItem('username');
-  if (storedUsername) {
-    setUsername(storedUsername);
-  }
-}, []);
+  // Function to handle signup button click
+  const handleSignupClick = () => {
+    router.push('/signup');
+  };
 
-// Function to handle signup button click
-const handleSignupClick = () => {
-  router.push('/signup');
-};
-
-// Function to handle login/logout button click
-const handleLoginLogoutClick = () => {
-  if (isLoggedIn) {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    setIsLoggedIn(false);
-    setUsername('Guest');;
-  } else {
-    router.push('/login');
-  }
-};
+  // Function to handle login/logout button click
+  const handleLoginLogoutClick = () => {
+    if (isLoggedIn) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      setIsLoggedIn(false);
+      setUsername('Guest');
+    } else {
+      router.push('/login');
+    }
+  };
 
   return (
     <div className={styles.container}>
-
       <header className={styles.header}>
         <div className={styles.leftCloud}>
           <Image
@@ -54,7 +52,7 @@ const handleLoginLogoutClick = () => {
           />
           {!isLoggedIn && (
             <button className={styles.signupButton} onClick={handleSignupClick}>
-            Sign up
+              Sign up
             </button>
           )}
         </div>
@@ -66,16 +64,14 @@ const handleLoginLogoutClick = () => {
             height={200}
           />
           <button className={styles.loginButton} onClick={handleLoginLogoutClick}>
-          {isLoggedIn ? 'Logout' : 'Login'}
+            {isLoggedIn ? 'Logout' : 'Login'}
           </button>
         </div>
         <h1 className={styles.title}>Beat the goblin!</h1>
       </header>
 
       <main className={styles.main}>
-
         <section className={styles.grimoire}>
-
           <div className={styles.deskBackground}>
             <Image
               src="/assets/desk/desk.png"
@@ -93,41 +89,7 @@ const handleLoginLogoutClick = () => {
               height={600}
             />
             <User username={username} />
-            </div>
-
-              <div className={styles.versusText}> {/* Idée changer la couleur du versus si ok = vert, sinon = rouge ?*/}
-                <h2>Versus</h2>
-              </div>
-
-              <div className={styles.goblinBannerContainer}>
-                <div className={styles.frameContainer}>
-                  <Image
-                    src="/assets/user_data/frame.png"
-                    alt="Goblin Frame"
-                    width={150}
-                    height={150}
-                    className={styles.frame}
-                  />
-                  <Image
-                    src="/assets/characters/GoblinAnimated.gif"
-                    alt="Goblin"
-                    width={130}
-                    height={130}
-                    unoptimized
-                    className={styles.goblin}
-                  />
-                </div>
-                <div className={styles.bannerContainer}>
-                  <Image
-                    src="/assets/user_data/banner2.png"
-                    alt="Goblin Banner"
-                    width={200}
-                    height={50}
-                    className={styles.banner}
-                  />
-                  <span className={styles.GoblinName}> Bob {/*ajouter random goblin name ici ?*/}</span>
-                </div>
-
+            <VersusGoblin goblinName="Bob" isVersusOk={true} />
           </div>
 
           <div className={styles.paperTodo}>
@@ -137,11 +99,9 @@ const handleLoginLogoutClick = () => {
               width={650}
               height={750}
             />
-
             <div className={styles.todoContent}>
-              <Grimoire isLoggedIn = {isLoggedIn}/>
+              <Grimoire isLoggedIn={isLoggedIn} />
             </div>
-
           </div>
         </section>
 
@@ -154,49 +114,21 @@ const handleLoginLogoutClick = () => {
               width={850}
               height={650}
             />
-            
-{/*
-            <div className={styles.rockinthewater}>
-              <Image
-                src="/assets/map/water/Rocks_03.gif"
-                alt="Rock in the water"
-                width={100}
-                height={100}
-              />
-            </div>
-            <div className={styles.sheepinsand}>
-              <Image
-                src="/assets/map/decors/HappySheep_Idle.gif"
-                alt="sheep in sand"
-                width={100}
-                height={100}
-              />
-            </div>
-            <div className={styles.tree1}>
-              <Image
-                src="/assets/map/decors/Tree1.gif"
-                alt="Tree1"
-                width={100}
-                height={100}
-              />
-            </div>
-*/}
           </div>
         </section>
-
       </main>
 
       <footer className={styles.footer}>
-      <div className={styles.cloud}>
+        <div className={styles.cloud}>
           <Image
             src="/assets/clouds/leftcloud.png"
             alt="center cloud"
             width={300}
             height={200}
-            />
-            <div className={styles.footerText}>
-              <p>&copy; 2024 by Samantha Jouini</p>
-            </div>
+          />
+          <div className={styles.footerText}>
+            <p>&copy; 2024 by Samantha Jouini</p>
+          </div>
         </div>
       </footer>
     </div>
