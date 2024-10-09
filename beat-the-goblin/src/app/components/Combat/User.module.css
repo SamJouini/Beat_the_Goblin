@@ -159,9 +159,10 @@
 .dayGifContainer {
   display: flex;
   flex-direction: column;
+  right: -15%;
   align-items: center;
   position: absolute;
-  bottom: -100%;
+  bottom: -110%;
   justify-content: center;
   transform: translateX(-50%);
 }
