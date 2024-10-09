@@ -42,19 +42,25 @@ def get_user_tasks (user_id):
         cursor = conn.cursor()
         try:
             cursor.execute("""
-                SELECT id, title, xp, created_at, due_date, completed_at 
+                SELECT id, title, xp, created_at, due_date, completed_at, 
+                           is_long, is_difficult, is_urgent, is_important
                 FROM Tasks 
                 WHERE user_id = ?
             """, (user_id,))
 
+            rows = cursor.fetchall()
             return [{
                 'id': row['id'],
                 'title': row['title'],
                 'xp': row['xp'],
                 'created_at': row['created_at'],
                 'due_date': row['due_date'],
-                'completed_at': row['completed_at']
-            } for row in cursor.fetchall()]
+                'completed_at': row['completed_at'],
+                'is_long': row['is_long'],
+                'is_difficult': row['is_difficult'],
+                'is_urgent': row['is_urgent'],
+                'is_important': row['is_important']
+            } for row in rows]
 
         except sqlite3.Error as e:
             logger.error(f"Database error while fetching tasks: {e}")
@@ -90,6 +96,10 @@ def task_edition():
     new_xp = data.get('xp')
     new_due_date = data.get('due_date')
     new_completed_at = data.get('completed_at')
+    new_is_long = data.get('is_long')
+    new_is_difficult = data.get('is_difficult')
+    new_is_urgent = data.get('is_urgent')
+    new_is_important = data.get('is_important')
 
     if task_id is None and new_title is None:
         return jsonify({'success': False, 'message': 'Missing id or title'}), 400
@@ -116,6 +126,18 @@ def task_edition():
             if new_completed_at is not None:
                 update_fields.append("completed_at = ?")
                 update_values.append(new_completed_at)
+            if new_is_long is not None:
+                update_fields.append("is_long = ?")
+                update_values.append(int(new_is_long))
+            if new_is_difficult is not None:
+                update_fields.append("is_difficult = ?")
+                update_values.append(int(new_is_difficult))
+            if new_is_urgent is not None:
+                update_fields.append("is_urgent = ?")
+                update_values.append(int(new_is_urgent))
+            if new_is_important is not None:
+                update_fields.append("is_important = ?")
+                update_values.append(int(new_is_important))
             
             update_values.extend([task_id, current_user_id])
             
