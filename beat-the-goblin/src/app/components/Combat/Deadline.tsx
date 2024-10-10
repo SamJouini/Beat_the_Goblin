@@ -3,8 +3,7 @@ import styles from './Deadline.module.css';
 import Image from 'next/image';
 
 const Deadline = () => {
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
+  const [deadline, setDeadline] = useState("--:--");
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -21,25 +20,10 @@ const Deadline = () => {
       });
       const data = await response.json();
       if (data.success) {
-        setHours(data.deadline.hours);
-        setMinutes(data.deadline.minutes);
+        setDeadline(data.deadline);
       }
     } catch (error) {
       console.error('Error fetching deadline:', error);
-    }
-  };
-
-  const handleHoursChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    if (value >= 0 && value <= 23) {
-      setHours(value);
-    }
-  };
-
-  const handleMinutesChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    if (value >= 0 && value <= 59) {
-      setMinutes(value);
     }
   };
 
@@ -51,7 +35,7 @@ const Deadline = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({ hours, minutes }),
+        body: JSON.stringify({"deadline": deadline}),
       });
       const data = await response.json();
       if (data.success) {
@@ -73,7 +57,7 @@ const Deadline = () => {
           className={styles.dayGif}
         />
         <button className={styles.deadlineButton} onClick={() => setIsOpen(true)}>
-          {hours}:{minutes} 
+          {deadline} 
         </button>
       </div>
       <dialog className={styles.dialog} open={isOpen}>
@@ -81,27 +65,7 @@ const Deadline = () => {
         <div className={styles.dialogContent}>
           <h2 className={styles.title}>Edit your deadline</h2>
           <div className={styles.time}>
-            <div className={styles.hours}>
-              <input 
-                className={styles.clock}
-                type="number" 
-                min="0" 
-                max="23" 
-                value={hours} 
-                onChange={handleHoursChange}
-                />
-            </div>
-            <div className={styles.minutes}>
-              <input 
-                id="minutes"
-                className={styles.clock}
-                type="number" 
-                min="0" 
-                max="59" 
-                value={minutes} 
-                onChange={handleMinutesChange}
-              />
-            </div>
+            <input type="time" className={styles.clock} value={deadline} onChange={(e) => setDeadline(e.target.value)}/>
           </div>
           <button className={styles.SaveButton} onClick={handleSave}>Save</button>
         </div>
