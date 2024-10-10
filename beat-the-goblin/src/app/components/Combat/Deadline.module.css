@@ -13,10 +13,8 @@
   margin-bottom: 3px;
 }
 
-.deadlineButton {
+.deadlineButton, .clock {
   padding: 5px 20px;
-  background-color: #B68A5B;
-  color: white;
   border: none;
   border-radius: 5px;
   font-size: 15px;
@@ -26,80 +24,11 @@
   font-family: Arial, sans-serif;
 }
 
-.deadlineButton:hover {
-  background-color: #597E7F;
-}
-
-/*dialog*/
-.dialog {
-  position: fixed;
-  top: 85%;
-  left: 110%;
-  transform: translate(-50%, -50%);
-  width: 260px;
-  height: 240px;
-  background-image: url('/assets/clouds/leftcloud.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  justify-content: center;
-  align-items: center;
-  z-index: 4;
-  border: none;
-  background-color: transparent;
-}
-
-.dialogContent {
-  padding: 20px;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.closeButton {
-  position: absolute;
-  top: 55px;
-  right: 14px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #333;
-  z-index: 4;
-}
-
-.title {
-  margin-top: 13px;
-  margin-bottom: 7px;
-  color: #597E7F;
-  font-size: 20px;
-  font-family: Arial, sans-serif;
-}
-
-.clock {
-  width: 60px;
-  padding: 5px;
-  margin-bottom: 7px;
-  font-size: 18px;
-  text-align: center;
-  margin: 0 5px;
-}
-
-.SaveButton {
-  padding: 8px 16px;
-  margin: 0 5px;
-  background-color: #47ABA9;
+.deadlineButton {
   color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  transition: background-color 0.3s;
+  background-color: #B68A5B;
 }
 
-.SaveButton:hover {
+.deadlineButton:hover {
   background-color: #597E7F;
 }

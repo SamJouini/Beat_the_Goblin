@@ -1,10 +1,10 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useEffect, useRef, useState, ChangeEvent } from 'react';
 import styles from './Deadline.module.css';
 import Image from 'next/image';
 
 const Deadline = () => {
   const [deadline, setDeadline] = useState("--:--");
-  const [isOpen, setIsOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
       fetchDeadline();
@@ -39,7 +39,7 @@ const Deadline = () => {
       });
       const data = await response.json();
       if (data.success) {
-        setIsOpen(false);
+        setEditing(false);
       }
     } catch (error) {
       console.error('Error updating deadline:', error);
@@ -47,30 +47,30 @@ const Deadline = () => {
   };
 
   return (
-  <>
-      <div className={styles.dayGifContainer}>
-        <Image 
-          src="/assets/user_data/day.gif"
-          alt="Day"
-          width={100}
-          height={100}
-          className={styles.dayGif}
-        />
-        <button className={styles.deadlineButton} onClick={() => setIsOpen(true)}>
-          {deadline} 
+    <div className={styles.dayGifContainer}>
+      <Image 
+        src="/assets/user_data/day.gif"
+        alt="Day"
+        width={100}
+        height={100}
+        className={styles.dayGif}
+      />
+
+      {editing ? (
+        <input type="time" 
+              className={styles.clock}
+              value={deadline}
+              onChange={(e) => setDeadline(e.target.value)}
+              onKeyDown={e => {if (e.key == 'Enter'){handleSave()}}}
+              onBlur={handleSave}
+              autoFocus/>
+      ):(
+        <button className={styles.deadlineButton} onClick={() => setEditing(true)}>
+          {deadline}
         </button>
-      </div>
-      <dialog className={styles.dialog} open={isOpen}>
-        <button className={styles.closeButton} onClick={() => setIsOpen(false)}> × </button>
-        <div className={styles.dialogContent}>
-          <h2 className={styles.title}>Edit your deadline</h2>
-          <div className={styles.time}>
-            <input type="time" className={styles.clock} value={deadline} onChange={(e) => setDeadline(e.target.value)}/>
-          </div>
-          <button className={styles.SaveButton} onClick={handleSave}>Save</button>
-        </div>
-      </dialog>
-  </>
+      )
+      }
+    </div>
   );
 };
 
