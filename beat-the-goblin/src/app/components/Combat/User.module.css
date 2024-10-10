@@ -154,36 +154,3 @@
   max-height: 100%;
   object-fit: contain;
 }
-
-/*deadline*/
-.dayGifContainer {
-  display: flex;
-  flex-direction: column;
-  right: -15%;
-  align-items: center;
-  position: absolute;
-  bottom: -110%;
-  justify-content: center;
-  transform: translateX(-50%);
-}
-
-.dayGif {
-  margin-bottom: 3px;
-}
-
-.deadlineButton {
-  padding: 5px 10px;
-  background-color: #B68A5B;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: -31px;
-  font-family: Arial, sans-serif;
-}
-
-.deadlineButton:hover {
-  background-color: #597E7F;
-}

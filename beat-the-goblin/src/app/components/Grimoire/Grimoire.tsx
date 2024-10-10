@@ -22,11 +22,9 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<number | undefined>(undefined);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-  const [userDeadline, setUserDeadline] = useState(20);
 
   useEffect(() => {
     fetchTasks();
-    fetchUserDeadline();
   }, []);
 
   const fetchTasks = async () => {
@@ -47,7 +45,6 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
 
       const data = await response.json();
       setTasks(data.tasks);
-      setUserDeadline(data.due_date);
     } catch (error) {
       console.error('Error fetching tasks:', error);
     }
@@ -56,7 +53,6 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const addTask = async () => {
     const newTask: Task = {
       title: "My new task",
-      due_date: getNextDeadline(),
     };
 
     try {
@@ -151,33 +147,6 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
     }
   };
 
-  const fetchUserDeadline = async () => {
-    try {
-      const response = await fetch('/api/deadline', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      const data = await response.json();
-      if (data.success) {
-        setUserDeadline(data.deadline);
-      }
-    } catch (error) {
-      console.error('Error fetching user deadline:', error);
-    }
-  };
-
-  const getNextDeadline = () => {
-    const now = new Date();
-    let deadline = new Date(now);
-    deadline.setHours(userDeadline, 0, 0, 0);
-
-    if (now > deadline) {
-      deadline.setDate(deadline.getDate() + 1);
-    }
-
-    return deadline.toISOString();
-  };
 
   return (
     <>

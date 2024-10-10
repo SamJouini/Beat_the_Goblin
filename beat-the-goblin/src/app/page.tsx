@@ -11,7 +11,6 @@ const MyComponents = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('Guest');
-  const [deadline, setDeadline] = useState(20);
 
   // Function to check if there's a token in storage and fetch username
   useEffect(() => {
@@ -89,8 +88,8 @@ const MyComponents = () => {
               width={800}
               height={600}
             />
-            <User username={username} deadline={deadline} setDeadline={setDeadline}/>
-            <VersusGoblin goblinName="Bob" isVersusOk={true} />
+            <User username={username}/>
+            <VersusGoblin goblinName="Bob" isVersusOk={true}/>
           </div>
 
           <div className={styles.paperTodo}>
@@ -101,7 +100,7 @@ const MyComponents = () => {
               height={750}
             />
             <div className={styles.todoContent}>
-              <Grimoire isLoggedIn={isLoggedIn} deadline={deadline} />
+              <Grimoire isLoggedIn={isLoggedIn}/>
             </div>
           </div>
         </section>

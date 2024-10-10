@@ -1,52 +1,10 @@
 import React, { useState, useEffect} from "react";
 import Image from "next/image";
 import styles from "./User.module.css";
-import DeadlineModal from "./Deadline";
+import Deadline from "./Deadline";
 
 const User = ({ username}: any) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deadline, setDeadline] = useState(20) // heure par défaut 20h
   const streakDays = 3;
-
-useEffect(() => {
-  fetchUserDeadline();
-}, [])
-
-const fetchUserDeadline = async () => {
-  try {
-    const response = await fetch('/api/user/deadline', {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    });
-    const data = await response.json();
-    if (data.success) {
-      setDeadline(data.deadline);
-    }
-  } catch (error) {
-    console.error('Error fetching user deadline:', error);
-  }
-};
-
-const handleSaveDeadline = async (newDeadline: number) => {
-  try {
-    const response = await fetch('/api/user/deadline', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      },
-      body: JSON.stringify({ deadline: newDeadline })
-    });
-    const data = await response.json();
-    if (data.success) {
-      setDeadline(newDeadline);
-      setIsModalOpen(false);
-    }
-  } catch (error) {
-    console.error('Error updating user deadline:', error);
-  }
-};
 
   return (
     <div className={styles.userContainer}>
@@ -122,29 +80,9 @@ const handleSaveDeadline = async (newDeadline: number) => {
               </div>
             </div>
           </div>
-          <div className={styles.dayGifContainer}>
-            <Image
-              src="/assets/user_data/day.gif"
-              alt="Day"
-              width={100}
-              height={100}
-              className={styles.dayGif}
-            />
-            <button 
-            className={styles.deadlineButton}
-            onClick={() => setIsModalOpen(true)}
-            > {/*change the button to show the deadline hours ?*/}
-            Deadline: {deadline}:00
-            </button>
-          </div>
-          <DeadlineModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          currentDeadline={deadline}
-          onSave={handleSaveDeadline}
-          />
         </div>
       </div>
+      <Deadline/>
     </div>
   );
 };

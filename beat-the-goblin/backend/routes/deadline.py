@@ -21,23 +21,28 @@ def get_user_deadline():
 
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT due_date FROM Tasks WHERE id = ?", (current_user_id,))
+        cursor.execute("SELECT deadline FROM Users WHERE id = ?", (current_user_id,))
         result = cursor.fetchone()
         if result:
-            return jsonify({'success': True, 'deadline': result['due_date']}), 200
+            deadline = result['deadline']
+            return jsonify({'success': True, 'deadline': deadline}), 200
         return jsonify({'success': False, 'message': 'User not found'}), 404
 
 @bp.route('/api/deadline', methods=['PUT'])
 @jwt_required()
 def update_user_deadline():
     current_user_id = get_jwt_identity()
-    new_deadline = request.json.get('due_date')
-    if new_deadline is None or not (0 <= new_deadline <= 23):
+    new_hours = request.json.get('hours')
+    new_minutes = request.json.get('minutes')
+    
+    if new_hours is None or new_minutes is None or not (0 <= new_hours <= 23) or not (0 <= new_minutes <= 59):
         return jsonify({'success': False, 'message': 'Invalid deadline'}), 400
+    
+    new_deadline = new_hours * 60 + new_minutes
     
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute("UPDATE Tasks SET due_date = ? WHERE id = ?", (new_deadline, current_user_id))
+        cursor.execute("UPDATE Users SET deadline = ? WHERE id = ?", (new_deadline, current_user_id))
         conn.commit()
         if cursor.rowcount > 0:
             return jsonify({'success': True, 'message': 'Deadline updated successfully'}), 200
