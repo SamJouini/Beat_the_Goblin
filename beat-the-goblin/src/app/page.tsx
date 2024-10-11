@@ -88,7 +88,7 @@ const MyComponents = () => {
               width={800}
               height={600}
             />
-            <User username={username}/>
+            <User username={username} isLoggedIn={isLoggedIn}/>
             <VersusGoblin goblinName="Bob" isVersusOk={true}/>
           </div>
 

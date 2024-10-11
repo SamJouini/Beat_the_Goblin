@@ -3,7 +3,7 @@ import Image from "next/image";
 import styles from "./User.module.css";
 import Deadline from "./Deadline";
 
-const User = ({ username}: any) => {
+const User = ({ username, isLoggedIn}: any) => {
   const streakDays = 3;
 
   return (
@@ -82,7 +82,7 @@ const User = ({ username}: any) => {
           </div>
         </div>
       </div>
-      <Deadline/>
+      <Deadline isLoggedIn={isLoggedIn}/>
     </div>
   );
 };

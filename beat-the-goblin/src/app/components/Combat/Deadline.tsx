@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, ChangeEvent } from 'react';
 import styles from './Deadline.module.css';
 import Image from 'next/image';
 
-const Deadline = () => {
+const Deadline = ({isLoggedIn}:any) => {
   const [deadline, setDeadline] = useState("--:--");
   const [editing, setEditing] = useState(false);
 
@@ -45,6 +45,10 @@ const Deadline = () => {
       console.error('Error updating deadline:', error);
     }
   };
+
+  if (!isLoggedIn) {
+    return null;
+  }
 
   return (
     <div className={styles.dayGifContainer}>
