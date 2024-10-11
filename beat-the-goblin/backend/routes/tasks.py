@@ -197,25 +197,35 @@ def complete_task():
     task_id = data.get('taskId')
     completed_at = data.get('completedAt')
 
-    if task_id is None or completed_at is None:
-        return jsonify({'success': False, 'message': 'Missing taskId or completedAt'}), 400
+    if task_id is None:
+        return jsonify({'success': False, 'message': 'Missing taskId'}), 400
 
     with get_db_connection() as conn:
         cursor = conn.cursor()
         try:
-            cursor.execute("""
-                UPDATE Tasks 
-                SET completed_at = ?
-                WHERE id = ? AND user_id = ?
-            """, (completed_at, task_id, current_user_id))
+            if completed_at is None:
+                # Reverse completion (set completed_at to NULL)
+                cursor.execute("""
+                    UPDATE Tasks 
+                    SET completed_at = NULL
+                    WHERE id = ? AND user_id = ?
+                """, (task_id, current_user_id))
+            else:
+                # Complete task
+                cursor.execute("""
+                    UPDATE Tasks 
+                    SET completed_at = ?
+                    WHERE id = ? AND user_id = ?
+                """, (completed_at, task_id, current_user_id))
             
             conn.commit()
 
             if cursor.rowcount == 1:
-                return jsonify({'success': True, 'message': 'Task completed successfully'}), 200
+                action = "uncompleted" if completed_at is None else "completed"
+                return jsonify({'success': True, 'message': f'Task {action} successfully'}), 200
             else:
                 return jsonify({'success': False, 'message': 'Task not found or not owned by user'}), 404
 
         except sqlite3.Error as e:
-            logger.error(f"Database error while completing task: {e}")
-            return jsonify({'success': False, 'message': 'An error occurred while completing the task'}), 500
+            logger.error(f"Database error while updating task completion status: {e}")
+            return jsonify({'success': False, 'message': 'An error occurred while updating the task'}), 500

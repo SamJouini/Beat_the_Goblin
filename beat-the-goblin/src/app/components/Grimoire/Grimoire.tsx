@@ -148,10 +148,13 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       }
     }
   };
-
+ 
   const completeTask = async (taskId: number) => {
     try {
-      const completedAt = new Date().toISOString();
+      const taskToUpdate = tasks.find(task => task.id === taskId);
+      if (!taskToUpdate) return;
+
+      const completedAt = taskToUpdate.completed_at ? null : new Date().toISOString();
       const response = await fetch('/api/complete-task', {
         method: 'PUT',
         headers: {
@@ -161,19 +164,18 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         body: JSON.stringify({ taskId, completedAt }),
       });
       const data = await response.json();
-  
+
       if (data.success) {
         setTasks(prevTasks => prevTasks.map(task => 
           task.id === taskId ? { ...task, completed_at: completedAt } : task
         ));
       } else {
-        console.error('Failed to complete task:', data.message);
+        console.error('Failed to update task completion status:', data.message);
       }
     } catch (error) {
-      console.error('Error completing task:', error);
+      console.error('Error updating task completion status:', error);
     }
-  };
-  
+  }
 
    const openDialog = (taskId: number | undefined) => {
     const task = tasks.find(t => t.id === taskId) || null;

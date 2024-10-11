@@ -42,10 +42,12 @@
   top: 50%;
   transform: translateY(-50%);
   color: inherit;
+  transition: color 0.2s, transform 0.2s;
 }
 
 .bulletButton:hover {
   color: #B68A5B;
+  transform: translateY(-50%) scale(1.2);
 }
 
 .taskContent {
