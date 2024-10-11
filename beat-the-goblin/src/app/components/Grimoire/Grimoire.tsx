@@ -27,6 +27,30 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
     fetchTasks();
   }, []);
 
+  useEffect(() => {
+    const archiveCompletedTasks = () => {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      yesterday.setHours(23, 59, 59, 999);
+
+      setTasks(prevTasks => prevTasks.filter(task => {
+        if (task.completed_at) {
+          return new Date(task.completed_at) > yesterday;
+        }
+        return true;
+      }));
+    };
+
+    const midnightTimeout = setTimeout(() => {
+      archiveCompletedTasks();
+      // Set up a daily interval to run at midnight
+      setInterval(archiveCompletedTasks, 24 * 60 * 60 * 1000);
+    }, new Date().setHours(24, 0, 0, 0) - Date.now());
+
+    return () => clearTimeout(midnightTimeout);
+  }, []);
+
+
   const fetchTasks = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -125,6 +149,32 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
     }
   };
 
+  const completeTask = async (taskId: number) => {
+    try {
+      const completedAt = new Date().toISOString();
+      const response = await fetch('/api/complete-task', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ taskId, completedAt }),
+      });
+      const data = await response.json();
+  
+      if (data.success) {
+        setTasks(prevTasks => prevTasks.map(task => 
+          task.id === taskId ? { ...task, completed_at: completedAt } : task
+        ));
+      } else {
+        console.error('Failed to complete task:', data.message);
+      }
+    } catch (error) {
+      console.error('Error completing task:', error);
+    }
+  };
+  
+
    const openDialog = (taskId: number | undefined) => {
     const task = tasks.find(t => t.id === taskId) || null;
     setIsDialogOpen(true);
@@ -167,6 +217,7 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         tasks={tasks}
         onOpenDialog={openDialog}
         onUpdateTask={updateTask}
+        onCompleteTask={completeTask}
       />
 
       <TaskMenu

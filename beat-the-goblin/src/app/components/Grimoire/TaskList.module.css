@@ -24,12 +24,28 @@
 }
 
 .EditableTasks li::before {
-  content: '\261B';
+  content: '';
   position: absolute;
   left: 15px;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.bulletButton {
+  background: none;
+  border: none;
   font-size: 1.5em;
+  cursor: pointer;
+  padding: 0;
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: inherit;
+}
+
+.bulletButton:hover {
+  color: #B68A5B;
 }
 
 .taskContent {
@@ -64,4 +80,16 @@
 .MenuIcon {
   cursor: pointer;
   flex-shrink: 0;
+}
+
+.completed {
+  opacity: 0.6;
+}
+
+.completed .bulletButton {
+  color: #5E7255;
+}
+
+.strikethrough {
+  text-decoration: line-through;
 }

@@ -8,9 +8,10 @@ interface TaskListProps {
   tasks: Task[];
   onOpenDialog: (taskId: number | undefined) => void;
   onUpdateTask: (updatedTask: Task) => void;
+  onCompleteTask: (taskId: number) => void;
 }
 
-const TaskList = ({ isLoggedIn, tasks, onOpenDialog, onUpdateTask }: TaskListProps) => {
+const TaskList = ({ isLoggedIn, tasks, onOpenDialog, onUpdateTask, onCompleteTask }: TaskListProps) => {
   const [editingId, setEditingId] = useState<number | undefined>();
   const [editValue, setEditValue] = useState<string>('');
 
@@ -43,11 +44,24 @@ const TaskList = ({ isLoggedIn, tasks, onOpenDialog, onUpdateTask }: TaskListPro
     }
   };
 
+  const handleComplete = (taskId: number | undefined) => {
+    if (isLoggedIn && taskId !== undefined) {
+      onCompleteTask(taskId);
+    }
+  };
+
   return (
     <div className={`${styles.EditableTasks} ${isLoggedIn ? styles.loggedIn : ''}`}>
       <ul>
         {tasks.map((task) => (
-          <li key={task.id}>
+          <li key={task.id} className={task.completed_at ? styles.completed : ''}>
+            <button
+              className={styles.bulletButton}
+              onClick={() => handleComplete(task.id)}
+              disabled={!isLoggedIn}
+            >
+              {task.completed_at ? '✓' : '\u261B'}
+            </button>
             <div className={styles.taskContent}>
               {editingId === task.id && isLoggedIn ? (
                 <input
@@ -60,7 +74,7 @@ const TaskList = ({ isLoggedIn, tasks, onOpenDialog, onUpdateTask }: TaskListPro
                 />
               ) : (
                 <span 
-                  className={isLoggedIn ? styles.editable : ''}
+                  className={`${isLoggedIn ? styles.editable : ''} ${task.completed_at ? styles.strikethrough : ''}`}
                   onClick={() => handleEdit(task)}
                 >
                   {task.title}

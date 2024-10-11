@@ -188,3 +188,34 @@ def task_delete():
             logger.error(f"Database error while deleting task: {e}")
             return jsonify({'success': False, 'message': 'An error occurred while deleting the task'}), 500
 
+
+@bp.route('/api/complete-task', methods=['PUT'])
+@jwt_required()
+def complete_task():
+    current_user_id = get_jwt_identity()
+    data = request.json
+    task_id = data.get('taskId')
+    completed_at = data.get('completedAt')
+
+    if task_id is None or completed_at is None:
+        return jsonify({'success': False, 'message': 'Missing taskId or completedAt'}), 400
+
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        try:
+            cursor.execute("""
+                UPDATE Tasks 
+                SET completed_at = ?
+                WHERE id = ? AND user_id = ?
+            """, (completed_at, task_id, current_user_id))
+            
+            conn.commit()
+
+            if cursor.rowcount == 1:
+                return jsonify({'success': True, 'message': 'Task completed successfully'}), 200
+            else:
+                return jsonify({'success': False, 'message': 'Task not found or not owned by user'}), 404
+
+        except sqlite3.Error as e:
+            logger.error(f"Database error while completing task: {e}")
+            return jsonify({'success': False, 'message': 'An error occurred while completing the task'}), 500
