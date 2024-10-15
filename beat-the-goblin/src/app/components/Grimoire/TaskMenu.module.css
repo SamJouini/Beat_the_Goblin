@@ -3,12 +3,14 @@
   left: 100%;
   width: 90%;
   max-width: 800px;
-  background-image: url('/assets/clouds/rightcloud.png');
+  background: none;
+  background-image: url(/assets/clouds/leftcloud.png);
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
   padding: 30px;
   color: #5E7255;
+  border: none;
 }
 
 .menuContent {
@@ -50,8 +52,8 @@
 
 .deleteButton {
   position: absolute;
-  bottom: 0%;
-  left: 90%;
+  bottom: 10%;
+  left: 85%;
   transform: translateX(-50%);
   background: none;
   border: none;
