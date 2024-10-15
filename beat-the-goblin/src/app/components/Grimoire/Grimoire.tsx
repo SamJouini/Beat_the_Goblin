@@ -7,7 +7,7 @@ import Image from 'next/image';
 export interface Task {
   id?: number;
   title: string;
-  xp?: number;
+  xp: number;
   created_at?: string;
   due_date?: string | null;
   completed_at?: string | null;
@@ -74,9 +74,20 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
     }
   };
 
+    // Function to calculate XP for a task
+    const calculateXP = (task: Task): number => {
+      let xp = 5; // Base XP
+      if (task.difficulty) xp += 2;
+      if (task.length) xp += 1;
+      if (task.urgency) xp += 1;
+      if (task.importance) xp += 1;
+      return xp;
+    };
+
   const addTask = async () => {
     const newTask: Task = {
       title: "My new task",
+      xp:5, // basic xp
     };
 
     try {
@@ -100,27 +111,35 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
     }
   };
 
-  const updateTask = async (updatedTask: Task) => {
-    try {
-      const response = await fetch('/api/edition', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify(updatedTask),
-      });
-      const data = await response.json();
+  const updateTaskProperties = async (updatedProperties: Partial<Task>) => {
+    if (selectedTaskId) {
+      const taskToUpdate = tasks.find(task => task.id === selectedTaskId);
+      if (!taskToUpdate) return;
 
-      if (data.success) {
-        setTasks(prevTasks => prevTasks.map(task => 
-          task.id === updatedTask.id ? updatedTask : task
-        ));
-      } else {
-        console.error('Failed to update task:', data.message);
+      const updatedTask = { ...taskToUpdate, ...updatedProperties };
+      const newXP = calculateXP(updatedTask);
+      
+      try {
+        const response = await fetch('/api/edition', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify({ ...updatedTask, xp: newXP }),
+        });
+        const data = await response.json();
+
+        if (data.success) {
+          setTasks(prevTasks => prevTasks.map(task => 
+            task.id === selectedTaskId ? { ...updatedTask, xp: newXP } : task
+          ));
+        } else {
+          console.error('Failed to update task:', data.message);
+        }
+      } catch (error) {
+        console.error('Error updating task:', error);
       }
-    } catch (error) {
-      console.error('Error updating task:', error);
     }
   };
 
@@ -190,16 +209,6 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
     setSelectedTaskId(undefined)
   };
 
-  const updateTaskProperties = (updatedProperties: Partial<Task>) => {
-    if (selectedTaskId) {
-      setTasks(prevTasks => prevTasks.map(task => 
-        task.id === selectedTaskId ? { ...task, ...updatedProperties } : task
-      ));
-      updateTask({ id: selectedTaskId, ...updatedProperties } as Task);
-    }
-  };
-
-
   return (
     <>
       <h2 className={styles.title}>
@@ -218,15 +227,16 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         isLoggedIn={isLoggedIn}
         tasks={tasks}
         onOpenDialog={openDialog}
-        onUpdateTask={updateTask}
+        onUpdateTask={updateTaskProperties}
         onCompleteTask={completeTask}
       />
 
       <TaskMenu
         isOpen={isDialogOpen}
         onClose={closeDialog}
-        onDelete={deleteTask}
         onUpdateTask={updateTaskProperties}
+        onDelete={deleteTask}
+        calculateXP={calculateXP}
         task={selectedTask}
       />
     </>

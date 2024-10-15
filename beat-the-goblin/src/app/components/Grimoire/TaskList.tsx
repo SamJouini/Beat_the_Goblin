@@ -77,7 +77,7 @@ const TaskList = ({ isLoggedIn, tasks, onOpenDialog, onUpdateTask, onCompleteTas
                   className={`${isLoggedIn ? styles.editable : ''} ${task.completed_at ? styles.strikethrough : ''}`}
                   onClick={() => handleEdit(task)}
                 >
-                  {task.title}
+                  {task.title} {(task.xp)}
                 </span>
               )}
             </div>
