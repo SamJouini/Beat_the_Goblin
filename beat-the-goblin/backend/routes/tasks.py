@@ -78,7 +78,8 @@ def create_task(user_id, title):
             return {
                 'id': row['id'],
                 'title': row['title'],
-                'created_at': row['created_at']
+                'created_at': row['created_at'],
+                'xp': row['xp']
             }
             
         except sqlite3.Error as e:

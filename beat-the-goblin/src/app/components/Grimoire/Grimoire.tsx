@@ -111,6 +111,30 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
     }
   };
 
+  const updateTask = async (updatedTask: Task) => {
+    try {
+      const response = await fetch('/api/edition', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(updatedTask),
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        setTasks(prevTasks => prevTasks.map(task => 
+          task.id === updatedTask.id ? updatedTask : task
+        ));
+      } else {
+        console.error('Failed to update task:', data.message);
+      }
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
+  };
+
   const updateTaskProperties = async (updatedProperties: Partial<Task>) => {
     if (selectedTaskId) {
       const taskToUpdate = tasks.find(task => task.id === selectedTaskId);
@@ -227,7 +251,7 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         isLoggedIn={isLoggedIn}
         tasks={tasks}
         onOpenDialog={openDialog}
-        onUpdateTask={updateTaskProperties}
+        onUpdateTask={updateTask}
         onCompleteTask={completeTask}
       />
 
