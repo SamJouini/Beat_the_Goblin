@@ -12,6 +12,13 @@ interface TaskMenuProps {
   task: Task | null;
 }
 
+const propertyDisplayNames: Record<keyof Pick<Task, 'length' | 'difficulty' | 'urgency' | 'importance'>, string> = {
+  length: 'Long',
+  difficulty: 'Difficult',
+  urgency: 'Urgent',
+  importance: 'Important'
+};
+
 const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, calculateXP, task }: TaskMenuProps) => {
     if (!isOpen || !task) return null;
 
@@ -53,12 +60,12 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, calculateXP, task }
           <div className={styles.menuContent}>
             <h3 className={styles.title}> Is my task ...</h3>
             <div className={styles.checkboxGroup}>
-              {Object.entries(properties).map(([key, value]) => (
-                <div key={key} className={styles.checkboxItem}>
-                  <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+            {(Object.keys(properties) as Array<keyof typeof properties>).map((key) => (
+            <div key={key} className={styles.checkboxItem}>
+              <span>{propertyDisplayNames[key]}</span>
                   <input
                     type="checkbox"
-                    checked={value}
+                    checked={properties[key]}
                     onChange={() => handleCheckboxChange(key as keyof typeof properties)}
                   />
                 </div>
