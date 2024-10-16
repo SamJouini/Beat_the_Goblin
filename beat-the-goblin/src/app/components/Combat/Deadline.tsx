@@ -2,10 +2,9 @@ import React, { useEffect, useRef, useState, ChangeEvent } from 'react';
 import styles from './Deadline.module.css';
 import Image from 'next/image';
 
-const Deadline = ({isLoggedIn}:any) => {
-  const [deadline, setDeadline] = useState("--:--");
+const Deadline = ({isLoggedIn, deadline, onDeadlineChange}:any) => {
   const [editing, setEditing] = useState(false);
-
+  
   useEffect(() => {
       fetchDeadline();
   }, []);
@@ -20,7 +19,7 @@ const Deadline = ({isLoggedIn}:any) => {
       });
       const data = await response.json();
       if (data.success) {
-        setDeadline(data.deadline);
+        onDeadlineChange(data.deadline);
       }
     } catch (error) {
       console.error('Error fetching deadline:', error);
@@ -64,7 +63,7 @@ const Deadline = ({isLoggedIn}:any) => {
         <input type="time" 
               className={styles.clock}
               value={deadline}
-              onChange={(e) => setDeadline(e.target.value)}
+              onChange={(e) => onDeadlineChange(e.target.value)}
               onKeyDown={e => {if (e.key == 'Enter'){handleSave()}}}
               onBlur={handleSave}
               autoFocus/>

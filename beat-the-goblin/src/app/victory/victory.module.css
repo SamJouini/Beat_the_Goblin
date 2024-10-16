@@ -1,0 +1,38 @@
+.victoryContainer {
+    background-color: gold; /* Golden background */
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .banner {
+    background-color: #8B4513; /* Brown banner */
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .banner h1 {
+    color: white; /* White text for contrast */
+  }
+  
+  .banner p {
+    color: white; /* White text for contrast */
+  }
+  
+  .returnButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Green button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .returnButton:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  

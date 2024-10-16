@@ -19,12 +19,13 @@ export interface Task {
   urgency?: boolean;
 }
 
-interface TaskManagerProps {
+interface GrimoireProps {
   isLoggedIn: boolean;
   updateCombatXP: (userXP: number, goblinXP: number) => void;
+  deadline: string;
 }
 
-const TaskManager = ({ isLoggedIn, updateCombatXP }: TaskManagerProps) => {
+const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<number | undefined>(undefined);

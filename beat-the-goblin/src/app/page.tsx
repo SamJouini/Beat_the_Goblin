@@ -13,6 +13,7 @@ const MyComponents = () => {
   const [username, setUsername] = useState('Guest');
   const [userXP, setUserXP] = useState(0);
   const [goblinXP, setGoblinXP] = useState(0);
+  const [deadline, setDeadline] = useState<string>("--:--");
 
   // Function to check if there's a token in storage and fetch username
   useEffect(() => {
@@ -47,6 +48,24 @@ const MyComponents = () => {
     setUserXP(newUserXP);
     setGoblinXP(newGoblinXP);
   };
+
+  // Add a useEffect for victory check
+  useEffect(() => {
+    const checkVictoryCondition = () => {
+      const now = new Date();
+      const [hours, minutes] = deadline.split(':').map(Number);
+      const deadlineTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+
+      if (now >= deadlineTime && userXP > goblinXP) {
+        router.push('/victory');
+      }
+    };
+
+    const victoryCheck = setInterval(checkVictoryCondition, 60000); // Check every minute
+    checkVictoryCondition();
+
+    return () => clearInterval(victoryCheck);
+  }, [deadline, userXP, goblinXP, router]);
 
   return (
     <div className={styles.container}>
@@ -96,8 +115,18 @@ const MyComponents = () => {
               width={800}
               height={600}
             />
-            <User username={username} isLoggedIn={isLoggedIn} userXP={userXP}/>
-            <VersusGoblin goblinName="Bob" userXP={userXP} goblinXP={goblinXP}/>
+            <User 
+            username={username} 
+            isLoggedIn={isLoggedIn} 
+            userXP={userXP}
+            deadline={deadline}
+            setDeadline={setDeadline}
+            />
+            <VersusGoblin 
+            goblinName="Bob" 
+            userXP={userXP} 
+            goblinXP={goblinXP}
+            />
           </div>
 
           <div className={styles.paperTodo}>
@@ -108,7 +137,11 @@ const MyComponents = () => {
               height={750}
             />
             <div className={styles.todoContent}>
-              <Grimoire isLoggedIn={isLoggedIn} updateCombatXP={updateCombatXP}/>
+              <Grimoire 
+              isLoggedIn={isLoggedIn} 
+              updateCombatXP={updateCombatXP}
+              deadline={deadline}
+              />
             </div>
           </div>
         </section>
