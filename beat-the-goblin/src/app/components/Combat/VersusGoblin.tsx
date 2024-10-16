@@ -2,7 +2,14 @@ import React from 'react';
 import Image from 'next/image';
 import styles from './VersusGoblin.module.css';
 
-const VersusGoblin = ({ goblinName = 'Bob', isVersusOk = true }) => {
+interface VersusGoblinProps {
+  goblinName?: string;
+  userXP: number;
+  goblinXP: number;
+}
+
+const VersusGoblin = ({ goblinName = 'Bob', userXP, goblinXP}: VersusGoblinProps) => {
+  const isVersusOk = userXP >= goblinXP;
   return (
     <div className={styles.VersusGoblinContainer}>
       <div className={`${styles.versusText} ${isVersusOk ? styles.versusOk : styles.versusNotOk}`}>

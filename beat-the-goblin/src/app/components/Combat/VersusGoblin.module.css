@@ -18,8 +18,16 @@
     margin: 1rem 0;
     text-align: left;
     font-size: 2rem;
-    color: #5E7255;
     font-family: 'Hilds', Arial, sans-serif;
+    transition: color 0.3s ease;
+  }
+  
+  .versusOk {
+    color: #5E7255;
+}
+
+.versusNotOk {
+    color: #6c2835;
   }
   
   .goblinBannerContainer {

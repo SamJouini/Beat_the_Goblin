@@ -17,39 +17,21 @@ export interface Task {
   urgency?: boolean;
 }
 
-const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+interface TaskManagerProps {
+  isLoggedIn: boolean;
+  updateCombatXP: (userXP: number, goblinXP: number) => void;
+}
+
+const TaskManager = ({ isLoggedIn, updateCombatXP }: TaskManagerProps) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<number | undefined>(undefined);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
+
   useEffect(() => {
     fetchTasks();
   }, []);
-
-  useEffect(() => {
-    const archiveCompletedTasks = () => {
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      yesterday.setHours(23, 59, 59, 999);
-
-      setTasks(prevTasks => prevTasks.filter(task => {
-        if (task.completed_at) {
-          return new Date(task.completed_at) > yesterday;
-        }
-        return true;
-      }));
-    };
-
-    const midnightTimeout = setTimeout(() => {
-      archiveCompletedTasks();
-      // Set up a daily interval to run at midnight
-      setInterval(archiveCompletedTasks, 24 * 60 * 60 * 1000);
-    }, new Date().setHours(24, 0, 0, 0) - Date.now());
-
-    return () => clearTimeout(midnightTimeout);
-  }, []);
-
 
   const fetchTasks = async () => {
     try {
@@ -73,6 +55,43 @@ const TaskManager = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       console.error('Error fetching tasks:', error);
     }
   };
+
+  useEffect(() => {
+    calculateCombatXP();
+  }, [tasks]);
+
+  const calculateCombatXP = () => {
+    const totalTaskXP = tasks.reduce((total, task) => total + task.xp, 0);
+    const newGoblinXP = Math.max(0, totalTaskXP - 5);
+    const newUserXP = tasks
+      .filter(task => task.completed_at)
+      .reduce((total, task) => total + task.xp, 0);
+    
+    updateCombatXP(newUserXP, newGoblinXP);
+  };
+
+  useEffect(() => {
+    const archiveCompletedTasks = () => {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      yesterday.setHours(23, 59, 59, 999);
+
+      setTasks(prevTasks => prevTasks.filter(task => {
+        if (task.completed_at) {
+          return new Date(task.completed_at) > yesterday;
+        }
+        return true;
+      }));
+    };
+
+    const midnightTimeout = setTimeout(() => {
+      archiveCompletedTasks();
+      // Set up a daily interval to run at midnight
+      setInterval(archiveCompletedTasks, 24 * 60 * 60 * 1000);
+    }, new Date().setHours(24, 0, 0, 0) - Date.now());
+
+    return () => clearTimeout(midnightTimeout);
+  }, []);
 
     // Function to calculate XP for a task
     const calculateXP = (task: Task): number => {

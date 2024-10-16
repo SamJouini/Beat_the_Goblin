@@ -11,6 +11,8 @@ const MyComponents = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('Guest');
+  const [userXP, setUserXP] = useState(0);
+  const [goblinXP, setGoblinXP] = useState(0);
 
   // Function to check if there's a token in storage and fetch username
   useEffect(() => {
@@ -38,6 +40,12 @@ const MyComponents = () => {
     } else {
       router.push('/login');
     }
+  };
+
+  // Function to update the Xps
+  const updateCombatXP = (newUserXP : number, newGoblinXP : number) => {
+    setUserXP(newUserXP);
+    setGoblinXP(newGoblinXP);
   };
 
   return (
@@ -88,8 +96,8 @@ const MyComponents = () => {
               width={800}
               height={600}
             />
-            <User username={username} isLoggedIn={isLoggedIn}/>
-            <VersusGoblin goblinName="Bob" isVersusOk={true}/>
+            <User username={username} isLoggedIn={isLoggedIn} userXP={userXP}/>
+            <VersusGoblin goblinName="Bob" userXP={userXP} goblinXP={goblinXP}/>
           </div>
 
           <div className={styles.paperTodo}>
@@ -100,7 +108,7 @@ const MyComponents = () => {
               height={750}
             />
             <div className={styles.todoContent}>
-              <Grimoire isLoggedIn={isLoggedIn}/>
+              <Grimoire isLoggedIn={isLoggedIn} updateCombatXP={updateCombatXP}/>
             </div>
           </div>
         </section>
