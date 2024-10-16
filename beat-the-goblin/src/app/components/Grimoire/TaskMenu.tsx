@@ -18,20 +18,20 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, calculateXP, task }
 
      // Initialize properties state with the task properties
   const [properties, setProperties] = useState({
-    long: task.length || false,
-    difficult: task.difficulty || false,
-    urgent: task.urgency || false,
-    important: task.importance || false,
+    length: task.length || false,
+    difficulty: task.difficulty || false,
+    urgency: task.urgency || false,
+    importance: task.importance || false,
   });
 
   // Update properties when task changes
   useEffect(() => {
     if (task) {
       setProperties({
-        long: task.length || false,
-        difficult: task.difficulty || false,
-        urgent: task.urgency || false,
-        important: task.importance || false,
+        length: task.length || false,
+        difficulty: task.difficulty || false,
+        urgency: task.urgency || false,
+        importance: task.importance || false,
       });
     }
   }, [task]);
