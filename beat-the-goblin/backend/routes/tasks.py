@@ -70,20 +70,27 @@ def create_task(user_id, title):
     with get_db_connection() as conn:
         cursor = conn.cursor()
         try:
-            cursor.execute('INSERT INTO Tasks (user_id, title) VALUES (?, ?)'
-            ' RETURNING id, title, created_at',
-            (user_id, title))
+            # Set a default XP value
+            default_xp = 5
+
+            cursor.execute('''
+                INSERT INTO Tasks (user_id, title, xp) 
+                VALUES (?, ?, ?) 
+                RETURNING id, title, created_at, xp
+            ''', (user_id, title, default_xp))
             
             row = cursor.fetchone()
+            conn.commit()  # Commit the transaction
+
             return {
-                'id': row['id'],
-                'title': row['title'],
-                'created_at': row['created_at'],
-                'xp': row['xp']
+                'id': row[0],  # Access by index instead of key
+                'title': row[1],
+                'created_at': row[2],
+                'xp': row[3]
             }
             
         except sqlite3.Error as e:
-            logger.error(f"Database error while fetching tasks: {e}")
+            logger.error(f"Database error while creating task: {e}")
             raise e
             
 @bp.route('/api/edition', methods=['PUT'])
