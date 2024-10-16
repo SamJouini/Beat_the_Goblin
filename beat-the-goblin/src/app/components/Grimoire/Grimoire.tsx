@@ -3,6 +3,8 @@ import TaskList from './TaskList';
 import TaskMenu from './TaskMenu';
 import styles from './Grimoire.module.css';
 import Image from 'next/image';
+import * as taskService from './TaskUtils/TaskServices';
+import { calculateXP, calculateCombatXP } from './TaskUtils/calculations'
 
 export interface Task {
   id?: number;
@@ -28,47 +30,19 @@ const TaskManager = ({ isLoggedIn, updateCombatXP }: TaskManagerProps) => {
   const [selectedTaskId, setSelectedTaskId] = useState<number | undefined>(undefined);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
-
   useEffect(() => {
     fetchTasks();
   }, []);
 
   const fetchTasks = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const headers: HeadersInit = {
-        'Content-Type': 'application/json'
-      };
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-  
-      const response = await fetch('/api/tasks', { headers });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setTasks(data.tasks);
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
-    }
+    const fetchedTasks = await taskService.fetchTasks();
+    setTasks(fetchedTasks);
   };
 
   useEffect(() => {
-    calculateCombatXP();
-  }, [tasks]);
-
-  const calculateCombatXP = () => {
-    const totalTaskXP = tasks.reduce((total, task) => total + task.xp, 0);
-    const newGoblinXP = Math.max(0, totalTaskXP - 5);
-    const newUserXP = tasks
-      .filter(task => task.completed_at)
-      .reduce((total, task) => total + task.xp, 0);
-    
-    updateCombatXP(newUserXP, newGoblinXP);
-  };
+    const { userXP, goblinXP } = calculateCombatXP(tasks);
+    updateCombatXP(userXP, goblinXP);
+  }, [tasks, updateCombatXP]);
 
   useEffect(() => {
     const archiveCompletedTasks = () => {
@@ -93,64 +67,24 @@ const TaskManager = ({ isLoggedIn, updateCombatXP }: TaskManagerProps) => {
     return () => clearTimeout(midnightTimeout);
   }, []);
 
-    // Function to calculate XP for a task
-    const calculateXP = (task: Task): number => {
-      let xp = 5; // Base XP
-      if (task.difficulty) xp += 2;
-      if (task.length) xp += 1;
-      if (task.urgency) xp += 1;
-      if (task.importance) xp += 1;
-      return xp;
-    };
-
   const addTask = async () => {
     const newTask: Task = {
       title: "My new task",
-      xp:5, // basic xp
+      xp: 5, // basic xp
     };
 
-    try {
-      const response = await fetch('/api/edition', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify(newTask),
-      });
-      const data = await response.json();
-
-      if (data.success) {
-        setTasks([...tasks, { ...newTask, id: data.taskId }]);
-      } else {
-        console.error('Failed to add task:', data.message);
-      }
-    } catch (error) {
-      console.error('Error adding task:', error);
+    const addedTask = await taskService.addTask(newTask);
+    if (addedTask) {
+      setTasks([...tasks, addedTask]);
     }
   };
 
   const updateTask = async (updatedTask: Task) => {
-    try {
-      const response = await fetch('/api/edition', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify(updatedTask),
-      });
-      const data = await response.json();
-
-      if (data.success) {
-        setTasks(prevTasks => prevTasks.map(task => 
-          task.id === updatedTask.id ? updatedTask : task
-        ));
-      } else {
-        console.error('Failed to update task:', data.message);
-      }
-    } catch (error) {
-      console.error('Error updating task:', error);
+    const success = await taskService.updateTask(updatedTask);
+    if (success) {
+      setTasks(prevTasks => prevTasks.map(task => 
+        task.id === updatedTask.id ? updatedTask : task
+      ));
     }
   };
 
@@ -159,97 +93,52 @@ const TaskManager = ({ isLoggedIn, updateCombatXP }: TaskManagerProps) => {
       const taskToUpdate = tasks.find(task => task.id === selectedTaskId);
       if (!taskToUpdate) return;
 
-      const updatedTask = { ...taskToUpdate, ...updatedProperties };
+      const updatedTask = {...taskToUpdate, ...updatedProperties};
       const newXP = calculateXP(updatedTask);
       
-      try {
-        const response = await fetch('/api/edition', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-          body: JSON.stringify({ ...updatedTask, xp: newXP }),
-        });
-        const data = await response.json();
-
-        if (data.success) {
-          setTasks(prevTasks => prevTasks.map(task => 
-            task.id === selectedTaskId ? { ...updatedTask, xp: newXP } : task
-          ));
-        } else {
-          console.error('Failed to update task:', data.message);
-        }
-      } catch (error) {
-        console.error('Error updating task:', error);
+      const success = await taskService.updateTask({...updatedTask, xp: newXP});
+      if (success) {
+        setTasks(prevTasks => prevTasks.map(task => 
+          task.id === selectedTaskId ? {...updatedTask, xp: newXP} : task
+        ));
       }
     }
   };
 
   const deleteTask = async () => {
     if (selectedTaskId) {
-      try {
-        const response = await fetch(`/api/delete?id=${selectedTaskId}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-          }
-        });
-  
-        const data = await response.json();
-  
-        if (data.success) {
-          setTasks(prevTasks => prevTasks.filter(task => task.id !== selectedTaskId));
-          closeDialog();
-        } else {
-          console.error('Failed to delete task:', data.message);
-        }
-      } catch (error) {
-        console.error('Error deleting task:', error);
+      const success = await taskService.deleteTask(selectedTaskId);
+      if (success) {
+        setTasks(prevTasks => prevTasks.filter(task => task.id !== selectedTaskId));
+        closeDialog();
       }
     }
   };
  
   const completeTask = async (taskId: number) => {
-    try {
-      const taskToUpdate = tasks.find(task => task.id === taskId);
-      if (!taskToUpdate) return;
+    const taskToUpdate = tasks.find(task => task.id === taskId);
+    if (!taskToUpdate) return;
 
-      const completedAt = taskToUpdate.completed_at ? null : new Date().toISOString();
-      const response = await fetch('/api/complete-task', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ taskId, completedAt }),
-      });
-      const data = await response.json();
-
-      if (data.success) {
-        setTasks(prevTasks => prevTasks.map(task => 
-          task.id === taskId ? { ...task, completed_at: completedAt } : task
-        ));
-      } else {
-        console.error('Failed to update task completion status:', data.message);
-      }
-    } catch (error) {
-      console.error('Error updating task completion status:', error);
+    const completedAt = taskToUpdate.completed_at ? null : new Date().toISOString();
+    const success = await taskService.completeTask(taskId, completedAt);
+    if (success) {
+      setTasks(prevTasks => prevTasks.map(task => 
+        task.id === taskId ? {...task, completed_at: completedAt} : task
+      ));
     }
-  }
+  };
 
-   const openDialog = (taskId: number | undefined) => {
+  const openDialog = (taskId: number | undefined) => {
     const task = tasks.find(t => t.id === taskId) || null;
     setIsDialogOpen(true);
     setSelectedTask(task);
-    setSelectedTaskId(taskId)
+    setSelectedTaskId(taskId);
   };
 
   const closeDialog = () => {
     setIsDialogOpen(false);
     setSelectedTask(null);
-    setSelectedTaskId(undefined)
+    setSelectedTaskId(undefined);
   };
 
   return (
