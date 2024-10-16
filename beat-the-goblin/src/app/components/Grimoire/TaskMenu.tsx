@@ -16,22 +16,22 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, calculateXP, task }
     if (!isOpen || !task) return null;
 
 
-     // Initialize properties state with optional task properties
+     // Initialize properties state with the task properties
   const [properties, setProperties] = useState({
-    length: task.length || false,
-    difficulty: task.difficulty || false,
-    urgency: task.urgency || false,
-    importance: task.importance || false,
+    long: task.length || false,
+    difficult: task.difficulty || false,
+    urgent: task.urgency || false,
+    important: task.importance || false,
   });
 
   // Update properties when task changes
   useEffect(() => {
     if (task) {
       setProperties({
-        length: task.length || false,
-        difficulty: task.difficulty || false,
-        urgency: task.urgency || false,
-        importance: task.importance || false,
+        long: task.length || false,
+        difficult: task.difficulty || false,
+        urgent: task.urgency || false,
+        important: task.importance || false,
       });
     }
   }, [task]);
@@ -51,7 +51,7 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, calculateXP, task }
         <dialog open className={styles.menuContainer}>
           <button className={styles.closeButton} onClick={onClose}>×</button>
           <div className={styles.menuContent}>
-            <h3 className={styles.title}>Task Properties</h3>
+            <h3 className={styles.title}> Is my task ...</h3>
             <div className={styles.checkboxGroup}>
               {Object.entries(properties).map(([key, value]) => (
                 <div key={key} className={styles.checkboxItem}>
@@ -63,6 +63,7 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, calculateXP, task }
                   />
                 </div>
               ))}
+              <h3 className={styles.title}> ...? </h3> 
             </div>
             <button className={styles.deleteButton} onClick={onDelete}>
               <Image
