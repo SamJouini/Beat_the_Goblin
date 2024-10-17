@@ -1,6 +1,22 @@
 .victoryContainer {
-    background-color: gold; /* Golden background */
-    height: 100vh; /* Full viewport height */
+    background-color: #5E7255;
+    background-image: 
+      url('/assets/map/decors/Tree1.gif'),
+      url('/assets/map/decors/Tree2.gif'),
+      url('/assets/map/decors/Tree3.png');
+    background-repeat: 
+      repeat,
+      repeat,
+      repeat;
+      background-position: 
+      0 0,
+      225px 150px,
+      450px 350px;
+    background-size: 
+      100px auto,
+      115px auto,
+      130px auto;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,30 +25,33 @@
   }
   
   .banner {
-    background-color: #8B4513; /* Brown banner */
-    padding: 20px;
-    border-radius: 10px;
+    background-color: #B68A5B;
+    padding: 40px;
+    border-radius: 20px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
   .banner h1 {
-    color: white; /* White text for contrast */
+    color: black;
   }
   
   .banner p {
-    color: white; /* White text for contrast */
+    color: black;
   }
   
   .returnButton {
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #4CAF50; /* Green button */
-    color: white;
+    background-color: #EEDFA9;
+    color: black;
     border: none;
     border-radius: 5px;
     cursor: pointer;
   }
   
   .returnButton:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #E1CF7D;
   }
   

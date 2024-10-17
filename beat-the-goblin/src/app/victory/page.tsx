@@ -7,7 +7,7 @@ const VictoryPage = () => {
     <div className={styles.victoryContainer}>
       <div className={styles.banner}>
         <h1>Congratulations!</h1>
-        <p>You've defeated the goblin and completed your tasks!</p>
+        <p>You’ve triumphed over the goblin!</p>
       </div>
       <Link href="/" className={styles.returnButton}>
         Return to Grimoire

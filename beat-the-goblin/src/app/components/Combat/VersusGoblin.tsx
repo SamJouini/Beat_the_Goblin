@@ -6,15 +6,13 @@ interface VersusGoblinProps {
   goblinName?: string;
   userXP: number;
   goblinXP: number;
-  isLoggedIn: boolean;
 }
 
-const VersusGoblin = ({ goblinName = 'Bob', userXP, goblinXP, isLoggedIn}: VersusGoblinProps) => {
+const VersusGoblin = ({ goblinName = 'Bob', userXP, goblinXP}: VersusGoblinProps) => {
   const isVersusOk = userXP >= goblinXP;
   return (
     <div className={styles.VersusGoblinContainer}>
-        <div className={`${styles.versusText} ${isLoggedIn ? (isVersusOk ?
-          styles.versusOk : styles.versusNotOk) : styles.versusUnlogged}`}>
+      <div className={`${styles.versusText} ${isVersusOk ? styles.versusOk : styles.versusNotOk}`}>
         <h2>Versus</h2>
       </div>
 
