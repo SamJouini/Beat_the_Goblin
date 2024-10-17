@@ -56,8 +56,10 @@ const MyComponents = () => {
       const [hours, minutes] = deadline.split(':').map(Number);
       const deadlineTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
 
-      if (now >= deadlineTime && userXP > goblinXP) {
+      if (now >= deadlineTime && userXP >= goblinXP) {
         router.push('/victory');
+      } else if (now >= deadlineTime && userXP < goblinXP) {
+        router.push('/defeat');
       }
     };
 

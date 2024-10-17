@@ -1,0 +1,95 @@
+.challengeContainer {
+    background-color: #5E7255;
+    background-image: 
+      url('/assets/characters/Torch_Purple2left.gif'),
+      url('/assets/characters/Torch_Purple2right.gif'),
+      url('/assets/characters/Torch_Purple3left.gif'),
+      url('/assets/characters/Torch_Purple3right.gif');
+      background-repeat: 
+      repeat,
+      repeat,
+      repeat,
+      repeat;
+    background-position: 
+    left 120px top 250px,
+    right 245px top 250px,
+    calc(50% - 600px) 750px,
+    calc(50% + 725px) 750px;
+    background-size: 
+      200px auto,
+      200px auto,
+      200px auto,
+      200px auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  
+.challengeContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(94, 114, 85, 0.5); /* Adjust the last value (0.7) for opacity */
+  z-index: 1;
+}
+
+.banner {
+  background-color: #B68A5B;
+  padding: 40px;
+  border-radius: 20px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  z-index: 2;
+}
+
+.banner h1 {
+  color: #EEDFA9;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  z-index: 2;
+}
+
+.banner p {
+  color: #EEDFA9;
+  font-size: 1.2rem;
+  z-index: 2;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  max-width: 600px;
+  z-index: 2;
+}
+
+.optionButton {
+  width: 100%;
+  margin: 10px 0;
+  padding: 15px 20px;
+  background-color: #EEDFA9;
+  color: #5E7255;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background-color 0.3s, transform 0.2s;
+  z-index: 2;
+}
+
+.optionButton:hover {
+  background-color: #E1CF7D;
+  transform: scale(1.05);
+  z-index: 2;
+}
