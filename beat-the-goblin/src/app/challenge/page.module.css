@@ -36,7 +36,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(94, 114, 85, 0.5); /* Adjust the last value (0.7) for opacity */
+  background-color: rgba(94, 114, 85, 0.40); /* Adjust the last value for opacity */
   z-index: 1;
 }
 

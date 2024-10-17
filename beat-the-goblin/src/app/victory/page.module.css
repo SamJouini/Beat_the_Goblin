@@ -23,6 +23,17 @@
     justify-content: center;
     text-align: center;
   }
+
+  .victoryContainer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(94, 114, 85, 0.40); /* Adjust the last value for opacity */
+    z-index: 1;
+  }
   
   .banner {
     background-color: #B68A5B;
@@ -31,14 +42,17 @@
     width: 80%;
     max-width: 600px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 2;
   }
   
   .banner h1 {
     color: black;
+    z-index: 2;
   }
   
   .banner p {
     color: black;
+    z-index: 2;
   }
   
   .returnButton {
@@ -49,9 +63,11 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    z-index: 2;
   }
   
   .returnButton:hover {
     background-color: #E1CF7D;
+    z-index: 2;
   }
   
