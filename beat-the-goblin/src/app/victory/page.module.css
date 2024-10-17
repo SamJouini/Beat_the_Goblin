@@ -10,12 +10,12 @@
       repeat;
       background-position: 
       0 0,
-      225px 150px,
-      450px 350px;
+      225px 250px,
+      550px 500px;
     background-size: 
       100px auto,
-      115px auto,
-      130px auto;
+      105px auto,
+      120px auto;
     height: 100vh;
     display: flex;
     flex-direction: column;
