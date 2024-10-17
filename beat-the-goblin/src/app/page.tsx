@@ -59,7 +59,7 @@ const MyComponents = () => {
       if (now >= deadlineTime && userXP >= goblinXP) {
         router.push('/victory');
       } else if (now >= deadlineTime && userXP < goblinXP) {
-        router.push('/defeat');
+        router.push('/challenge');
       }
     };
 
