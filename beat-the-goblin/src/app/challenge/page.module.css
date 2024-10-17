@@ -2,22 +2,14 @@
     background-color: #5E7255;
     background-image: 
       url('/assets/characters/Torch_Purple2left.gif'),
-      url('/assets/characters/Torch_Purple2right.gif'),
-      url('/assets/characters/Torch_Purple3left.gif'),
-      url('/assets/characters/Torch_Purple3right.gif');
+      url('/assets/characters/Torch_Purple2right.gif');
       background-repeat: 
-      repeat,
-      repeat,
       repeat,
       repeat;
     background-position: 
-    left 120px top 250px,
-    right 245px top 250px,
-    calc(50% - 600px) 750px,
-    calc(50% + 725px) 750px;
+    left 50px top 200px,
+    right 700px top 200px;
     background-size: 
-      200px auto,
-      200px auto,
       200px auto,
       200px auto;
     height: 100vh;
