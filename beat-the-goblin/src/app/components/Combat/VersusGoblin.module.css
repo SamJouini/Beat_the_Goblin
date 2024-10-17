@@ -29,6 +29,10 @@
 .versusNotOk {
     color: #6c2835;
   }
+
+.versusUnlogged {
+  color: #597E7F;
+}
   
   .goblinBannerContainer {
     position: relative;
