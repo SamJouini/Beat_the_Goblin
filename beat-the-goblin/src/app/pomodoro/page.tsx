@@ -2,37 +2,53 @@
 import React, { useState, useEffect } from 'react';
 import styles from './page.module.css';
 
-// Define the duration of a Pomodoro session in seconds (currently 25 minutes) 
-// Create a change timer button for more option ? 
-const POMODORO_DURATION = 25 * 60;
+/**
+ * Pomodoro Component
+ * 
+ * This component implements a Pomodoro timer designed to help users manage their work and break times.
+ * It provides a 25-minute countdown timer with start, pause, and reset functionality.
+ * 
+ * Key Features:
+ * - Timer countdown that persists across page refreshes using localStorage.
+ * - Automatic reset when the timer reaches zero or when manually reset.
+ * - Start, pause, and reset functionality for user control.
+ * 
+ * Future Implementation:
+ * - Add customizable timer duration.
+ * - Implement break timer functionality.
+ * - Add sound notifications for timer completion.
+ */
+
+const POMODORO_DURATION = 25 * 60; // 25 minutes in seconds
 
 const Pomodoro = () => {
-  // State variables
+  // State variables for managing the timer, activity status, and initialization
   const [timeLeft, setTimeLeft] = useState(POMODORO_DURATION);
   const [isActive, setIsActive] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Effect to initialize the timer state, potentially from localStorage (in case the user refresh the page)
+  // Effect to initialize the timer state from localStorage
   useEffect(() => {
-    // Retrieve saved state from localStorage
     const savedState = localStorage.getItem('pomodoroState');
     if (savedState) {
       const { timeLeft: savedTime, isActive: savedIsActive, lastUpdated } = JSON.parse(savedState);
-      // Calculate elapsed time since last update
       const elapsedTime = Math.floor((Date.now() - lastUpdated) / 1000);
-      // Ensure remaining time doesn't go below 0
       const remainingTime = Math.max(savedTime - elapsedTime, 0);
-      setTimeLeft(remainingTime);
-      setIsActive(savedIsActive);
+      if (remainingTime > 0) {
+        setTimeLeft(remainingTime);
+        setIsActive(savedIsActive);
+      } else {
+        resetTimer();
+      }
     }
-    setIsInitialized(true);
+    setIsInitialized(true); // Mark the component as initialized
   }, []);
 
   // Effect to handle timer countdown and state persistence
   useEffect(() => {
     if (!isInitialized) return;
 
-    let interval: NodeJS.Timeout;
+    let interval = null;
 
     // Function to save current state to localStorage
     const saveState = () => {
@@ -48,28 +64,35 @@ const Pomodoro = () => {
       interval = setInterval(() => {
         setTimeLeft((prevTime) => {
           const newTime = prevTime - 1;
-          saveState();
+          if (newTime === 0) {
+            resetTimer(); // Reset timer when it reaches 0
+          } else {
+            saveState(); // Save current state
+          }
           return newTime;
         });
       }, 1000);
     } else if (timeLeft === 0) {
-      // Stop the timer when it reaches 0
-      setIsActive(false);
-      saveState();
+      resetTimer(); // Reset timer when it reaches 0
     }
 
-    // Save state when component updates
-    saveState();
+    saveState(); // Save state when component updates
 
-    // Cleanup function to clear interval
     return () => {
-      if (interval) clearInterval(interval);
+      if (interval) clearInterval(interval); // Cleanup function to clear interval
     };
   }, [isActive, timeLeft, isInitialized]);
 
   // Function to toggle the timer between active and paused states
   const toggleTimer = () => {
     setIsActive((prevIsActive) => !prevIsActive);
+  };
+
+  // Function to reset the timer to its initial state
+  const resetTimer = () => {
+    setTimeLeft(POMODORO_DURATION);
+    setIsActive(false);
+    localStorage.removeItem('pomodoroState'); // Clear saved state from localStorage
   };
 
   // Function to format seconds into MM:SS string
@@ -85,9 +108,14 @@ const Pomodoro = () => {
       <div className={styles.timerCircle}>
         <span className={styles.timerText}>{formatTime(timeLeft)}</span>
       </div>
-      <button className={styles.startButton} onClick={toggleTimer}>
-        {isActive ? 'Pause' : 'Start'}
-      </button>
+      <div className={styles.buttonContainer}>
+        <button className={styles.button} onClick={toggleTimer}>
+          {isActive ? 'Pause' : 'Start'}
+        </button>
+        <button className={styles.button} onClick={resetTimer}>
+          Reset
+        </button>
+      </div>
     </div>
   );
 };
