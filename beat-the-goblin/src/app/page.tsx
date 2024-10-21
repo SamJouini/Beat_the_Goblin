@@ -128,6 +128,7 @@ const MyComponents = () => {
             goblinName="Bob" 
             userXP={userXP} 
             goblinXP={goblinXP}
+            isLoggedIn={isLoggedIn}
             />
           </div>
 
