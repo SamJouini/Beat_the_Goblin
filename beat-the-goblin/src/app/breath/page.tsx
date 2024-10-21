@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import styles from './page.module.css';
 
 /**
@@ -94,6 +95,9 @@ const Breath = () => {
         <button className={styles.button} onClick={resetExercise}>
           Reset
         </button>
+        <Link href="/" passHref>
+          <button className={styles.button}>Grimoire</button>
+        </Link>
       </div>
     </div>
   );  
