@@ -4,11 +4,11 @@ import Link from 'next/link';
 import styles from './page.module.css';
 
 /**
- * Breath Component
+ * Breath Page
  * 
- * This component implements a breathing exercise timer designed to guide users through 
+ * This page implements a breathing exercise timer designed to guide users through 
  * a 5-minute breathing exercise. It alternates between "Inhale" and "Exhale" prompts every 
- * 5 seconds, with a visual indicator (an animated circle) to assist in maintaining rhythm.
+ * 5 seconds, with a visual indicator (the animated circle) to assist in maintaining rhythm.
  * 
  * Key Features:
  * - Timer countdown that resets on page refresh.
@@ -17,8 +17,8 @@ import styles from './page.module.css';
  * 
  * Future Implementation:
  * - Add a setup system to allow users to customize:
- *   1. Overall exercise duration (currently fixed at 5 minutes)
- *   2. Duration of each inhale and exhale cycle (currently fixed at 5 seconds each)
+ *   1. Overall exercise duration (currently fixed at 5 minutes).
+ *   2. Duration of each inhale and exhale cycle (currently fixed at 5 seconds each).
  */
 
 const EXERCISE_DURATION = 5 * 60; // 5 minutes in seconds

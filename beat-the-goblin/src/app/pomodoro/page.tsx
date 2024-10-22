@@ -4,9 +4,9 @@ import Link from 'next/link';
 import styles from './page.module.css';
 
 /**
- * Pomodoro Component
+ * Pomodoro Page
  * 
- * This component implements a Pomodoro timer designed to help users manage their work and break times.
+ * This page implements a Pomodoro timer designed to help users manage their work and break times.
  * It provides a 25-minute countdown timer with start, pause, and reset functionality.
  * 
  * Key Features:
@@ -17,7 +17,7 @@ import styles from './page.module.css';
  * Future Implementation:
  * - Add customizable timer duration.
  * - Implement break timer functionality.
- * - Add sound notifications for timer completion.
+ * - Add sound notifications for timer completion ?
  */
 
 const POMODORO_DURATION = 25 * 60; // 25 minutes in seconds
@@ -86,7 +86,10 @@ const Pomodoro = () => {
 
   // Function to toggle the timer between active and paused states
   const toggleTimer = () => {
-    setIsActive((prevIsActive) => !prevIsActive);
+    setIsActive(!isActive);
+    if (!isActive) {
+      fetchPomodoro();
+    }
   };
 
   // Function to reset the timer to its initial state
@@ -101,6 +104,20 @@ const Pomodoro = () => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  // Function to fetch database when pomodoro start
+  const fetchPomodoro = async () => {
+      try {
+      const response = await fetch('/api/pomodoro', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+    } catch (error) {
+      console.error('Error fetching pomodoro:', error);
+    }
   };
 
   // Render the Pomodoro timer UI
