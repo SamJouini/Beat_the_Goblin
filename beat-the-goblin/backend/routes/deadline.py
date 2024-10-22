@@ -29,11 +29,18 @@ def get_user_deadline():
             if deadline_str == None:
                 deadline_str = datetime.time(hour=20).isoformat(timespec="minutes")
             
-            # here we have the default deadliine for the user
+            # here we have the default deadline for the user
             # add a bit more if the user has done a pomodoro
-            cursor.execute("SELECT pomodoro FROM Combat WHERE user_id = ? AND combat_date = ?", (current_user_id, datetime.date.today().isoformat()))
+            cursor.execute("SELECT pomodoro, breath FROM Combat WHERE user_id = ? AND combat_date = ?", 
+                           (current_user_id, datetime.date.today().isoformat()))
             result = cursor.fetchone()
+
             if result and result['pomodoro'] == 1:
+                deadline = datetime.time.fromisoformat(deadline_str)
+                edited_deadline = datetime.datetime.combine(datetime.date.today(), deadline) + datetime.timedelta(minutes = 30)
+                deadline_str = (edited_deadline).time().isoformat(timespec="minutes")
+
+            elif result and result ['breath'] == 1:
                 deadline = datetime.time.fromisoformat(deadline_str)
                 edited_deadline = datetime.datetime.combine(datetime.date.today(), deadline) + datetime.timedelta(minutes = 30)
                 deadline_str = (edited_deadline).time().isoformat(timespec="minutes")
@@ -60,6 +67,7 @@ def update_user_deadline():
             return jsonify({'success': True, 'message': 'Deadline updated successfully'}), 200
         return jsonify({'success': False, 'message': 'Failed to update deadline'}), 500
 
+
 @bp.route('/api/pomodoro', methods=['PUT'])
 @jwt_required()
 def start_pomodoro():
@@ -76,5 +84,21 @@ def start_pomodoro():
             conn.commit()
        
         return jsonify({"message": "Pomodoro started successfully"}), 200
-    
 
+
+@bp.route('/api/breath', methods=['PUT'])
+@jwt_required()
+def start_breath():
+    current_user_id = get_jwt_identity()
+    
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("UPDATE Combat SET breath = ? WHERE user_id = ? AND combat_date = ?", 
+                       (1, current_user_id, datetime.date.today().isoformat()))
+        conn.commit()
+        if cursor.rowcount < 1:
+            cursor.execute("INSERT INTO Combat (breath, user_id, combat_date) VALUES (1, ?, ?)", 
+                       (current_user_id, datetime.date.today().isoformat()))
+            conn.commit()
+       
+        return jsonify({"message": "Exercice started successfully"}), 200

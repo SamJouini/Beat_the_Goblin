@@ -60,7 +60,10 @@ const Breath = () => {
 
   // Function to toggle the exercise between active and paused states
   const toggleExercise = () => {
-    setIsActive((prevIsActive) => !prevIsActive);
+    setIsActive(!isActive);
+    if (!isActive) {
+      fetchBreath();
+    };
   };
 
   // Function to reset the exercise to its initial state
@@ -75,6 +78,20 @@ const Breath = () => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+    // Function to fetch database when exercice start
+    const fetchBreath = async () => {
+      try {
+      const response = await fetch('/api/breath', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+    } catch (error) {
+      console.error('Error fetching breath:', error);
+    }
   };
 
   // Render the Breath exercise UI
