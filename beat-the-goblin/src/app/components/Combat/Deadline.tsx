@@ -20,7 +20,7 @@ import Image from 'next/image';
  * 
  * Futur implementations:
  * - Modify the displayed gif depending the time of the day (dawn, day, noon, night).
- * - The current componenet uses 'any' type for its props, change it to improve type safety.
+ * - The current component uses 'any' type for its props, change it to improve type safety.
  */
 
 const Deadline = ({isLoggedIn, deadline, onDeadlineChange}:any) => {
