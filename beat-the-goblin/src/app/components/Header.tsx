@@ -3,6 +3,25 @@ import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import styles from "./Header.module.css";
 
+/**
+ * Header Component
+ * 
+ * This component implements the header section of the application, including
+ * login/logout functionality, signup option, and the main title.
+ * 
+ * Key Features:
+ * - Displays "Sign up" button for non-logged-in users.
+ * - Shows "Login" or "Logout" button based on user's login status.
+ * - Handles user authentication state and token management.
+ * - Provides navigation to signup and login pages.
+ * 
+ * Props:
+ * @param {boolean} isLoggedIn - Indicates whether a user is currently logged in.
+ * @param {function} setIsLoggedIn - Function to update the login status.
+ * @param {function} setUsername - Function to set the current user's username.
+ */
+
+
 interface HeaderProps {
   isLoggedIn: boolean;
   setIsLoggedIn: (value: boolean) => void;
@@ -16,6 +35,7 @@ const Header = ({ isLoggedIn, setIsLoggedIn, setUsername }: HeaderProps) => {
   const handleSignupClick = () => {
     router.push('/signup');
   };
+
 
   interface LoginResponse {
     access_token: string;
@@ -48,6 +68,7 @@ const Header = ({ isLoggedIn, setIsLoggedIn, setUsername }: HeaderProps) => {
     }
   };
 
+  // Render the header UI
   return (
     <header className={styles.header}>
       <div className={styles.leftCloud}>
