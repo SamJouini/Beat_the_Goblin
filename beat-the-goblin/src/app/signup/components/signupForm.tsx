@@ -3,9 +3,22 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './signupForm.module.css'
 
-/*
- * SignupForm Component to renders a form for user registration.
- * It handles form state, submission, and error display.
+/**
+ * SignupForm Component
+ * 
+ * This component renders a form for user registration in the "Beat the Goblin" application.
+ * It handles form state management, submission, and error display.
+ * 
+ * Key Features:
+ * - Manages form state for username, email, and password inputs.
+ * - Performs client-side form validation.
+ * - Sends signup requests to the server and handles responses.
+ * - Displays error messages for failed signup attempts.
+ * - Uses Next.js router for navigation after successful signup.
+ * 
+ * Futur implementation: 
+ * - Improve the form rendition to be less clunky.
+ * 
  */
 
 
@@ -57,7 +70,7 @@ const { name, value } = e.target;
       }
   };
 
-  // The actual form
+  // Render the sign up form UI
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
     <div className={styles.formGrid}>
