@@ -24,3 +24,19 @@
     margin-bottom: 5rem;
     font-size: 1rem;
   }
+
+  .dragModeButton {
+    padding: 5px 20px;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: -5px;
+    font-family: Arial, sans-serif;
+    color: white;
+    background-color: #B68A5B;
+    border: none;
+  }
+  
+  .dragModeButton:hover {
+    background-color: #597E7F;
+  }

@@ -1,0 +1,69 @@
+/* Header.module.css */
+.header {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    padding-top: 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .leftCloud, .rightCloud {
+    position: relative;
+    top: -25%;
+    width: 30%;
+    max-width: 300px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .leftCloud {
+    justify-content: flex-start;
+  }
+  
+  .rightCloud {
+    justify-content: flex-end;
+  }
+  
+  .signupButton, .loginButton {
+    padding: 10px 20px;
+    background-color: #B68A5B;
+    color: #EEDFA9;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background-color 0.3s;
+    z-index: 2;
+    position: absolute;
+  }
+  
+  .signupButton {
+    left: 20%;
+  }
+  
+  .loginButton {
+    right: 20%;
+  }
+  
+  .loginButton:hover, .signupButton:hover {
+    background-color: #5E7255;
+  }
+  
+  .title {
+    font-family: Hilds, Arial, sans-serif;
+    font-size: 11rem;
+    color: #E1CF7D;
+    text-shadow: 
+      3px 3px 2px rgba(182, 138, 91, 1),
+      4px 4px 3px rgba(238, 223, 129, 1);
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+  

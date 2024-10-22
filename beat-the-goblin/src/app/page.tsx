@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
+import Header from './components/Header';
 import Grimoire from './components/Grimoire/Grimoire';
 import User from './components/Combat/User';
 import VersusGoblin from './components/Combat/VersusGoblin';
@@ -15,39 +16,50 @@ const MyComponents = () => {
   const [goblinXP, setGoblinXP] = useState(0);
   const [deadline, setDeadline] = useState<string>("--:--");
 
-  // Function to check if there's a token in storage and fetch username
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(Boolean(token));
+    const checkTokenAndExpiration = () => {
+      const token = localStorage.getItem('token');
+      const expirationTime = localStorage.getItem('tokenExpiration');
+      const storedUsername = localStorage.getItem('username');
 
-    const storedUsername = localStorage.getItem('username');
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
+      if (token && expirationTime) {
+        const currentTime = new Date().getTime();
+        if (currentTime > parseInt(expirationTime)) {
+          // Token has expired
+          localStorage.removeItem('token');
+          localStorage.removeItem('tokenExpiration');
+          localStorage.removeItem('username');
+          setIsLoggedIn(false);
+          setUsername('Guest');
+        } else {
+          // Token is still valid
+          setIsLoggedIn(true);
+          setUsername(storedUsername || 'Guest');
+        }
+      } else {
+        // No token or expiration time found
+        setIsLoggedIn(false);
+        setUsername('Guest');
+      }
+    };
+
+    // Initial check
+    checkTokenAndExpiration();
+
+    // Set up periodic checks
+    const intervalId = setInterval(checkTokenAndExpiration, 60000); // Check every minute
+
+    // Cleanup function to clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
   }, []);
 
-  // Function to handle signup button click
-  const handleSignupClick = () => {
-    router.push('/signup');
-  };
-
-  // Function to handle login/logout button click
-  const handleLoginLogoutClick = () => {
-    if (isLoggedIn) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('username');
-      setIsLoggedIn(false);
-      setUsername('Guest');
-    } else {
-      router.push('/login');
-    }
-  };
 
   // Function to update the Xps
   const updateCombatXP = (newUserXP : number, newGoblinXP : number) => {
     setUserXP(newUserXP);
     setGoblinXP(newGoblinXP);
   };
+
 
   // Add a useEffect for victory check
   useEffect(() => {
@@ -69,35 +81,13 @@ const MyComponents = () => {
     return () => clearInterval(victoryCheck);
   }, [deadline, userXP, goblinXP, router]);
 
+
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.leftCloud}>
-          <Image
-            src="/assets/clouds/leftcloud.png"
-            alt="Left cloud"
-            width={300}
-            height={200}
-          />
-          {!isLoggedIn && (
-            <button className={styles.signupButton} onClick={handleSignupClick}>
-              Sign up
-            </button>
-          )}
-        </div>
-        <div className={styles.rightCloud}>
-          <Image
-            src="/assets/clouds/rightcloud.png"
-            alt="Right cloud"
-            width={300}
-            height={200}
-          />
-          <button className={styles.loginButton} onClick={handleLoginLogoutClick}>
-            {isLoggedIn ? 'Logout' : 'Login'}
-          </button>
-        </div>
-        <h1 className={styles.title}>Beat the goblin!</h1>
-      </header>
+      <Header 
+      isLoggedIn={isLoggedIn} 
+      setIsLoggedIn={setIsLoggedIn} 
+      setUsername={setUsername} />
 
       <main className={styles.main}>
         <section className={styles.grimoire}>
