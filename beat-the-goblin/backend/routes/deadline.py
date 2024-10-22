@@ -11,6 +11,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def get_db_connection():
+    """
+    Establishes and returns a connection to the SQLite database.
+    
+    Returns:
+        sqlite3.Connection: A connection object to the database.
+    """
     conn = sqlite3.connect('btgdatabase.db')
     conn.row_factory = sqlite3.Row
     return conn
@@ -18,6 +24,12 @@ def get_db_connection():
 @bp.route('/api/deadline', methods=['GET'])
 @jwt_required()
 def get_user_deadline():
+    """
+    Retrieves the user's deadline and adjusts it based on completed Pomodoro or breath exercises.
+    
+    Returns:
+        tuple: A JSON response containing the deadline and HTTP status code.
+    """
     current_user_id = get_jwt_identity()
 
     with get_db_connection() as conn:
@@ -52,6 +64,12 @@ def get_user_deadline():
 @bp.route('/api/deadline', methods=['PUT'])
 @jwt_required()
 def update_user_deadline():
+    """
+    Updates the user's deadline in the database.
+    
+    Returns:
+        tuple: A JSON response indicating success or failure and HTTP status code.
+    """
     current_user_id = get_jwt_identity()
     new_deadline = datetime.time.fromisoformat(request.json.get('deadline'))
 
@@ -71,6 +89,12 @@ def update_user_deadline():
 @bp.route('/api/pomodoro', methods=['PUT'])
 @jwt_required()
 def start_pomodoro():
+    """
+    Marks the start of a Pomodoro session for the user.
+    
+    Returns:
+        tuple: A JSON response confirming the action and HTTP status code.
+    """
     current_user_id = get_jwt_identity()
     
     with get_db_connection() as conn:
@@ -89,6 +113,12 @@ def start_pomodoro():
 @bp.route('/api/breath', methods=['PUT'])
 @jwt_required()
 def start_breath():
+    """
+    Marks the start of a breath exercise for the user.
+    
+    Returns:
+        tuple: A JSON response confirming the action and HTTP status code.
+    """
     current_user_id = get_jwt_identity()
     
     with get_db_connection() as conn:
