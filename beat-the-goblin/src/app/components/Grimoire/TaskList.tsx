@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
 import styles from './TaskList.module.css';
 import { Task } from './Grimoire';
+import TaskItem from './TaskItem';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 interface TaskListProps {
   isLoggedIn: boolean;
@@ -9,90 +11,45 @@ interface TaskListProps {
   onOpenDialog: (taskId: number | undefined) => void;
   onUpdateTask: (updatedTask: Task) => void;
   onCompleteTask: (taskId: number) => void;
+  isDragMode: boolean;
 }
 
-const TaskList = ({ isLoggedIn, tasks, onOpenDialog, onUpdateTask, onCompleteTask }: TaskListProps) => {
-  const [editingId, setEditingId] = useState<number | undefined>();
-  const [editValue, setEditValue] = useState<string>('');
+const TaskList = ({ isLoggedIn, tasks, onOpenDialog, onUpdateTask, onCompleteTask, isDragMode }: TaskListProps) => {
 
-  const handleEdit = (task: Task) => {
-    if (isLoggedIn) {
-      setEditingId(task.id);
-      setEditValue(task.title);
-    }
-  };
+    // Create a memoized array of sortable items
+    const sortedTaskIds = useMemo(() => 
+      tasks.filter(task => task.id !== undefined).map(task => ({ id: task.id! })),
+      [tasks]
+    );
 
-  const handleSave = async (id: number | undefined) => {
+
+
+  const handleSave = async (id: number | undefined, title: string) => {
     if (!isLoggedIn || id === undefined) return;
 
     const updatedTask = tasks.find(task => task.id === id);
     if (updatedTask) {
-      onUpdateTask({ ...updatedTask, title: editValue });
-    }
-    setEditingId(undefined);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, id: number | undefined) => {
-    if (e.key === 'Enter' && isLoggedIn) {
-      handleSave(id);
+      onUpdateTask({ ...updatedTask, title: title });
     }
   };
 
-  const handleBlur = (id: number | undefined) => {
-    if (isLoggedIn) {
-      handleSave(id);
-    }
-  };
-
-  const handleComplete = (taskId: number | undefined) => {
-    if (isLoggedIn && taskId !== undefined) {
-      onCompleteTask(taskId);
-    }
-  };
 
   return (
     <div className={`${styles.EditableTasks} ${isLoggedIn ? styles.loggedIn : ''}`}>
       <ul>
-        {tasks.map((task) => (
-          <li key={task.id} className={task.completed_at ? styles.completed : ''}>
-            <button
-              className={styles.bulletButton}
-              onClick={() => handleComplete(task.id)}
-              disabled={!isLoggedIn}
-            >
-              {task.completed_at ? '✓' : '\u261B'}
-            </button>
-            <div className={styles.taskContent}>
-              {editingId === task.id && isLoggedIn ? (
-                <input
-                  className={styles.taskedit}
-                  value={editValue}
-                  onChange={(e) => setEditValue(e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(e, task.id)}
-                  onBlur={() => handleBlur(task.id)}
-                  autoFocus
-                />
-              ) : (
-                <span 
-                  className={`${isLoggedIn ? styles.editable : ''} ${task.completed_at ? styles.strikethrough : ''}`}
-                  onClick={() => handleEdit(task)}
-                >
-                  {task.title} {(task.xp)}
-                </span>
-              )}
-            </div>
-            {isLoggedIn && (
-              <Image
-                src="/assets/todo/Book.png"
-                alt="Menu"
-                width={15}
-                height={15}
-                className={styles.MenuIcon}
-                onClick={() => onOpenDialog(task.id)}
-              />
-            )}
-          </li>
-        ))}
+        <SortableContext 
+          items={sortedTaskIds}
+          strategy={verticalListSortingStrategy}
+          >
+        {tasks.map((task) => <TaskItem
+            isLoggedIn={isLoggedIn}
+            task={task}
+            isDragMode={isDragMode}
+            onCompleteTask={onCompleteTask}
+            onOpenDialog={onOpenDialog}
+            onSave={handleSave}
+            />)}
+        </SortableContext>
       </ul>
     </div>
   );

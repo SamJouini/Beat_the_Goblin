@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import TaskList from './TaskList';
-import TaskMenu from './TaskMenu';
-import styles from './Grimoire.module.css';
+import React, { useState, useEffect, useMemo} from 'react';
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import Image from 'next/image';
 import * as taskService from './TaskUtils/TaskServices';
 import { calculateXP, calculateCombatXP } from './TaskUtils/calculations'
+import TaskList from './TaskList';
+import TaskMenu from './TaskMenu';
+import styles from './Grimoire.module.css';
+import { debounce } from 'lodash';
 
 export interface Task {
   id?: number;
@@ -17,6 +20,7 @@ export interface Task {
   length?: boolean;
   importance?: boolean;
   urgency?: boolean;
+  order?: number;
 }
 
 interface GrimoireProps {
@@ -30,6 +34,12 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<number | undefined>(undefined);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [isDragMode, setIsDragMode] = useState(false);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor)
+  );
 
   useEffect(() => {
     fetchTasks();
@@ -67,6 +77,7 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
 
     return () => clearTimeout(midnightTimeout);
   }, []);
+
 
   const addTask = async () => {
     const newTask: Task = {
@@ -142,6 +153,43 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
     setSelectedTaskId(undefined);
   };
 
+  const toggleDragMode = () => {
+    setIsDragMode(!isDragMode);
+  };
+
+  // Debounced reorder function
+  const debouncedReorderTasks = debounce(async (newOrder: number[]) => {
+    try {
+      const success = await taskService.reorderTasks(newOrder);
+      if (!success) {
+        console.error('Failed to update task order in the backend');
+        await fetchTasks();
+      }
+    } catch (error) {
+      console.error('Error occurred while reordering tasks:', error);
+      await fetchTasks();
+    }
+  }, 500);
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active && over && active.id !== over.id) {
+      setTasks((prevTasks) => {
+        const oldIndex = prevTasks.findIndex((task) => task.id === active.id);
+        const newIndex = prevTasks.findIndex((task) => task.id === over.id);
+        const newTasks = arrayMove(prevTasks, oldIndex, newIndex);
+        
+        // Get the new order of task IDs
+        const newOrder = newTasks.map(task => task.id).filter((id): id is number => id !== undefined);
+        debouncedReorderTasks(newOrder);
+        
+        return newTasks;
+      });
+    }
+  };
+
+
   return (
     <>
       <h2 className={styles.title}>
@@ -156,22 +204,33 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
         />
       </h2>
 
-      <TaskList 
-        isLoggedIn={isLoggedIn}
-        tasks={tasks}
-        onOpenDialog={openDialog}
-        onUpdateTask={updateTask}
-        onCompleteTask={completeTask}
-      />
+      <DndContext 
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+          <TaskList 
+            isLoggedIn={isLoggedIn}
+            tasks={tasks}
+            onOpenDialog={openDialog}
+            onUpdateTask={updateTask}
+            onCompleteTask={completeTask}
+            isDragMode={isDragMode}
+          />
+      </DndContext>
 
       <TaskMenu
         isOpen={isDialogOpen}
         onClose={closeDialog}
-        onUpdateTask={updateTaskProperties}
+        onUpdateTask={(updatedProperties) => updateTaskProperties(updatedProperties)}
         onDelete={deleteTask}
         calculateXP={calculateXP}
         task={selectedTask}
       />
+
+      <button onClick={toggleDragMode} className={styles.dragToggleButton}>
+        {isDragMode ? 'Disable Drag' : 'Enable Drag'}
+      </button>
     </>
   );
 };

@@ -120,3 +120,21 @@ export const completeTask = async (taskId: number, completedAt: string | null): 
   }
 };
 
+
+export const reorderTasks = async (taskIds: number[]): Promise<boolean> => {
+  try {
+    const response = await fetch('/api/reorder-tasks', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify({ taskIds }),
+    });
+    const data = await response.json();
+    return data.success;
+  } catch (error) {
+    console.error('Error reordering tasks:', error);
+    return false;
+  }
+};

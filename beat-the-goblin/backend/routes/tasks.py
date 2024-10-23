@@ -43,9 +43,10 @@ def get_user_tasks (user_id):
         try:
             cursor.execute("""
                 SELECT id, title, xp, created_at, due_date, completed_at, 
-                           is_long, is_difficult, is_urgent, is_important
+                           is_long, is_difficult, is_urgent, is_important, `order`
                 FROM Tasks 
                 WHERE user_id = ?
+                ORDER By `order`
             """, (user_id,))
 
             rows = cursor.fetchall()
@@ -59,7 +60,8 @@ def get_user_tasks (user_id):
                 'is_long': row['is_long'],
                 'is_difficult': row['is_difficult'],
                 'is_urgent': row['is_urgent'],
-                'is_important': row['is_important']
+                'is_important': row['is_important'],
+                'order': row['order'],
             } for row in rows]
 
         except sqlite3.Error as e:
@@ -73,11 +75,8 @@ def create_task(user_id, title):
             # Set a default XP value
             default_xp = 5
 
-            cursor.execute('''
-                INSERT INTO Tasks (user_id, title, xp) 
-                VALUES (?, ?, ?) 
-                RETURNING id, title, created_at, xp
-            ''', (user_id, title, default_xp))
+            cursor.execute("INSERT INTO Tasks (user_id, title, xp) VALUES (?, ?, ?) RETURNING id, title, created_at, xp",
+                           (user_id, title, default_xp))
             
             row = cursor.fetchone()
             conn.commit()  # Commit the transaction
@@ -113,8 +112,8 @@ def task_edition():
         return jsonify({'success': False, 'message': 'Missing id or title'}), 400
     
     if task_id is None:
-        create_task(current_user_id, new_title)
-        return jsonify({'success': True, 'message': 'Task updated successfully'}), 200
+        task = create_task(current_user_id, new_title)
+        return jsonify({'success': True, 'message': 'Task updated successfully', 'taskId': task['id']}), 200
 
     with get_db_connection() as conn:
         cursor = conn.cursor()
@@ -149,13 +148,8 @@ def task_edition():
             
             update_values.extend([task_id, current_user_id])
             
-            query = f"""
-                UPDATE Tasks 
-                SET {', '.join(update_fields)}
-                WHERE id = ? AND user_id = ?
-            """
-            
-            cursor.execute(query, update_values)
+            cursor.execute(f"UPDATE Tasks SET {', '.join(update_fields)} WHERE id = ? AND user_id = ?",
+                            (update_values))
             conn.commit()
 
             if cursor.rowcount == 0:
@@ -180,10 +174,8 @@ def task_delete():
     with get_db_connection() as conn:
         cursor = conn.cursor()
         try:            
-            cursor.execute("""
-                DELETE FROM Tasks 
-                WHERE id = ? AND user_id = ?
-            """, (task_id, current_user_id))
+            cursor.execute("DELETE FROM Tasks WHERE id = ? AND user_id = ?",
+                            (task_id, current_user_id))
             
             conn.commit()
 
@@ -213,18 +205,12 @@ def complete_task():
         try:
             if completed_at is None:
                 # Reverse completion (set completed_at to NULL)
-                cursor.execute("""
-                    UPDATE Tasks 
-                    SET completed_at = NULL
-                    WHERE id = ? AND user_id = ?
-                """, (task_id, current_user_id))
+                cursor.execute("UPDATE Tasks SET completed_at = NULL WHERE id = ? AND user_id = ?",
+                                (task_id, current_user_id))
             else:
                 # Complete task
-                cursor.execute("""
-                    UPDATE Tasks 
-                    SET completed_at = ?
-                    WHERE id = ? AND user_id = ?
-                """, (completed_at, task_id, current_user_id))
+                cursor.execute("UPDATE Tasks SET completed_at = ? WHERE id = ? AND user_id = ?",
+                                (completed_at, task_id, current_user_id))
             
             conn.commit()
 
@@ -237,3 +223,27 @@ def complete_task():
         except sqlite3.Error as e:
             logger.error(f"Database error while updating task completion status: {e}")
             return jsonify({'success': False, 'message': 'An error occurred while updating the task'}), 500
+
+
+@bp.route('/api/reorder-tasks', methods=['PUT'])
+@jwt_required()
+def reorder_tasks():
+   current_user_id = get_jwt_identity()
+   data = request.json
+   task_ids = data.get('taskIds')
+
+   if not task_ids:
+       return jsonify({'success': False, 'message': 'Missing task IDs'}), 400
+
+   with get_db_connection() as conn:
+       cursor = conn.cursor()
+       try:
+           for index, task_id in enumerate(task_ids):
+               cursor.execute("UPDATE Tasks SET `order` = ? WHERE id = ? AND user_id = ?",
+                               (index, task_id, current_user_id))
+           conn.commit()
+
+           return jsonify({'success': True}),200 # Return success message.
+       except sqlite3.Error as e:
+           logger.error(f"Database error while reordering tasks: {e}")
+           return jsonify({'success': False}),500 # Handle errors gracefully.
