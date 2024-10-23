@@ -228,8 +228,10 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
         task={selectedTask}
       />
 
-      <button onClick={toggleDragMode} className={styles.dragToggleButton}>
-        {isDragMode ? 'Disable Drag' : 'Enable Drag'}
+      <button 
+        onClick={toggleDragMode} 
+        className={styles.dragModeButton}>
+        {isDragMode ? 'Edit Tasks' : 'Reorder Tasks'}
       </button>
     </>
   );
