@@ -43,10 +43,12 @@ def get_user_tasks (user_id):
         try:
             cursor.execute("""
                 SELECT id, title, xp, created_at, due_date, completed_at, 
-                           is_long, is_difficult, is_urgent, is_important, `order`
+                    is_long, is_difficult, is_urgent, is_important, `order`
                 FROM Tasks 
-                WHERE user_id = ?
-                ORDER By `order`
+                WHERE user_id = ? 
+                AND (due_date >= DATE('now') OR due_date IS NULL)
+                AND (completed_at >= DATETIME('now', 'start of day') OR completed_at IS NULL)
+                ORDER BY `order`
             """, (user_id,))
 
             rows = cursor.fetchall()
@@ -61,7 +63,7 @@ def get_user_tasks (user_id):
                 'is_difficult': row['is_difficult'],
                 'is_urgent': row['is_urgent'],
                 'is_important': row['is_important'],
-                'order': row['order'],
+                'order': row['order']
             } for row in rows]
 
         except sqlite3.Error as e:

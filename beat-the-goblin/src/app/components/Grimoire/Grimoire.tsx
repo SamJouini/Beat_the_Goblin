@@ -55,29 +55,6 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
     updateCombatXP(userXP, goblinXP);
   }, [tasks, updateCombatXP]);
 
-  useEffect(() => {
-    const archiveCompletedTasks = () => {
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      yesterday.setHours(23, 59, 59, 999);
-
-      setTasks(prevTasks => prevTasks.filter(task => {
-        if (task.completed_at) {
-          return new Date(task.completed_at) > yesterday;
-        }
-        return true;
-      }));
-    };
-
-    const midnightTimeout = setTimeout(() => {
-      archiveCompletedTasks();
-      // Set up a daily interval to run at midnight
-      setInterval(archiveCompletedTasks, 24 * 60 * 60 * 1000);
-    }, new Date().setHours(24, 0, 0, 0) - Date.now());
-
-    return () => clearTimeout(midnightTimeout);
-  }, []);
-
 
   const addTask = async () => {
     const newTask: Task = {
@@ -229,7 +206,7 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
       />
 
       <button 
-        onClick={toggleDragMode} 
+        onClick={toggleDragMode}
         className={styles.dragModeButton}>
         {isDragMode ? 'Edit Tasks' : 'Reorder Tasks'}
       </button>
