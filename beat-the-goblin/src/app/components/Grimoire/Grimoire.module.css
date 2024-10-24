@@ -26,6 +26,8 @@
   }
 
   .dragModeButton {
+    position: absolute;
+    top: 85%;
     padding: 5px 20px;
     border-radius: 5px;
     font-size: 15px;
