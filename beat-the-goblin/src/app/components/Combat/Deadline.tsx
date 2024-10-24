@@ -27,7 +27,7 @@ const Deadline = ({isLoggedIn, deadline, onDeadlineChange}:any) => {
   // State to manage whether the deadline is being edited
   const [editing, setEditing] = useState(false);
   
-  // Effect to fetch the deadline when the component mounts
+  // Effect to fetch the deadline when the user is logged
   useEffect(() => {
     if (isLoggedIn) {
       fetchDeadline();
