@@ -29,8 +29,10 @@ const Deadline = ({isLoggedIn, deadline, onDeadlineChange}:any) => {
   
   // Effect to fetch the deadline when the component mounts
   useEffect(() => {
+    if (isLoggedIn) {
       fetchDeadline();
-  }, []);
+    }
+  }, [isLoggedIn]);
 
   // Function to fetch the current deadline from the API
   const fetchDeadline = async () => {
