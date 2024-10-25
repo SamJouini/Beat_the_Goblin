@@ -7,6 +7,8 @@ import Header from './components/Header';
 import Grimoire from './components/Grimoire/Grimoire';
 import User from './components/Combat/User';
 import VersusGoblin from './components/Combat/VersusGoblin';
+import Map from './components/Map';
+import Footer from './components/Footer'
 
 const MyComponents = () => {
   const router = useRouter();
@@ -139,32 +141,10 @@ const MyComponents = () => {
           </div>
         </section>
 
-        <section className={styles.mapSection}>
-          <h2 className={styles.mapTitle}>The adventure map</h2>
-          <div className={styles.mapContainer}>
-            <Image
-              src="/assets/map/map.png"
-              alt="game's map"
-              width={850}
-              height={650}
-            />
-          </div>
-        </section>
+      <Map/>
       </main>
 
-      <footer className={styles.footer}>
-        <div className={styles.cloud}>
-          <Image
-            src="/assets/clouds/leftcloud.png"
-            alt="center cloud"
-            width={300}
-            height={200}
-          />
-          <div className={styles.footerText}>
-            <p>&copy; 2024 by Samantha Jouini</p>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   );
 };

@@ -1,0 +1,19 @@
+.footer {
+    position: relative;
+    width: 100%;
+    height: 250px;
+  }
+  
+  .cloud {
+    position: absolute;
+    bottom: 5%;
+    left: 40%;
+    width: 100%;
+    height: auto;
+  }
+  
+  .footerText {
+    position: absolute;
+    bottom: 50%;
+    left: 5%;
+  }
