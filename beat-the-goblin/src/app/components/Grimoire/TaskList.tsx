@@ -1,5 +1,4 @@
-import React, { useState, useMemo } from 'react';
-import Image from 'next/image';
+import React, { useMemo } from 'react';
 import styles from './TaskList.module.css';
 import { Task } from './Grimoire';
 import TaskItem from './TaskItem';
@@ -35,6 +34,7 @@ const TaskList = ({ isLoggedIn, tasks, onOpenDialog, onUpdateTask, onCompleteTas
 
 
   return (
+    <div className={styles.customScrollContainer}>
     <div className={`${styles.EditableTasks} ${isLoggedIn ? styles.loggedIn : ''}`}>
       <ul>
         <SortableContext 
@@ -51,6 +51,7 @@ const TaskList = ({ isLoggedIn, tasks, onOpenDialog, onUpdateTask, onCompleteTas
             />)}
         </SortableContext>
       </ul>
+    </div>
     </div>
   );
 };

@@ -1,11 +1,31 @@
+.customScrollContainer {
+  position: relative;
+  max-width: 800px;
+  max-height: 425px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
 .EditableTasks {
   font-family: 'Courier New', Courier, monospace;
-  max-width: 600px;
-  max-height: 425px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin: 0 auto;
-  padding: 10px;
+  max-height: 100%;
+  overflow-y: scroll;
+  padding-right: 25px;
+  scrollbar-width: thin;
+  scrollbar-color: #E1CF7D transparent;
+}
+
+.EditableTasks::-webkit-scrollbar {
+  width: 10px;
+}
+
+.EditableTasks::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.EditableTasks::-webkit-scrollbar-thumb {
+  background-color: #E1CF7D;
+  border-radius: 5px;
 }
 
 .EditableTasks ul {
