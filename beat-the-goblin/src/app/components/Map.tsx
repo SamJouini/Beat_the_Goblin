@@ -1,6 +1,7 @@
 'use client';
 import Image from "next/image";
 import styles from "./Map.module.css";
+import GridComponent from "./Grid";
 
 /**
  * Map Component
@@ -31,6 +32,7 @@ const Map = () => {
           width={850}
           height={650}
         />
+      {/*< GridComponent/>*/}
       </div>
     </section>
   );
