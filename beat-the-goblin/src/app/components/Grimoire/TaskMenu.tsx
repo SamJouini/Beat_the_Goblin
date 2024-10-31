@@ -17,7 +17,7 @@ const propertyDisplayNames: Record<'length' | 'difficulty' | 'urgency' | 'import
   difficulty: 'Difficult',
   urgency: 'Urgent',
   importance: 'Important',
-  recurrence: 'Reccurent'
+  recurrence: 'Recurrent'
 };
 
 const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, calculateXP, task }: TaskMenuProps) => {
