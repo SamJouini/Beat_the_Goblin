@@ -20,6 +20,7 @@ export interface Task {
   length?: boolean;
   importance?: boolean;
   urgency?: boolean;
+  recurrence?: boolean;
   order?: number;
 }
 
@@ -43,7 +44,7 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [isLoggedIn]);
 
   const fetchTasks = async () => {
     const fetchedTasks = await taskService.fetchTasks();
@@ -166,6 +167,12 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
     }
   };
 
+   // Function to sort tasks: completed tasks at the bottom
+   const sortedTasks = useMemo(() => {
+    return [...tasks].sort((a, b) => {
+      return (a.completed_at ? 1 : 0) - (b.completed_at ? 1 : 0);
+    });
+  }, [tasks]);
 
   return (
     <>
@@ -188,7 +195,7 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
       >
           <TaskList 
             isLoggedIn={isLoggedIn}
-            tasks={tasks}
+            tasks={sortedTasks}
             onOpenDialog={openDialog}
             onUpdateTask={updateTask}
             onCompleteTask={completeTask}

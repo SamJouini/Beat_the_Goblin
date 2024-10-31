@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 import sqlite3
 import logging
 
-bp = Blueprint('main', __name__)
+bp = Blueprint('CRUD', __name__)
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -43,7 +43,7 @@ def get_user_tasks (user_id):
         try:
             cursor.execute("""
                 SELECT id, title, xp, created_at, due_date, completed_at, 
-                    is_long, is_difficult, is_urgent, is_important, `order`
+                    is_long, is_difficult, is_urgent, is_important, `order`, is_recurring
                 FROM Tasks 
                 WHERE user_id = ? 
                 AND (due_date >= DATE('now') OR due_date IS NULL)
@@ -59,11 +59,12 @@ def get_user_tasks (user_id):
                 'created_at': row['created_at'],
                 'due_date': row['due_date'],
                 'completed_at': row['completed_at'],
-                'is_long': row['is_long'],
-                'is_difficult': row['is_difficult'],
-                'is_urgent': row['is_urgent'],
-                'is_important': row['is_important'],
-                'order': row['order']
+                'length': row['is_long'],
+                'difficulty': row['is_difficult'],
+                'urgency': row['is_urgent'],
+                'importance': row['is_important'],
+                'order': row['order'],
+                'recurrence': row['is_recurring']
             } for row in rows]
 
         except sqlite3.Error as e:
@@ -105,10 +106,11 @@ def task_edition():
     new_xp = data.get('xp')
     new_due_date = data.get('due_date')
     new_completed_at = data.get('completed_at')
-    new_is_long = data.get('is_long')
-    new_is_difficult = data.get('is_difficult')
-    new_is_urgent = data.get('is_urgent')
-    new_is_important = data.get('is_important')
+    new_is_long = data.get('length')
+    new_is_difficult = data.get('difficulty')
+    new_is_urgent = data.get('urgency')
+    new_is_important = data.get('importance')
+    new_is_recurring = data.get('recurrence')
 
     if task_id is None and new_title is None:
         return jsonify({'success': False, 'message': 'Missing id or title'}), 400
@@ -147,6 +149,9 @@ def task_edition():
             if new_is_important is not None:
                 update_fields.append("is_important = ?")
                 update_values.append(int(new_is_important))
+            if new_is_recurring is not None:
+                update_fields.append("is_recurring = ?")
+                update_values.append(int(new_is_recurring))
             
             update_values.extend([task_id, current_user_id])
             
@@ -189,63 +194,3 @@ def task_delete():
         except sqlite3.Error as e:
             logger.error(f"Database error while deleting task: {e}")
             return jsonify({'success': False, 'message': 'An error occurred while deleting the task'}), 500
-
-
-@bp.route('/api/complete-task', methods=['PUT'])
-@jwt_required()
-def complete_task():
-    current_user_id = get_jwt_identity()
-    data = request.json
-    task_id = data.get('taskId')
-    completed_at = data.get('completedAt')
-
-    if task_id is None:
-        return jsonify({'success': False, 'message': 'Missing taskId'}), 400
-
-    with get_db_connection() as conn:
-        cursor = conn.cursor()
-        try:
-            if completed_at is None:
-                # Reverse completion (set completed_at to NULL)
-                cursor.execute("UPDATE Tasks SET completed_at = NULL WHERE id = ? AND user_id = ?",
-                                (task_id, current_user_id))
-            else:
-                # Complete task
-                cursor.execute("UPDATE Tasks SET completed_at = ? WHERE id = ? AND user_id = ?",
-                                (completed_at, task_id, current_user_id))
-            
-            conn.commit()
-
-            if cursor.rowcount == 1:
-                action = "uncompleted" if completed_at is None else "completed"
-                return jsonify({'success': True, 'message': f'Task {action} successfully'}), 200
-            else:
-                return jsonify({'success': False, 'message': 'Task not found or not owned by user'}), 404
-
-        except sqlite3.Error as e:
-            logger.error(f"Database error while updating task completion status: {e}")
-            return jsonify({'success': False, 'message': 'An error occurred while updating the task'}), 500
-
-
-@bp.route('/api/reorder-tasks', methods=['PUT'])
-@jwt_required()
-def reorder_tasks():
-   current_user_id = get_jwt_identity()
-   data = request.json
-   task_ids = data.get('taskIds')
-
-   if not task_ids:
-       return jsonify({'success': False, 'message': 'Missing task IDs'}), 400
-
-   with get_db_connection() as conn:
-       cursor = conn.cursor()
-       try:
-           for index, task_id in enumerate(task_ids):
-               cursor.execute("UPDATE Tasks SET `order` = ? WHERE id = ? AND user_id = ?",
-                               (index, task_id, current_user_id))
-           conn.commit()
-
-           return jsonify({'success': True}),200 # Return success message.
-       except sqlite3.Error as e:
-           logger.error(f"Database error while reordering tasks: {e}")
-           return jsonify({'success': False}),500 # Handle errors gracefully.

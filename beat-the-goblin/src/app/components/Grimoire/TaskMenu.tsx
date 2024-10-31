@@ -12,11 +12,12 @@ interface TaskMenuProps {
   task: Task | null;
 }
 
-const propertyDisplayNames: Record<keyof Pick<Task, 'length' | 'difficulty' | 'urgency' | 'importance'>, string> = {
+const propertyDisplayNames: Record<'length' | 'difficulty' | 'urgency' | 'importance' | 'recurrence', string> = {
   length: 'Long',
   difficulty: 'Difficult',
   urgency: 'Urgent',
-  importance: 'Important'
+  importance: 'Important',
+  recurrence: 'Reccurent'
 };
 
 const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, calculateXP, task }: TaskMenuProps) => {
@@ -28,7 +29,8 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, calculateXP, task }
     length: task.length || false,
     difficulty: task.difficulty || false,
     urgency: task.urgency || false,
-    importance: task.importance || false,
+    importance: task.importance || false, 
+    recurrence: task.recurrence || false,
   });
 
   // Update properties when task changes
@@ -39,6 +41,7 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, calculateXP, task }
         difficulty: task.difficulty || false,
         urgency: task.urgency || false,
         importance: task.importance || false,
+        recurrence: task.recurrence || false,
       });
     }
   }, [task]);
@@ -47,11 +50,8 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, calculateXP, task }
     const handleCheckboxChange = (property: keyof typeof properties) => {
         const newProperties = { ...properties, [property]: !properties[property] };
         setProperties(newProperties);
-        
-        const updatedTask = { ...task, ...newProperties };
-        const newXP = calculateXP(updatedTask);
-        
-        onUpdateTask({ [property]: newProperties[property] });
+                
+        onUpdateTask({ ...newProperties});
       };
     
       return (
@@ -66,7 +66,7 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, calculateXP, task }
                   <input
                     type="checkbox"
                     checked={properties[key]}
-                    onChange={() => handleCheckboxChange(key as keyof typeof properties)}
+                    onChange={() => handleCheckboxChange(key)}
                   />
                 </div>
               ))}
