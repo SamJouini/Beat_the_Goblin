@@ -21,6 +21,9 @@ import Image from 'next/image';
  * Futur implementations:
  * - Modify the displayed gif depending the time of the day (dawn, day, noon, night).
  * - The current component uses 'any' type for its props, change it to improve type safety.
+ * - Currently, the challenge/victory pages can be triggered by setting a deadline before the current time.
+ *   This problem need to be corrected quickly.
+ * - There is an issus about the deadline set up, when the user edit it is triggering the challenge page !
  */
 
 const Deadline = ({isLoggedIn, deadline, onDeadlineChange}:any) => {
