@@ -8,7 +8,6 @@ interface TaskMenuProps {
   onClose: () => void;
   onDelete: () => void;
   onUpdateTask: (updatedProperties: Partial<Task>) => void;
-  calculateXP: (task: Task) => number;
   task: Task | null;
 }
 
@@ -20,7 +19,7 @@ const propertyDisplayNames: Record<'length' | 'difficulty' | 'urgency' | 'import
   recurrence: 'Recurrent'
 };
 
-const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, calculateXP, task }: TaskMenuProps) => {
+const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, task }: TaskMenuProps) => {
     if (!isOpen || !task) return null;
 
 

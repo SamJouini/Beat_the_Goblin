@@ -208,7 +208,6 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
         onClose={closeDialog}
         onUpdateTask={(updatedProperties) => updateTaskProperties(updatedProperties)}
         onDelete={deleteTask}
-        calculateXP={calculateXP}
         task={selectedTask}
       />
 
