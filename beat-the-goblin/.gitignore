@@ -41,6 +41,8 @@ next-env.d.ts
 #database
 *.db
 
+#vscode
 .vscode/*
 
+# JWT secret token
 backend/config.json
