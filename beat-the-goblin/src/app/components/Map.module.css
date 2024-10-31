@@ -34,8 +34,8 @@
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: repeat(24, 32px);
-    grid-template-rows: repeat(20, 32px);
+    grid-template-columns: repeat( 10, 64px);
+    grid-template-rows: repeat( 10, 64px);
     z-index: 9999;
   }
 
