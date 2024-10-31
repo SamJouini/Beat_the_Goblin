@@ -12,7 +12,7 @@ import styles from './page.module.css';
  * - Displays a welcoming title for returning users.
  * - Integrates the LoginForm component for handling user login.
  * - Uses CSS modules for styling, ensuring a consistent and appealing layout.
- * 
+ *
  */
 
 

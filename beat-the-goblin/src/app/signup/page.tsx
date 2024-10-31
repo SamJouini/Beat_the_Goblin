@@ -13,6 +13,8 @@ import styles from './page.module.css';
  * - Integrates the SignupForm component for handling user registration.
  * - Uses CSS modules for styling, ensuring a consistent and appealing layout.
  * 
+ * Futur implementations: 
+ * - Validation by email system to increase the security 
  */
 
 export default function SignupPage() {
