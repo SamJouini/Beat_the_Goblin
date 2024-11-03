@@ -9,6 +9,7 @@ interface TaskMenuProps {
   onDelete: () => void;
   onUpdateTask: (updatedProperties: Partial<Task>) => void;
   task: Task | null;
+  clientY: number;
 }
 
 const propertyDisplayNames: Record<'length' | 'difficulty' | 'urgency' | 'importance' | 'recurrence', string> = {
@@ -19,7 +20,7 @@ const propertyDisplayNames: Record<'length' | 'difficulty' | 'urgency' | 'import
   recurrence: 'Recurrent'
 };
 
-const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, task }: TaskMenuProps) => {
+const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, task, clientY}: TaskMenuProps) => {
     if (!isOpen || !task) return null;
 
 
@@ -54,7 +55,7 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, task }: TaskMenuPro
       };
     
       return (
-        <dialog open className={styles.menuContainer}>
+        <dialog open className={styles.menuContainer} style={{top: `${clientY}px`}}>
           <button className={styles.closeButton} onClick={onClose}>×</button>
           <div className={styles.menuContent}>
             <h3 className={styles.title}> Is my task ...</h3>

@@ -9,7 +9,7 @@ import styles from './TaskList.module.css';
 interface TaskItemProps {
     isLoggedIn: boolean;
     task: Task;
-    onOpenDialog: (taskId: number | undefined) => void;
+    onOpenDialog: (taskId: number | undefined, clientY: number) => void;
     onCompleteTask: (taskId: number) => void;
     isDragMode: boolean;
     onSave: (id: number | undefined, title: string) => void;
@@ -85,11 +85,12 @@ const TaskItem = ({isLoggedIn, task, onOpenDialog, onCompleteTask, isDragMode, o
                 width={15}
                 height={15}
                 className={styles.MenuIcon}
-                onClick={() => onOpenDialog(task.id)}
+                onClick={(event) => onOpenDialog(task.id, event.clientY)}
             />
         )}
         </li>
+        
     )
 };
-
+MouseEvent
 export default TaskItem;

@@ -7,7 +7,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 interface TaskListProps {
   isLoggedIn: boolean;
   tasks: Task[];
-  onOpenDialog: (taskId: number | undefined) => void;
+  onOpenDialog: (taskId: number | undefined, clientY: number) => void;
   onUpdateTask: (updatedTask: Task) => void;
   onCompleteTask: (taskId: number) => void;
   isDragMode: boolean;

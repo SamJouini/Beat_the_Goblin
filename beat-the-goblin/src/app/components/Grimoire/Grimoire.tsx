@@ -33,6 +33,7 @@ interface GrimoireProps {
 const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [dialogY, setDialogY] = useState(0);
   const [selectedTaskId, setSelectedTaskId] = useState<number | undefined>(undefined);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isDragMode, setIsDragMode] = useState(false);
@@ -118,9 +119,10 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
     }
   };
 
-  const openDialog = (taskId: number | undefined) => {
+  const openDialog = (taskId: number | undefined, clientX: number) => {
     const task = tasks.find(t => t.id === taskId) || null;
     setIsDialogOpen(true);
+    setDialogY(clientX);
     setSelectedTask(task);
     setSelectedTaskId(taskId);
   };
@@ -209,6 +211,7 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
         onUpdateTask={(updatedProperties) => updateTaskProperties(updatedProperties)}
         onDelete={deleteTask}
         task={selectedTask}
+        clientY={dialogY}
       />
 
       {isLoggedIn && (
