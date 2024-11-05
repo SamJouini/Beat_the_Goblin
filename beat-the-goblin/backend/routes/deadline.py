@@ -11,12 +11,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def get_db_connection():
-    """
-    Establishes and returns a connection to the SQLite database.
-    
-    Returns:
-        sqlite3.Connection: A connection object to the database.
-    """
+    "Establishes and returns a connection to the SQLite database."
     conn = sqlite3.connect('btgdatabase.db')
     conn.row_factory = sqlite3.Row
     return conn
@@ -24,12 +19,7 @@ def get_db_connection():
 @bp.route('/api/deadline', methods=['GET'])
 @jwt_required()
 def get_user_deadline():
-    """
-    Retrieves the user's deadline and adjusts it based on completed Pomodoro or breath exercises.
-    
-    Returns:
-        tuple: A JSON response containing the deadline and HTTP status code.
-    """
+    "Retrieves the user's deadline and adjusts it based on completed Pomodoro or breath exercises."
     current_user_id = get_jwt_identity()
 
     with get_db_connection() as conn:
@@ -42,11 +32,11 @@ def get_user_deadline():
                 deadline_str = datetime.time(hour=20).isoformat(timespec="minutes")
             
             # here we have the default deadline for the user
-            # add a bit more if the user has done a pomodoro
             cursor.execute("SELECT pomodoro, breath FROM Combat WHERE user_id = ? AND combat_date = ?", 
                            (current_user_id, datetime.date.today().isoformat()))
             result = cursor.fetchone()
 
+            # add a bit more if the user has done a pomodoro
             if result and result['pomodoro'] == 1:
                 deadline = datetime.time.fromisoformat(deadline_str)
                 edited_deadline = datetime.datetime.combine(datetime.date.today(), deadline) + datetime.timedelta(minutes = 30)
@@ -64,12 +54,7 @@ def get_user_deadline():
 @bp.route('/api/deadline', methods=['PUT'])
 @jwt_required()
 def update_user_deadline():
-    """
-    Updates the user's deadline in the database.
-    
-    Returns:
-        tuple: A JSON response indicating success or failure and HTTP status code.
-    """
+    "Updates the user's deadline in the database."
     current_user_id = get_jwt_identity()
     new_deadline = datetime.time.fromisoformat(request.json.get('deadline'))
 
@@ -89,12 +74,7 @@ def update_user_deadline():
 @bp.route('/api/pomodoro', methods=['PUT'])
 @jwt_required()
 def start_pomodoro():
-    """
-    Marks the start of a Pomodoro session for the user.
-    
-    Returns:
-        tuple: A JSON response confirming the action and HTTP status code.
-    """
+    "Marks the start of a Pomodoro session for the user."
     current_user_id = get_jwt_identity()
     
     with get_db_connection() as conn:
@@ -113,12 +93,7 @@ def start_pomodoro():
 @bp.route('/api/breath', methods=['PUT'])
 @jwt_required()
 def start_breath():
-    """
-    Marks the start of a breath exercise for the user.
-    
-    Returns:
-        tuple: A JSON response confirming the action and HTTP status code.
-    """
+    "Marks the start of a breath exercise for the user."
     current_user_id = get_jwt_identity()
     
     with get_db_connection() as conn:

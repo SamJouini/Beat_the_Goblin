@@ -10,6 +10,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def get_db_connection():
+    "Establishes and returns a connection to the SQLite database."
     conn = sqlite3.connect('btgdatabase.db')
     conn.row_factory = sqlite3.Row
     return conn
@@ -17,16 +18,17 @@ def get_db_connection():
 @bp.route('/api/reorder-tasks', methods=['PUT'])
 @jwt_required()
 def reorder_tasks():
+   "Handles reordering of tasks for a user."
    current_user_id = get_jwt_identity()
    data = request.json
-   task_ids = data.get('taskIds')
+   task_ids = data.get('taskIds')  # Get the list of task IDs in their new order
 
    if not task_ids:
        return jsonify({'success': False, 'message': 'Missing task IDs'}), 400
 
    with get_db_connection() as conn:
        cursor = conn.cursor()
-       try:
+       try:   # Update the order of each task
            for index, task_id in enumerate(task_ids):
                cursor.execute("UPDATE Tasks SET `order` = ? WHERE id = ? AND user_id = ?",
                                (index, task_id, current_user_id))

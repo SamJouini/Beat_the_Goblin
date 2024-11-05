@@ -11,6 +11,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def get_db_connection():
+    "Establishes and returns a connection to the SQLite database."
     conn = sqlite3.connect('btgdatabase.db')
     conn.row_factory = sqlite3.Row
     return conn
@@ -18,6 +19,10 @@ def get_db_connection():
 @bp.route('/api/complete-task', methods=['PUT'])
 @jwt_required()
 def complete_task():
+    """
+    Handles task completion or un-completion using JSON data with 'taskId' and 'completedAt' as fields.
+    If the task is recurring and completed, it creates a clone for the next occurrence.
+    """
     current_user_id = get_jwt_identity()
     data = request.json
     task_id = data.get('taskId')

@@ -5,12 +5,14 @@ import sqlite3
 bp = Blueprint('signup', __name__)
 
 def get_db_connection():
+    "Establishes and returns a connection to the SQLite database."
     conn = sqlite3.connect('btgdatabase.db')
     conn.row_factory = sqlite3.Row
     return conn
 
 @bp.route('/api/signup', methods=['POST'])
 def signup():
+    "Handles user registration using JSON data with 'username', 'email', and 'password' fields."
     data = request.json
     username = data.get('username')
     email = data.get('email')

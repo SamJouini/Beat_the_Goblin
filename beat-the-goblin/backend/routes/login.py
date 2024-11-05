@@ -15,12 +15,14 @@ logger = logging.getLogger(__name__)
 jwt = JWTManager()
 
 def get_db_connection():
+    "Establishes and returns a connection to the SQLite database."
     conn = sqlite3.connect('btgdatabase.db')
     conn.row_factory = sqlite3.Row
     return conn
 
 @bp.route('/api/login', methods=['POST'])
 def login():
+    "Handles user login using JSON data with 'email' and 'password' fields"
     data = request.json
     email = data.get('email')
     password = data.get('password')
