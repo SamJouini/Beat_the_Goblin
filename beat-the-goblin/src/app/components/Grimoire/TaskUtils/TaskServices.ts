@@ -1,5 +1,6 @@
 import { Task } from '../Grimoire';
 
+/*Fetches tasks from the server.*/
 export const fetchTasks = async (): Promise<Task[]> => {
   try {
     const token = localStorage.getItem('token');
@@ -24,6 +25,8 @@ export const fetchTasks = async (): Promise<Task[]> => {
   }
 };
 
+
+/*Adds a new task to the server.*/
 export const addTask = async (newTask: Task): Promise<Task | null> => {
   try {
     const response = await fetch('/api/edition', {
@@ -48,6 +51,8 @@ export const addTask = async (newTask: Task): Promise<Task | null> => {
   }
 };
 
+
+/*Updates an existing task on the server.*/
 export const updateTask = async (updatedTask: Task): Promise<boolean> => {
   try {
     const response = await fetch('/api/edition', {
@@ -72,6 +77,8 @@ export const updateTask = async (updatedTask: Task): Promise<boolean> => {
   }
 };
 
+
+/*Deletes a task from the server.*/
 export const deleteTask = async (taskId: number): Promise<boolean> => {
   try {
     const response = await fetch(`/api/delete?id=${taskId}`, {
@@ -96,6 +103,8 @@ export const deleteTask = async (taskId: number): Promise<boolean> => {
   }
 };
 
+
+/*Updates the completion status of a task on the server. */
 export const completeTask = async (taskId: number, completedAt: string | null): Promise<boolean> => {
   try {
     const response = await fetch('/api/complete-task', {
@@ -121,6 +130,7 @@ export const completeTask = async (taskId: number, completedAt: string | null): 
 };
 
 
+/*Reorders tasks on the server.*/
 export const reorderTasks = async (taskIds: number[]): Promise<boolean> => {
   try {
     const response = await fetch('/api/reorder-tasks', {

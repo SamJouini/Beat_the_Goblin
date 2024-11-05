@@ -10,7 +10,21 @@ import VersusGoblin from './components/Combat/VersusGoblin';
 import Map from './components/Map';
 import Footer from './components/Footer'
 
-const MyComponents = () => {
+/**
+ * MyComponents
+ * 
+ * This is the main page component that integrates various sub-components to create
+ * a gamified task management application.
+ * 
+ * Key Features:
+ * - User authentication state management
+ * - XP tracking for user and goblin opponent
+ * - Deadline management
+ * - Automatic routing to victory or challenge pages based on conditions
+ * - Integration of various UI components (Header, User, VersusGoblin, Grimoire, Map, Footer)
+ */
+
+const MainComponent = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('Guest');
@@ -18,6 +32,11 @@ const MyComponents = () => {
   const [goblinXP, setGoblinXP] = useState(0);
   const [deadline, setDeadline] = useState<string>("--:--");
 
+
+    /**
+   * Effect hook to manage authentication state
+   * Checks for token validity and updates login state accordingly
+   */
   useEffect(() => {
     const checkTokenAndExpiration = () => {
       const token = localStorage.getItem('token');
@@ -149,4 +168,4 @@ const MyComponents = () => {
   );
 };
 
-export default MyComponents;
+export default MainComponent;

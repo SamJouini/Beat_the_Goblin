@@ -3,6 +3,12 @@ import styles from './TaskMenu.module.css';
 import Image from 'next/image';
 import { Task } from './Grimoire';
 
+/**
+ * TaskMenu Component
+ * 
+ * Renders a menu for editing task properties and deleting tasks.
+ */
+
 interface TaskMenuProps {
   isOpen: boolean;
   onClose: () => void;
@@ -24,7 +30,7 @@ const TaskMenu = ({ isOpen, onClose, onDelete, onUpdateTask, task, clientY}: Tas
     if (!isOpen || !task) return null;
 
 
-     // Initialize properties state with the task properties
+  // Initialize properties state with the task properties
   const [properties, setProperties] = useState({
     length: task.length || false,
     difficulty: task.difficulty || false,

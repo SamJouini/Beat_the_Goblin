@@ -3,6 +3,32 @@ import Image from "next/image";
 import styles from "./User.module.css";
 import Deadline from "./Deadline";
 
+/**
+ * User Component
+ * 
+ * This component displays user information including username, avatar, streak, rewards, and deadline.
+ * 
+ * Key Features:
+ * - Displays user avatar and username.
+ * - Shows current streak and longest streak (currently a placeholder).
+ * - Displays user rewards (durrently a placeholder).
+ * - Integrates the Deadline component for deadline management.
+ * 
+ * @param {UserProps} props - The props for the User component.
+ * @property {string} username - The username of the current user.
+ * @property {boolean} isLoggedIn - Indicates whether a user is logged in.
+ * @property {number} userXP - The experience points of the user.
+ * @property {string} deadline - The current deadline value.
+ * @property {function} setDeadline - Function to update the deadline.
+ * 
+ * Future Implementations:
+ * - Implement dynamic streak calculation based on user activity.
+ * - Add functionality to earn and display more rewards.
+ * - Implement a user page to edit user infos ? (name, avatar...?)
+ * - Implement user level system ?
+ */
+
+
 interface UserProps {
   username: string;
   isLoggedIn: boolean;
@@ -12,6 +38,7 @@ interface UserProps {
 }
 
 const User = ({ username, isLoggedIn, userXP, deadline, setDeadline }: UserProps) => {
+  // Hardcoded streak days for demonstration
   const streakDays = 3;
 
   return (

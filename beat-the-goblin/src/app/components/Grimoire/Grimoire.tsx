@@ -9,6 +9,14 @@ import TaskMenu from './TaskMenu';
 import styles from './Grimoire.module.css';
 import { debounce } from 'lodash';
 
+/**
+ * TaskManager Component
+ * 
+ * This component manages the task list, including adding, updating, deleting, and reordering tasks.
+ * It also handles the drag-and-drop functionality and the task menu dialog.
+ */
+
+
 export interface Task {
   id?: number;
   title: string;
@@ -38,26 +46,30 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isDragMode, setIsDragMode] = useState(false);
 
+  // Set up Drag and Drop sensors
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor)
   );
 
+  // Fetch tasks on component mount and when login status changes
   useEffect(() => {
     fetchTasks();
   }, [isLoggedIn]);
 
-  const fetchTasks = async () => {
-    const fetchedTasks = await taskService.fetchTasks();
-    setTasks(fetchedTasks);
-  };
-
+  // Update combat XP whenever tasks change
   useEffect(() => {
     const { userXP, goblinXP } = calculateCombatXP(tasks);
     updateCombatXP(userXP, goblinXP);
   }, [tasks, updateCombatXP]);
 
+// Fetch tasks from the server
+  const fetchTasks = async () => {
+    const fetchedTasks = await taskService.fetchTasks();
+    setTasks(fetchedTasks);
+  };
 
+  // Add a new task
   const addTask = async () => {
     const newTask: Task = {
       title: "My new task",
@@ -70,6 +82,7 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
     }
   };
 
+  // Update an existing task
   const updateTask = async (updatedTask: Task) => {
     const success = await taskService.updateTask(updatedTask);
     if (success) {
@@ -79,6 +92,7 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
     }
   };
 
+  // Update task properties and recalculate XP
   const updateTaskProperties = async (updatedProperties: Partial<Task>) => {
     if (selectedTaskId) {
       const taskToUpdate = tasks.find(task => task.id === selectedTaskId);
@@ -96,6 +110,7 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
     }
   };
 
+  // Delete a task
   const deleteTask = async () => {
     if (selectedTaskId) {
       const success = await taskService.deleteTask(selectedTaskId);
@@ -106,6 +121,7 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
     }
   };
  
+  // Toggle task completion status
   const completeTask = async (taskId: number) => {
     const taskToUpdate = tasks.find(task => task.id === taskId);
     if (!taskToUpdate) return;
@@ -119,6 +135,7 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
     }
   };
 
+  // Open the task menu dialog
   const openDialog = (taskId: number | undefined, clientX: number) => {
     const task = tasks.find(t => t.id === taskId) || null;
     setIsDialogOpen(true);
@@ -127,17 +144,19 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
     setSelectedTaskId(taskId);
   };
 
+    // Close the task menu dialog
   const closeDialog = () => {
     setIsDialogOpen(false);
     setSelectedTask(null);
     setSelectedTaskId(undefined);
   };
 
+  // Toggle drag mode for reordering tasks
   const toggleDragMode = () => {
     setIsDragMode(!isDragMode);
   };
 
-  // Debounced reorder function
+  // Debounced function to update task order in the backend
   const debouncedReorderTasks = debounce(async (newOrder: number[]) => {
     try {
       const success = await taskService.reorderTasks(newOrder);
@@ -151,6 +170,7 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
     }
   }, 500);
 
+  // Handle the end of a drag event
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -169,7 +189,7 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
     }
   };
 
-   // Function to sort tasks: completed tasks at the bottom
+   // Memoized sorted tasks with completed tasks at the bottom
    const sortedTasks = useMemo(() => {
     return [...tasks].sort((a, b) => {
       return (a.completed_at ? 1 : 0) - (b.completed_at ? 1 : 0);

@@ -4,6 +4,12 @@ import { Task } from './Grimoire';
 import TaskItem from './TaskItem';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
+/**
+ * TaskList Component
+ * 
+ * Renders a list of tasks with sorting capabilities.
+ */
+
 interface TaskListProps {
   isLoggedIn: boolean;
   tasks: Task[];
@@ -22,7 +28,7 @@ const TaskList = ({ isLoggedIn, tasks, onOpenDialog, onUpdateTask, onCompleteTas
     );
 
 
-
+    // Handles saving of edited task titles
   const handleSave = async (id: number | undefined, title: string) => {
     if (!isLoggedIn || id === undefined) return;
 
