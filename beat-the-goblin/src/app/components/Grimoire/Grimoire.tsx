@@ -189,7 +189,7 @@ const TaskManager = ({ isLoggedIn, updateCombatXP, deadline }: GrimoireProps) =>
     }
   };
 
-   // Memoized sorted tasks with completed tasks at the bottom
+   // Memorized sorted tasks with completed tasks at the bottom
    const sortedTasks = useMemo(() => {
     return [...tasks].sort((a, b) => {
       return (a.completed_at ? 1 : 0) - (b.completed_at ? 1 : 0);
