@@ -103,5 +103,5 @@ const TaskItem = ({isLoggedIn, task, onOpenDialog, onCompleteTask, isDragMode, o
         
     )
 };
-MouseEvent
+
 export default TaskItem;

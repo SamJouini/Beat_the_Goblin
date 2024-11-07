@@ -1,3 +1,5 @@
+![Beat the Goblin logo] (./beat_the_goblin/BeattheGoblin.png)
+
 # Beat the Goblin
 
 ## Description
