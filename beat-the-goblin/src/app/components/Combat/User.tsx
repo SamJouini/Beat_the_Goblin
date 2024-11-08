@@ -84,7 +84,7 @@ const User = ({ username, isLoggedIn, userXP, deadline, setDeadline }: UserProps
               ))}
             </div>
             <span className={styles.streakText}>Current Streak: {3}</span>
-            <span className={styles.streakBest}>Longest's Streak: {7}</span>
+            <span className={styles.streakBest}>Longest Streak: {7}</span>
           </div>
           <div className={styles.rewardContainer}>
             <h4 className={styles.rewardTitle}>My rewards:</h4>
