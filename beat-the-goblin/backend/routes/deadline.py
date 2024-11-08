@@ -28,15 +28,16 @@ def get_user_deadline():
         result = cursor.fetchone()
         if result:
             deadline_str = result['deadline']
+            
+            # here we have the default deadline for the user
             if deadline_str == None:
                 deadline_str = datetime.time(hour=20).isoformat(timespec="minutes")
             
-            # here we have the default deadline for the user
             cursor.execute("SELECT pomodoro, breath FROM Combat WHERE user_id = ? AND combat_date = ?", 
                            (current_user_id, datetime.date.today().isoformat()))
             result = cursor.fetchone()
 
-            # add a bit more if the user has done a pomodoro
+            # add a bit more if the user has done a pomodoro or a breathing exercice
             if result and result['pomodoro'] == 1:
                 deadline = datetime.time.fromisoformat(deadline_str)
                 edited_deadline = datetime.datetime.combine(datetime.date.today(), deadline) + datetime.timedelta(minutes = 30)
