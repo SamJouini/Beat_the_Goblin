@@ -100,7 +100,7 @@ const MainComponent = () => {
     checkVictoryCondition();
 
     return () => clearInterval(victoryCheck);
-  }, [deadline, userXP, goblinXP, router]);
+  }, [deadline, userXP, goblinXP]);
 
 
   return (

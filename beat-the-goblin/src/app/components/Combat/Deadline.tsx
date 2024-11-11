@@ -29,6 +29,7 @@ import Image from 'next/image';
 const Deadline = ({isLoggedIn, deadline, onDeadlineChange}:any) => {
   // State to manage whether the deadline is being edited
   const [editing, setEditing] = useState(false);
+  const [editValue, setEditValue] = useState<string>("--:--");
   
   // Effect to fetch the deadline when the user is logged
   useEffect(() => {
@@ -49,6 +50,7 @@ const Deadline = ({isLoggedIn, deadline, onDeadlineChange}:any) => {
       const data = await response.json();
       if (data.success) {
         onDeadlineChange(data.deadline);
+        setEditValue(data.deadline);
       }
     } catch (error) {
       console.error('Error fetching deadline:', error);
@@ -64,11 +66,12 @@ const Deadline = ({isLoggedIn, deadline, onDeadlineChange}:any) => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({"deadline": deadline}),
+        body: JSON.stringify({"deadline": editValue}),
       });
       const data = await response.json();
       if (data.success) {
         setEditing(false);
+        onDeadlineChange(editValue);
       }
     } catch (error) {
       console.error('Error updating deadline:', error);
@@ -95,8 +98,8 @@ const Deadline = ({isLoggedIn, deadline, onDeadlineChange}:any) => {
         // Render an input field when editing
         <input type="time" 
               className={styles.clock}
-              value={deadline}
-              onChange={(e) => onDeadlineChange(e.target.value)}
+              value={editValue}
+              onChange={(e) => setEditValue(e.target.value)}
               onKeyDown={e => {if (e.key == 'Enter'){handleSave()}}}
               onBlur={handleSave}
               autoFocus/>
