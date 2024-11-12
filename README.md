@@ -37,7 +37,7 @@ Beat the Goblin is a gamified task management application. The idea is to gently
 - Displays user rewards (placeholder functionality)
 
 ### VersusGoblin Component
-- Visualizes the comparison between user's XP and goblin's XP 
+- Visualizes the comparison between the user's XP and the goblin's XP 
 by displaying a "Versus" text with color-coding based on XP comparison
 - Shows the goblin's avatar and name
 
@@ -48,29 +48,20 @@ by displaying a "Versus" text with color-coding based on XP comparison
 
 ## Installation
 
-1. Clone the repository:
+1. Clone the repository on your favourite terminal:
 
 git clone https://github.com/SamJouini/Beat_the_Goblin
 
-
-2. Install dependencies:
-
-npm install
-
-
-3. Run the development server:
-
-npm run dev
-
+2. Open the newly cloned repository
 
 ## Usage
 
 1. Create an account or log in.
 2. Add tasks to your Grimoire.
 3. Complete tasks to gain XP and beat the goblin.
-4. Use the Pomodoro timer or breathing exercise as needed.
-5. Check your progress on the interactive map.
-6. Manage your deadline and view your profile information.
+4. Manage your deadline and view your profile information.
+5. Use the Pomodoro timer or breathing exercise as needed.
+(6. Check your progress on the interactive map.)
 
 ### Frontend
 - Next.js
@@ -96,7 +87,7 @@ npm run dev
 - Dynamic streak calculation based on user activity
 - Reward system
 - Difficulty management for goblin opponent
-- Accessibility improvements for color-blind users
+- Accessibility improvements for colour-blind users
 - Randomized goblin names
 - Day/night cycle visualization for deadline component
 
