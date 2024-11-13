@@ -1,7 +1,8 @@
 # Beat the Goblin
 
 ## Description
-Beat the Goblin is a gamified task management application. The idea is to gently encourage the user to manage and finish their daily tasks (and goals) using a metaphorical battle against a goblin opponent.
+Beat the Goblin is a gamified task management application. 
+The idea is to gently encourage the user to manage and finish their daily tasks using a "combat" against a goblin opponent as motivation.
 
 ## Key Features
 - User authentication system
@@ -35,7 +36,7 @@ Beat the Goblin is a gamified task management application. The idea is to gently
 - Displays user rewards (placeholder functionality)
 
 ### VersusGoblin Component
-- Visualizes the comparison between user's XP and goblin's XP 
+- Visualizes the comparison between the user's XP and the goblin's XP 
 by displaying a "Versus" text with color-coding based on XP comparison
 - Shows the goblin's avatar and name
 
@@ -54,7 +55,7 @@ git clone https://github.com/SamJouini/Beat_the_Goblin
 2. Add tasks to your Grimoire.
 3. Complete tasks to gain XP and beat the goblin.
 4. Manage your deadline and view your profile information.
-5. 4. Use the Pomodoro timer or breathing exercise when needed.
+5. Use the Pomodoro timer or breathing exercise when needed.
       
 ### Frontend
 - Next.js
@@ -63,13 +64,13 @@ git clone https://github.com/SamJouini/Beat_the_Goblin
 - CSS Modules
 - @dnd-kit for drag-and-drop functionality
 - Lodash for utility functions
-- 
+  
 ### Backend
 - Flask
 - Flask-JWT-Extended for authentication
 - SQLite3 for database management
 - python-dotenv for environment variable management
-- 
+  
 ## Future Improvements
 - User profile editing capabilities
 - Customizable Pomodoro and breathing exercise durations
